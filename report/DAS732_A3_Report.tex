@@ -1,0 +1,1018 @@
+\documentclass[conference,a4paper]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{placeins}
+\usepackage{stfloats}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage{cite}
+\usepackage{pdfpages}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={From Snapshots to Trajectories: A Visual Analytics Workflow on Global Internet Adoption},
+  pdfauthor={Parikshith Aithal K V, Sindhoor Ganapathi Hegde, Varshith M Gowda}}
+\graphicspath{{diagrams/}{../images/}}
+\extrafloats{100}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\dbltopfraction}{0.9}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.8}
+\renewcommand{\dblfloatpagefraction}{0.8}
+\setcounter{totalnumber}{4}
+\setcounter{dbltopnumber}{2}
+\definecolor{loop}{HTML}{C0392B}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\inference}[1]{\par\smallskip\noindent\textit{Inference.} #1\par\smallskip}
+
+\begin{document}
+
+\title{From Snapshots to Trajectories: A Visual Analytics Workflow on Global Internet Adoption}
+
+\author{
+\IEEEauthorblockN{Parikshith Aithal K V}
+\IEEEauthorblockA{Roll No. BT2024249\\IIIT Bangalore}
+\and
+\IEEEauthorblockN{Sindhoor Ganapathi Hegde}
+\IEEEauthorblockA{Roll No. BT2024014\\IIIT Bangalore}
+\and
+\IEEEauthorblockN{Varshith M Gowda}
+\IEEEauthorblockA{Roll No. BT2024227\\IIIT Bangalore}
+}
+\maketitle
+
+\begin{abstract}
+Assignment~1 (A1, appended) explored the Our World in Data \emph{Internet} collection visually and
+concluded that mobile phones let many countries skip the fixed-line era, but that broadband rather
+than mobile saturation separates connected from unconnected populations. This report turns those
+visual observations into a visual analytics (VA) workflow in the sense of Keim
+et~al.~\cite{keim2008scope}, with one explicit feedback loop drawn as an unrolled diagram.
+Iteration~1 applies statistical modelling (logistic diffusion fits, rank tests, segmented
+regression, bootstrap correlations, convergence analysis), unsupervised mining (PCA,
+$k$-means/GMM/Ward, Isolation Forest and LOF) and supervised learning (Ridge, Random Forest,
+gradient boosting) to the raw panel. Four of its inferences are fed back as a data transformation:
+removal of recording artefacts (Fiji's 2023--24 mobile series), 13 engineered features, reshaping
+into 2000--2025 trajectories, and imputation fitted inside each training fold. Iteration~2
+visualizes the transformed data, clusters whole trajectories with dynamic time warping (silhouette
+0.52 against 0.35 for snapshot labels), lowers country-grouped cross-validation RMSE on identical
+rows from 11.77 to 10.16 percentage points, and forecasts 2021--2025. A Population Stability Index
+drift chart shows that the target shifted after 2020 while the inputs did not, which explains why
+raw 80\% intervals covered only 50\% of outcomes; conformal re-calibration restores 83\% and tracks
+the nominal level from 50\% to 90\%. The divide is a delay of 6--12 years on a common S-curve,
+relative inequality has fallen (Gini 0.81 to 0.19) but late starters close a smaller share of their
+remaining gap, and fixed infrastructure, not mobile, marks a country's position on the curve.
+\end{abstract}
+
+\begin{IEEEkeywords}
+visual analytics, feedback loop, diffusion curves, convergence, clustering, dynamic time warping,
+conformal prediction, data drift, digital divide
+\end{IEEEkeywords}
+
+% =========================================================================================
+\section{Introduction}
+% =========================================================================================
+\subsection{From A1 to A3}
+A1 asked whether mobile technology let countries skip fixed-line infrastructure, whether that
+closed the connectivity gap, and, if not, what separates connected populations from unconnected
+ones. Its answer was visual: a landline count today hides opposite histories (A1 Fig.~5), the gap
+between income groups widened (A1 Fig.~11), subscriptions are not people (A1 Figs.~10 and~18), and
+broadband correlates more strongly with adoption than mobile does (A1 Figs.~19--20). Visual
+readings of this kind can be confounded by time trends, outliers and recording errors. A3 therefore
+tests them with statistics and models placed inside a VA workflow, in which visualization and
+automated analysis alternate and each informs the next~\cite{keim2008challenges,card1999,sacha2014}.
+
+\subsection{Research questions}
+The central A3 question is: \emph{can infrastructure and history explain and forecast which
+countries get online, and does feeding the first iteration's inferences back into the data change
+the answer?} It is answered through four sub-questions, each mapped to a family of methods required
+by the brief:
+\begin{itemize}
+\item \textbf{RQ1, statistics:} when and how fast did countries adopt, is the divide closing, and
+  what does each indicator really measure? (V1, V1b, V2, V3, V3b, V13)
+\item \textbf{RQ2, unsupervised mining:} which kinds of countries exist, and which do not fit any
+  kind? (V4--V6, V8, V8b)
+\item \textbf{RQ3, supervised learning:} how well does infrastructure predict an unseen country and
+  forecast unseen years, and how far can the forecasts be trusted? (V7, V10--V12b)
+\item \textbf{RQ4, workflow:} which inferences change the data, and what does the second iteration
+  learn that the first could not? (V0, V9, V14)
+\end{itemize}
+
+\subsection{Contributions}
+The report contributes (i) a two-iteration, unrolled Keim workflow with one labelled feedback loop
+(Fig.~\ref{fig:v0}); (ii) a statistical re-test of A1's visual claims, including diffusion timing
+and convergence; (iii) a leakage-safe evaluation protocol with country-grouped folds, a temporal
+holdout and past-only features; (iv) an iteration~1 versus iteration~2 comparison on identical rows
+and folds; (v) a drift chart that links forecast mis-calibration to a post-2020 shift, with a
+calibration curve for the re-calibrated intervals; and (vi) a reproducible pipeline (Fig.~\ref{fig:v0b})
+(\texttt{python src/run\_all.py}) with an interactive demonstrator that runs in a web browser.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V0_workflow_architecture.pdf}
+\caption{\textbf{V0: one labelled feedback loop separates two complete VA iterations.} (a) The
+compact Keim diamond. (b) The process unrolled into four stages (\textcircled{\scriptsize 1} data,
+\textcircled{\scriptsize 2} visualize, \textcircled{\scriptsize 3} model, \textcircled{\scriptsize 4}
+visualize and know) and two rows: iteration~1 ($D_1\!\rightarrow\!V_1\!\rightarrow\!M_1\!\rightarrow\!K_1$)
+runs on raw data; the inferences $K_1$ become the transformation $T$ (red); iteration~2
+($D_2\!\rightarrow\!V_3\!\rightarrow\!M_2\!\rightarrow\!K_2$) runs on the transformed data. Small
+glyphs inside each module sketch its content (coverage grid, S-curves, drift chart). The dashed edge
+is the drift-triggered re-calibration of the forecast intervals.}
+\label{fig:v0}
+\end{figure*}
+
+\subsection{Organisation}
+Section~\ref{sec:related} reviews related work and Section~\ref{sec:data} the data and its
+quality. Section~\ref{sec:methods} describes the workflow and every method, and
+Section~\ref{sec:design} justifies the visual encodings. Sections~\ref{sec:it1}--\ref{sec:it2}
+report the two iterations and the feedback loop between them, and Section~\ref{sec:disc} answers
+the research questions and discusses validity.
+
+% =========================================================================================
+\section{Related Work}\label{sec:related}
+% =========================================================================================
+\textit{VA process models.} Card et~al.~\cite{card1999} describe visualization as a pipeline from
+data to view; Keim et~al.~\cite{keim2008scope,keim2008challenges} extend it to the VA diamond, in
+which data, visualization, models and knowledge are linked by transitions and a feedback loop.
+Sacha et~al.~\cite{sacha2014} refine the knowledge side into exploration, verification and
+knowledge-generation loops; the two iterations of this report correspond to an exploration loop
+whose findings are verified after the data are transformed. Wang et~al.~\cite{wang2024va4ml} survey
+VA for machine learning from a data perspective, and the data-centric tasks they identify
+(diagnosing data, improving data, explaining models) are the tasks of the feedback loop here.
+
+\textit{Diffusion and the digital divide.} Technology adoption is classically modelled as an
+S-shaped diffusion curve~\cite{rogers2003}. Comin and Hobijn~\cite{comin2010} show that cross-country
+differences in adoption are dominated by adoption \emph{lags} rather than by different curve shapes,
+which V1 tests for the internet. The ITU~\cite{itu2023} reports that a third of the world remained
+offline in 2023, concentrated in low-income countries, consistent with the late-starter archetype
+found in V8.
+
+\textit{Time-series mining and uncertainty.} Dynamic time warping~\cite{sakoe1978dtw} is a standard
+distance for clustering curves that are similar in shape but shifted in time~\cite{aghabozorgi2015}.
+Concept drift, a change in the relation between inputs and target over time, invalidates models
+trained on earlier data~\cite{gama2014}. Conformalised quantile regression~\cite{romano2019cqr}
+gives prediction intervals with finite-sample coverage under exchangeability, and the Population
+Stability Index~\cite{siddiqi2006} is a common drift monitor in deployed ML workflows.
+
+% =========================================================================================
+\section{Data and Pre-processing}\label{sec:data}
+% =========================================================================================
+\subsection{Core dataset}
+The core data are A1's merged OWID panel~\cite{owid}: 247 entities over 1960--2025. Removing
+aggregate rows (World, income groups, continents) leaves 217 countries and 12{,}579 country-years.
+Table~\ref{tab:vars} lists the five indicators. Internet users is the target of every supervised
+model. Regions follow A1's six-continent lookup, so A1 and A3 groupings coincide.
+
+\begin{table}[!t]
+\centering
+\caption{Indicators analysed (country rows only)}
+\label{tab:vars}
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}Y l r r r@{}}
+\toprule
+Indicator & Years & Rows & Obs.\,\% & Median \\
+\midrule
+Internet users (\% pop.), target & 1990--2025 & 6{,}224 & 49.5 & 19.0 \\
+Mobile subscriptions /100 & 1960--2024 & 10{,}594 & 84.2 & 1.7 \\
+Phone owners (\% adults) & 2013--2025 & 1{,}330 & 10.6 & 85.3 \\
+Fixed telephone lines /100 & 1960--2024 & 11{,}794 & 93.8 & 6.6 \\
+Fixed broadband /100 & 1998--2024 & 4{,}330 & 34.4 & 4.7 \\
+\bottomrule
+\multicolumn{5}{@{}l}{\scriptsize Obs.\,\%: share of the 12{,}579 country-years observed. Source:~\cite{owid}.}
+\end{tabularx}
+\end{table}
+
+\subsection{Pre-processing beyond A1}
+\textit{Audit.} Two columns are exact copies of others: \texttt{internet\_users\_share\_pct\_ict}
+duplicates the target and \texttt{broadband\_penetration\_per100} duplicates broadband
+subscriptions (maximum absolute difference 0). The pipeline asserts this before dropping them. Five
+count columns are dropped because they scale with population, and the internet-user count is the
+target multiplied by population.
+
+\textit{No imputation in iteration~1.} Iteration~1 uses complete cases only, so every pattern it
+reports exists in observed data. Imputation enters in iteration~2, after the quality analysis below
+motivates it, and is always fitted on the training fold alone.
+
+\textit{Supplementary data.} None is used. A World Bank income join was considered and rejected for
+the same reason as in A1: the question concerns infrastructure, and adding income would answer a
+different question. The consequence, that all results are associations, is discussed in
+Section~\ref{sec:limits}.
+
+\subsection{Data quality and missingness}
+Fig.~\ref{fig:v3b} measures coverage against all 217 countries. Mobile subscriptions and landlines
+are observed for more than 95\% of countries from 1990 to 2022; broadband begins around 2000 and
+passes 80\% only in 2005; ownership exists only in survey years from 2014; and 2023--2025 thin out
+sharply, which is why the snapshot year is 2024 and the forecast horizon ends in 2025. Coverage is
+lowest in Oceania for every indicator. Missingness is not random: in 2015--2024 the median internet
+share is 50\% in country-years without an ownership survey and 75\% in those with one
+(Mann--Whitney $p=10^{-41}$); for broadband the gap is smaller (63\% against 70\%, $p=10^{-4}$).
+
+\inference{Imputing ownership with a global mean would bias low-connectivity countries upwards.
+Iteration~1 therefore uses complete cases only, and iteration~2 uses multivariate imputation fitted
+in-fold together with explicit missingness flags, so the model can learn that a missing survey is
+itself informative.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V3b_data_quality_missingness.png}
+\caption{\textbf{V3b: coverage is uneven in time and space, and ownership is missing mainly for
+less-connected country-years, so missingness cannot be ignored.} (a) Share of all 217 countries
+observed per indicator and year. (b) Coverage by region, 2010--2025. (c) Internet share of
+country-years with and without each indicator.}
+\label{fig:v3b}
+\end{figure*}
+
+% =========================================================================================
+\section{Workflow and Methods}\label{sec:methods}
+% =========================================================================================
+\subsection{The unrolled workflow}
+Keim et~al.~\cite{keim2008scope,keim2008challenges} describe VA as transitions between four stages,
+data ($D$), visualization ($V$), models ($M$) and knowledge ($K$), with a feedback loop from
+knowledge back to data. Drawn as a state diagram (Fig.~\ref{fig:v0}a) the process is a cyclic graph
+with self-loops, which cannot show which pass produced which inference. Fig.~\ref{fig:v0}b therefore
+unrolls it into two iterations with no self-loops and a single edge labelled
+\textcolor{loop}{\textbf{Feedback loop}} from $K_1$ to $D_2$. Table~\ref{tab:modules} lists every
+module with its methods and their sources.
+
+
+
+\begin{table*}[!t]
+\centering
+\caption{Modules of the unrolled workflow, with the methods, their sources and the resulting figures}
+\label{tab:modules}
+\small
+\begin{tabularx}{\textwidth}{@{}l l Y l l@{}}
+\toprule
+Stage & Module & Methods (source) & Tool & Output \\
+\midrule
+$D_1$ & raw panel & duplicate assertion, aggregate removal, A1 regions, complete cases, coverage and missingness tests~\cite{owid} & pandas, SciPy & V3b \\
+$V_1$ & statistical exploration & logistic diffusion fit~\cite{rogers2003}; Kruskal--Wallis~\cite{kruskal1952}; Mann--Whitney with Holm correction~\cite{holm1979}; $\sigma$- and $\beta$-convergence and Gini~\cite{comin2010}; segmented regression and LOWESS~\cite{cleveland1979}; bootstrap Spearman intervals~\cite{efron1993} & SciPy, statsmodels & V1, V1b, V2, V3 \\
+$M_1$ & unsupervised & PCA~\cite{jolliffe2016}; $k$-means, GMM and Ward clustering scored by silhouette~\cite{rousseeuw1987} and bootstrap ARI~\cite{hubert1985}; Isolation Forest~\cite{liu2008if} and LOF~\cite{breunig2000lof} & scikit-learn~\cite{pedregosa2011} & V4--V6 \\
+$M_1$ & supervised baseline & Ridge, Random Forest~\cite{breiman2001rf}, histogram gradient boosting~\cite{ke2017lightgbm}; country-grouped 5-fold CV; held-out permutation importance~\cite{breiman2001rf} & scikit-learn & V7 \\
+$K_1$ & inferences & four inferences, Table~\ref{tab:k1} & --- & --- \\
+\textcolor{loop}{\textbf{loop}} & transformation $T$ & T1 artefact rules; T2 13 past-only features; T3 trajectories and MICE imputation~\cite{vanbuuren2011mice} & pandas, scikit-learn & V9 \\
+$V_3$ & transformed-data views & before/after, feature association, coverage; PSI drift chart~\cite{siddiqi2006,gama2014} & matplotlib & V9, V13 \\
+$M_2$ & trajectory mining & dynamic time warping~\cite{sakoe1978dtw,aghabozorgi2015} with average linkage; t-SNE map~\cite{vandermaaten2008} & NumPy, SciPy & V8, V8b \\
+$M_2$ & supervised and forecast & gradient boosting with engineered features; SHAP~\cite{lundberg2017shap}; partial dependence and ICE~\cite{friedman2001,goldstein2015}; quantile loss; conformalised quantile regression~\cite{romano2019cqr} & scikit-learn, SHAP & V10--V12b \\
+$K_2$ & knowledge & answer to the central question & --- & V14 \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{Statistical methods}
+\textit{Diffusion.} Each country's internet share $y(t)$ is fitted, from 1990 onwards and for
+countries with at least 15 observed years, by non-linear least squares to
+\begin{equation}
+y(t)=\frac{L}{1+e^{-k\,(t-t_0)}},
+\end{equation}
+where $L$ is the saturation level, $k$ the growth rate and $t_0$ the take-off year at which half of
+$L$ is reached~\cite{rogers2003}. Regional differences in $t_0$ are tested with Kruskal--Wallis and
+pairwise Mann--Whitney tests against Europe, with Holm's correction~\cite{kruskal1952,holm1979}.
+
+\textit{Convergence.} $\sigma$-convergence is the decline over time of the cross-country standard
+deviation and of the Gini coefficient
+$G=\sum_i\sum_j|y_i-y_j|/(2n^2\bar y)$. $\beta$-convergence is assessed on headroom: the share of
+the remaining gap closed between 2014 and 2024, $h=(y_{2024}-y_{2014})/(100-y_{2014})$, is
+correlated with $y_{2014}$; a negative correlation would mean that low starters catch up.
+
+\textit{Floor and decoupling.} A segmented regression
+$y=\beta_0+\beta_1x+\beta_2\max(0,x-c)$ with $x=\log(1+\text{broadband})$ is fitted by grid search
+over the breakpoint $c$ and compared with a straight line by an $F$-test. Spearman correlations per
+year are given 95\% intervals by resampling countries 400 times~\cite{efron1993}.
+
+\subsection{Unsupervised mining}
+The 2024 snapshot is z-scored and analysed by PCA~\cite{jolliffe2016}. $k$-means, a full-covariance
+Gaussian mixture and Ward clustering are fitted for $k=2,\dots,8$; $k$ is chosen by the mean
+silhouette $s=\frac{1}{n}\sum_i (b_i-a_i)/\max(a_i,b_i)$~\cite{rousseeuw1987} within $k\in[3,6]$
+subject to a minimum cluster size of 3\% of countries, and stability is measured by the adjusted
+Rand index (ARI)~\cite{hubert1985} between full-data labels and labels from 200 bootstrap refits.
+Anomalies are ranked by the average of the percentile ranks of Isolation Forest~\cite{liu2008if}
+and LOF~\cite{breunig2000lof} scores and tagged by transparent rules. In iteration~2, trajectories
+are compared by dynamic time warping~\cite{sakoe1978dtw}, which aligns curves under a Sakoe--Chiba
+band of five years,
+\begin{equation}
+\mathrm{DTW}(a,b)=\min_{\pi}\Big(\sum_{(i,j)\in\pi}(a_i-b_j)^2\Big)^{1/2},
+\end{equation}
+and clustered by average linkage on the DTW matrix.
+
+\subsection{Supervised learning and forecasting}
+Gradient boosting is the main model (histogram variant~\cite{ke2017lightgbm}); Ridge and Random
+Forest~\cite{breiman2001rf} are baselines. All supervised scores come from 5-fold cross-validation
+in which every fold holds out whole countries, using one fixed country-to-fold map for every
+experiment. Missing predictors in iteration~2 are imputed by chained equations
+(MICE)~\cite{vanbuuren2011mice} fitted on the training fold only. Explanations use SHAP
+values~\cite{lundberg2017shap} and partial dependence with individual conditional expectation
+curves~\cite{friedman2001,goldstein2015}.
+
+For the forecast, quantile models $\hat q_{\alpha/2}$ and $\hat q_{1-\alpha/2}$ are trained on years
+up to 2020. Conformalised quantile regression~\cite{romano2019cqr} refits them on years before 2018,
+computes conformity scores $E_i=\max\{\hat q_{\alpha/2}(x_i)-y_i,\;y_i-\hat q_{1-\alpha/2}(x_i)\}$
+on 2018--2020, and widens the interval by the $\lceil(n+1)(1-\alpha)\rceil/n$ empirical quantile of
+the scores.
+
+\subsection{Drift}
+The Population Stability Index~\cite{siddiqi2006} compares the distribution of a variable in year
+$t$ with a reference window (2015--2020) over the reference deciles $b$:
+\begin{equation}
+\mathrm{PSI}_t=\sum_{b}\big(p_{t,b}-p_{\mathrm{ref},b}\big)\ln\frac{p_{t,b}}{p_{\mathrm{ref},b}},
+\end{equation}
+with the usual action thresholds of 0.1 (evaluate) and 0.2 (retrain or re-calibrate).
+
+\subsection{Correctness with respect to space and time}
+Three rules hold throughout. In space, no model is tested on a country it has seen. In time, every
+engineered feature uses only the past (expanding maxima and lags), and the forecast is trained on
+years up to 2020 and scored on 2021--2025, with the ordering asserted in code. For the target, no
+feature contains the target or a transform of it; a guard rejects duplicates, counts and any column
+whose name contains ``internet''. Table~\ref{tab:setup} lists the settings.
+
+\begin{table}[!t]
+\centering
+\caption{Experimental settings (fixed seed 42 throughout)}
+\label{tab:setup}
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}l Y@{}}
+\toprule
+Component & Setting \\
+\midrule
+Logistic fit & $L\in[0.9\max y,100]$, $k\in[0.02,2]$, $t_0\in[1985,2060]$ \\
+Bootstrap & 400 country resamples (Spearman), 2{,}000 (medians), 200 (ARI) \\
+Clustering & $k$-means 25 inits; GMM full covariance, 5 inits; Ward linkage \\
+Anomalies & Isolation Forest 500 trees; LOF 15 neighbours \\
+DTW & Sakoe--Chiba radius 5 yr; curves with $\ge$18 of 26 years observed \\
+Iteration-1 model & HistGBM 150 iterations, depth 6, learning rate 0.08 \\
+Iteration-2 model & HistGBM 300 iterations, depth 8, learning rate 0.06 \\
+Imputation & IterativeImputer (MICE), 10 rounds, fitted per training fold \\
+Forecast & train $\le$2020; CQR fit $<$2018, calibrate 2018--20; test 2021--25 \\
+PSI & reference 2015--2020, reference deciles as bins \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% =========================================================================================
+\section{Visualization Design Rationale}\label{sec:design}
+% =========================================================================================
+Each figure was designed for one analytic task, following the what--why--how reasoning of
+Munzner's nested model~\cite{munzner2014}: the task decides the idiom, and the idiom decides the
+encoding. Table~\ref{tab:design} records the choice and the alternative that was rejected. Three
+rules apply to every figure: one colour per region shared by all figures (a colour-blind-safe
+Okabe--Ito palette, validated for separation under colour-vision deficiency), no dual value axes,
+and a title that states the finding rather than the chart type.
+
+\begin{table*}[!t]
+\centering
+\caption{Design rationale: task, idiom, encoding, and the alternative rejected for each figure}
+\label{tab:design}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}l Y Y Y Y@{}}
+\toprule
+Fig. & Analytic task & Idiom and encoding & Why & Rejected alternative \\
+\midrule
+V0 & show the process and the loop & unrolled node-link diagram, colour = Keim stage & order and causality are positional & cyclic diagram (ambiguous passes)~\cite{keim2008scope} \\
+V1 & compare timing across regions & fitted curves; box + strip of $t_0$; scatter $t_0$--$k$ & every country visible, uncertainty shown & regional mean lines only (hide spread) \\
+V1b & is the gap closing? & indexed lines (one axis); headroom scatter with fit & absolute vs relative inequality on one scale & dual-axis chart (misleading scale coupling) \\
+V2 & shape of a relation; change of correlation & log-$x$ scatter + segmented fit + LOWESS; CI bands & floor visible on log axis & single pooled $r$ (hides time trend) \\
+V3 & measurement validity & scatter with reference lines; histogram; time series & ratio lines read directly & table of ratios \\
+V3b & data quality & heatmaps (year $\times$ indicator, region $\times$ indicator); paired boxes & dense, exact values printed & bar per year (too many bars) \\
+V4 & structure of 5-D data & biplot + loading heatmap & points and variables together & scatter-plot matrix (10 panels) \\
+V5 & choose and validate $k$ & small multiples of criteria; parallel coordinates & profiles compare all variables at once & radar chart (area distortion) \\
+V6 & rank and explain outliers & lollipop + PCA overlay & rank and location side by side & table only \\
+V7 & diagnose a model & predicted--actual scatter; residual boxes; importance bars & error by region and level & single RMSE number \\
+V8, V8b & compare trajectory groups & small multiples with IQR; confusion heatmap; dendrogram; t-SNE map & paths shown, not summarised & spaghetti plot of 181 lines \\
+V9 & show the transformation & before/after lines; diverging bars & what changed, per feature & prose only \\
+V10 & compare iterations & dumbbell plot; grouped bars with s.d. & direction and size of change & two separate tables \\
+V11 & explain and localise error & SHAP beeswarm; diverging choropleth (zero = white) & polarity needs a diverging scale & rainbow map \\
+V12, V12b & forecast uncertainty & fan chart (cone); calibration curve vs diagonal; PDP + ICE & trust measured, not asserted & point forecasts only \\
+V13 & monitor drift & line chart with threshold bands & action thresholds visible & table of PSI values \\
+V14 & answer the question & four-panel synthesis (when, what, who, change) & one panel per part of the answer & text summary \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+% =========================================================================================
+\section{Iteration 1: Raw Data}\label{sec:it1}
+% =========================================================================================
+\subsection{RQ1: statistical exploration ($V_1$)}
+\textit{Diffusion is an S-curve shifted by region (Fig.~\ref{fig:v1}).} The logistic model fits 201
+of 203 countries with $R^2\ge0.9$ (median $R^2=0.990$). The take-off year differs by region
+(Kruskal--Wallis $H=86.3$, $p=4\times10^{-17}$). Africa's median take-off is 2017.5, 11.9 years after
+Europe's 2005.6 (Mann--Whitney, Holm-corrected $p=1.4\times10^{-15}$); the other regions lag by
+6.3--11.5 years. Take-off year and growth rate are weakly negatively correlated (Spearman
+$\rho=-0.21$, $p=0.003$).
+
+\inference{The digital divide behaves as a delay on a common S-curve rather than a different curve,
+as Comin and Hobijn~\cite{comin2010} found for earlier technologies, and late starters do not climb
+faster. This converts A1's ``years behind Europe'' chart (A1 Fig.~14) into a tested result.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V1_diffusion_scurves.png}
+\caption{\textbf{V1: every region follows the same S-curve, shifted by up to 12 years, and late
+adopters do not catch up faster.} Left: observed series (thin) and logistic curves with
+region-median parameters (thick). Centre: take-off year by region with every country overplotted.
+Right: take-off year against growth rate; two countries reach the $k\le2$ bound.}
+\label{fig:v1}
+\end{figure*}
+
+\textit{Is the divide closing? (Fig.~\ref{fig:v1b}).} Relative inequality between countries fell
+steadily: the Gini coefficient of internet shares dropped from 0.81 in 1995 to 0.19 in 2024. Absolute
+spread did not: the cross-country standard deviation rose until 2013 (29.3 points) and has fallen only
+since, and the gap between the median European and the median African country peaked at 64 points in
+2014 and was still 52 in 2024. Between 2014 and 2024, countries that started higher closed a
+\emph{larger} share of their remaining headroom (Spearman $\rho=+0.52$, $p=10^{-13}$, 175 countries).
+
+\inference{The divide is narrowing in relative terms only. In absolute terms it peaked a decade ago,
+and the countries furthest behind are still closing the smallest share of their gap, so there is no
+$\beta$-convergence in headroom.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V1b_convergence.png}
+\caption{\textbf{V1b: relative inequality has fallen, but absolute spread only since 2013, and low
+starters close a smaller share of their remaining gap.} (a) Median country, 10th--90th percentile
+band and the Europe--Africa median gap. (b) Standard deviation and Gini, each indexed to its own
+maximum. (c) Share of headroom closed 2014--2024 against the 2014 level, with an OLS fit.}
+\label{fig:v1b}
+\end{figure*}
+
+\textit{A broadband floor and the decoupling of mobile (Fig.~\ref{fig:v2}).} Of 3{,}629
+country-years in 2005--2024, 28.7\% have fewer than one broadband subscription per 100, yet internet
+use on this floor reaches 30\% (median 9\%, 90th percentile 30\%). Above the floor, internet use rises
+roughly linearly in $\log(1+\text{broadband})$; the segmented regression places a breakpoint near 23
+per 100, where the slope steepens from 19.6 to 30.8 points per log-unit ($R^2=0.78$; $F=21.4$ against
+a single line, $p=6\times10^{-10}$). In 2005 broadband, mobile and landlines all correlated at
+$\rho\approx0.9$ with internet use, whereas by 2024 mobile had fallen to $\rho=0.42$ (95\% CI
+0.26--0.57) and broadband held at 0.80 (0.71--0.87).
+
+\inference{Broadband acts non-linearly and has a floor below which it carries no information.
+Mobile subscriptions stopped distinguishing countries once they saturated, so A1's pooled
+correlation hid a trend over time.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V2_floor_effect_decoupling.png}
+\caption{\textbf{V2: broadband has a floor and a non-linear effect, and mobile lost its power to
+separate countries after 2005.} Left: internet use against broadband (log1p axis) with a segmented
+fit and LOWESS; the shaded band is the floor below one subscription per 100. Right: Spearman $\rho$
+with internet use by year, with 95\% country-bootstrap intervals.}
+\label{fig:v2}
+\end{figure*}
+
+\textit{Subscriptions count SIMs, not people (Fig.~\ref{fig:v3}).} In each country's latest year
+with both values ($n=193$), the median country has 1.34 SIMs per phone owner (IQR 1.15--1.61).
+Ownership correlates at $\rho=0.89$ with internet use and subscriptions at only $\rho=0.52$. One
+multi-SIM flag of 1.5 SIMs per owner is used throughout; it lies inside the upper quartile but below
+the Tukey fence of 2.30, so it marks a market pattern (35\% of countries) rather than an outlier.
+Fiji lies far outside every other country, at 574 subscriptions per 100 in 2024 with ownership
+unchanged at 82\%.
+
+\inference{Raw subscriptions overstate people and must be normalised before modelling. Fiji's jump
+from 111 to 574 in two years, with flat ownership and internet use, is a recording artefact rather
+than adoption.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V3_multisim_inflation.png}
+\caption{\textbf{V3: subscriptions overstate people by a median 1.34 SIMs per owner, and Fiji's
+2023--24 values are an artefact.} Left: subscriptions against ownership with one and 1.5
+SIMs-per-owner lines. Centre: distribution of SIMs per owner with the team threshold and Tukey
+fence. Right: Fiji's mobile series against ownership and internet use.}
+\label{fig:v3}
+\end{figure*}
+
+\subsection{RQ2: unsupervised mining ($M_1$, $V_2$)}
+On the 2024 snapshot (135 complete-case countries, five z-scored indicators), PCA places 64.2\% of
+the variance on a general connectivity axis on which all five indicators load positively, and
+17.8\% on a second axis loaded almost entirely by mobile subscriptions (0.96; Fig.~\ref{fig:v4}).
+Two countries, Fiji and Hong Kong, stretch the second axis on their own. The third component (11\%)
+contrasts landlines with ownership and internet use, i.e.\ legacy fixed lines that did not turn
+into internet use.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V4_pca_biplot.png}
+\caption{\textbf{V4: two axes describe 82\% of 2024 connectivity, and the mobile axis is driven by
+two countries.} (a) Biplot coloured by region with loading vectors. (b) Loadings of the first three
+components.}
+\label{fig:v4}
+\end{figure*}
+
+$k$ was scanned from 2 to 8 for $k$-means, GMM and Ward (Fig.~\ref{fig:v5}). $k=2$ has the highest
+$k$-means silhouette (0.45) but only separates low from high; within $k\in[3,6]$ and with no
+cluster smaller than four countries, $k=3$ maximises it (0.33). GMM's BIC is lowest at $k=5$, but at
+$k\ge4$ the smallest $k$-means cluster holds only two countries, i.e.\ outliers rather than groups. The three $k$-means clusters order cleanly
+by connectivity, with median internet use of 49, 88 and 94\%, landlines of 0.8, 10.8 and 30.1 and
+broadband of 1.5, 20.3 and 39.2 per 100, i.e.\ the mobile-first, mixed and fixed-line-legacy groups
+of A1 Fig.~23. Stability is moderate: bootstrap ARI is 0.64 for $k$-means and 0.49 for GMM, and the
+three methods agree at ARI 0.47--0.63. Ward's apparently best silhouette (0.47) is an artefact,
+since one of its three clusters contains only Fiji and Hong Kong.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V5_cluster_validation_profiles.png}
+\caption{\textbf{V5: three archetypes ordered by connectivity, separated mostly by landlines and
+broadband, and only moderately stable.} (a) Silhouette against $k$ for three methods. (b) GMM BIC and
+AIC with $k$-means inertia. (c) Bootstrap ARI over 200 resamples. (d) Cluster profiles as medians
+with IQR bands; raw medians are printed under each axis.}
+\label{fig:v5}
+\end{figure*}
+
+Isolation Forest and LOF, combined by rank average, share seven of their top-15 countries
+(Spearman 0.77; Fig.~\ref{fig:v6}). Most top anomalies are multi-SIM markets (Hong Kong, Andorra,
+the UAE, C\^ote d'Ivoire); Monaco is anomalous for extreme landlines (95 per 100) and Kiribati as a
+fast climber (+77 points in ten years). Fiji ranks first under both detectors.
+
+\inference{The snapshot archetypes reproduce A1's grouping, but their moderate stability and the
+dominance of one artefact country show that a single-year snapshot is a fragile basis for
+grouping countries.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V6_anomalies.png}
+\caption{\textbf{V6: both detectors rank Fiji first, and most anomalies are multi-SIM markets.}
+(a) Top-15 anomaly percentiles with rule-based reason tags and each detector's percentile. (b) The
+same countries in PCA space, sized by anomaly score.}
+\label{fig:v6}
+\end{figure*}
+
+\subsection{RQ3: supervised baseline ($M_1$, $V_2$)}
+Internet share was predicted from the four raw predictors (broadband, mobile, landlines, year) on
+4{,}089 complete-case country-years. Ridge reaches an RMSE of 13.98 points ($R^2=0.797$), Random
+Forest 11.46 (0.863) and gradient boosting 11.77 (0.856). Fig.~\ref{fig:v7} locates the failures:
+error is small below 10\% online (RMSE 5.2) and 12--14 points at every level above, with the widest
+residual spread in Asia and North America. Permutation importance measured on the held-out fold
+assigns almost all weight to broadband (drop in $R^2\approx1.0$), then year (0.23); shuffling mobile
+costs 0.02.
+
+\inference{Raw infrastructure explains about 86\% of variance for unseen countries, but mobile adds
+almost nothing and errors are large in mid-adoption countries, where histories differ most.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V7_baseline_diagnostics.png}
+\caption{\textbf{V7: a raw-infrastructure model explains 86\% of variance but relies on broadband
+alone and errs by 12--14 points above 10\% adoption.} (a) Out-of-fold predictions against actual
+values. (b) Residuals by region with RMSE by adoption level. (c) Permutation importance on held-out
+folds.}
+\label{fig:v7}
+\end{figure*}
+
+\subsection{Inferences $K_1$}
+Table~\ref{tab:k1} lists the four inferences that leave iteration~1, the evidence for each and the
+transformation each one triggers. The table is the feedback loop in written form.
+
+\begin{table*}[!t]
+\centering
+\caption{The feedback loop: each iteration-1 inference and the data transformation it triggers}
+\label{tab:k1}
+\small
+\begin{tabularx}{\textwidth}{@{}p{3.3cm} Y Y@{}}
+\toprule
+Inference ($K_1$) & Evidence & Transformation $T$ (input to iteration~2) \\
+\midrule
+K1.1 Fiji's 2023--24 mobile values are a recording artefact &
+Top anomaly under both detectors~\cite{liu2008if,breunig2000lof} (V6); alone drives PC2 (V4); forms
+a Ward cluster (V5); 111$\rightarrow$574 per 100 with flat ownership (V3) &
+\textbf{T1} two rules applied to every country: (A) a saturated mobile market ($\ge$90) exceeding
+2.5 times its five-year median; (B) a one-year jump of at least 1.8 times that reverts within 1.25
+times. Ten cells are removed. \\
+K1.2 Subscriptions overstate people &
+$\rho$ 0.52 against 0.89 (V3); multi-SIM tags (V6); mobile importance near zero (V7) &
+\textbf{T2} \texttt{sim\_per\_owner}, \texttt{multi\_sim\_flag} (1.5), \texttt{mobile\_capped} (at 100) \\
+K1.3 History matters: same level today, different paths (A1 Fig.~5) &
+Take-off delays (V1)~\cite{rogers2003}; no catch-up in headroom (V1b)~\cite{comin2010}; snapshot
+clusters only moderately stable (V5)~\cite{hubert1985} &
+\textbf{T2} \texttt{landline\_peak} (expanding maximum), \texttt{landline\_decline},
+\texttt{leapfrog\_index}, \texttt{years\_since\_mobile\_gt\_landline}, one- and three-year momentum;
+\textbf{T3} 2000--2025 trajectories for clustering~\cite{aghabozorgi2015} \\
+K1.4 Broadband acts non-linearly with a floor; data are missing not at random &
+Floor holds 29\% of rows; segmented fit (V2)~\cite{cleveland1979}; importance (V7); MNAR test (V3b) &
+\textbf{T2} \texttt{log1p\_broadband}, \texttt{broadband\_zero}; \textbf{T3} MICE imputation
+fitted in-fold, with missingness flags~\cite{vanbuuren2011mice} \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+% =========================================================================================
+\section{The Feedback Loop: Transformation $T$}
+% =========================================================================================
+Fig.~\ref{fig:v9} is the first visualization of iteration~2 and shows what $T$ changed. T1 removes
+ten cells; Fiji's and Saint Kitts and Nevis's series are shown before and after. Of the ten, two are
+Fiji's level shift (rule A) and eight are isolated one-year spikes (rule B) in broadband (six),
+landlines (one) and internet use (one), each listed in the artefact log. T2 compares each engineered
+feature's association with the target against the raw predictors, pooled over all country-years.
+Pooled correlations are inflated by the shared time trend (raw mobile reaches 0.89 pooled against
+0.42 within 2024 in V2), so T2 is read for new information rather than size: \texttt{broadband\_zero}
+isolates the floor ($-0.74$), and the history features (\texttt{landline\_decline} 0.74,
+\texttt{years\_since\_mobile\_gt\_landline} 0.75, with near-complete coverage) carry information that
+no single-year value has. \texttt{sim\_per\_owner} is almost uncorrelated with the target ($-0.04$).
+T3 shows why imputation is required.
+
+All engineered features are predictor-only and past-only: none uses the target, and none at year
+$t$ uses a value after $t$. The trajectory clusters of V8 are built from the target's own curve and
+are therefore not used as a supervised feature.
+
+\inference{The transformation removes a known error, neutralises multi-SIM noise, and adds
+history, which is the dimension iteration~1 identified as missing.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V9_feedback_transformation.png}
+\caption{\textbf{V9: the transformation removes ten artefact cells and adds history features that
+no single-year value contains.} T1: artefact removal (crosses mark removed cells). T2: Spearman
+$\rho$ of engineered (blue) and raw (grey) features with internet use. T3: coverage of raw and
+engineered features.}
+\label{fig:v9}
+\end{figure*}
+
+% =========================================================================================
+\section{Iteration 2: Transformed Data}\label{sec:it2}
+% =========================================================================================
+\subsection{RQ2: trajectory archetypes ($M_2$, $V_4$)}
+The internet curves of 181 countries (2000--2025, at least 18 observed years, interior gaps
+interpolated, 225 cells filled) were clustered by DTW with average linkage. Three archetypes result
+(Fig.~\ref{fig:v8}): T0 late starters (43 countries, medoid Tanzania, median 0\%$\rightarrow$33\%),
+T1 the S-curve majority (113, Maldives, 3\%$\rightarrow$84\%) and T2 early saturators (25, South
+Korea, 39\%$\rightarrow$96\%). Two thirds of African countries are late starters, whereas every South
+American country follows the majority curve. The trajectory labels are far better separated in
+trajectory space than the snapshot labels (silhouette 0.52 against 0.35) and agree with them only
+weakly (ARI 0.30): 37 of 133 countries change group. Sixteen of the 41 low-connectivity countries of
+2024 lie on the majority curve, only later, and 17 of the 35 fixed-line-legacy countries reached
+their level along the majority curve rather than by early saturation.
+
+The dendrogram (Fig.~\ref{fig:v8b}a) shows that the three-group cut is the natural one: the late
+starters separate from the rest at the root, and the early saturators split off next. A t-SNE
+map~\cite{vandermaaten2008} of the DTW distances (Fig.~\ref{fig:v8b}b) arranges the archetypes along
+a single continuum from Ethiopia and Tanzania to South Korea and Germany, with India, Indonesia and
+Nigeria at the boundary between late starters and the majority.
+
+\inference{Country archetypes are paths rather than positions, and the paths form one continuum
+ordered by timing. Iteration~2 recovers A1's ``same place today, opposite histories'' with a model
+instead of a visual comparison.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V8_trajectory_archetypes.png}
+\caption{\textbf{V8: grouping by path yields three S-curve archetypes that cut across the 2024
+snapshot clusters.} Top: the three DTW archetypes (all members faint, IQR band, median, medoid) and
+their mix by region. Bottom left: snapshot clusters against trajectory archetypes ($n=133$). Bottom
+right: each labelling is coherent only in its own space.}
+\label{fig:v8}
+\end{figure*}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V8b_dendrogram_tsne.png}
+\caption{\textbf{V8b: the three archetypes are the natural cut of the DTW hierarchy and lie on one
+continuum ordered by timing.} (a) Average-linkage dendrogram with the $k=3$ cut and an archetype
+colour strip. (b) t-SNE map of the DTW distance matrix, sized by 2025 internet share.}
+\label{fig:v8b}
+\end{figure*}
+
+\subsection{RQ3: supervised model on transformed data ($M_2$, $V_4$)}
+Table~\ref{tab:cv} and Fig.~\ref{fig:v10} compare the iterations on the same folds. On identical
+rows (the 4{,}089 complete cases), iteration~2 lowers gradient-boosting RMSE from 11.77 to 10.16
+points ($-14\%$; $R^2$ 0.856$\rightarrow$0.892). The gain is largest in Asia ($-21\%$), Africa
+($-18\%$) and Oceania ($-16\%$), smaller in Europe ($-9\%$) and absent in the Americas ($+1\%$). With
+MICE, 2{,}134 further rows become usable (6{,}223 in total) and RMSE reaches 8.84 ($R^2=0.926$). The
+ablations separate the two effects: raw features with MICE give 10.67 and engineered features with
+median imputation give 9.14, so the engineered features carry most of the gain and MICE adds about
+0.3.
+
+\begin{table}[!t]
+\centering
+\caption{Five-fold country-grouped cross-validation (mean $\pm$ s.d.\ over folds)}
+\label{tab:cv}
+\footnotesize
+\begin{tabular}{@{}l r r r@{}}
+\toprule
+Model (rows) & RMSE & $R^2$ & $n$ \\
+\midrule
+I1 Ridge, raw (cc) & 13.98$\pm$1.31 & 0.797 & 4089 \\
+I1 Random Forest~\cite{breiman2001rf}, raw (cc) & 11.46$\pm$0.50 & 0.863 & 4089 \\
+I1 HistGBM~\cite{ke2017lightgbm}, raw (cc) & 11.77$\pm$0.77 & 0.856 & 4089 \\
+\textbf{I2 HistGBM, eng.\ + MICE (cc)} & \textbf{10.16$\pm$0.58} & \textbf{0.892} & 4089 \\
+\midrule
+Abl.\ A: raw + MICE~\cite{vanbuuren2011mice} (all) & 10.67$\pm$0.64 & 0.892 & 6223 \\
+Abl.\ B: eng.\ + median (all) & 9.14$\pm$0.71 & 0.920 & 6223 \\
+\textbf{I2 HistGBM, eng.\ + MICE (all)} & \textbf{8.84$\pm$0.50} & \textbf{0.926} & 6223 \\
+\bottomrule
+\multicolumn{4}{@{}l}{\scriptsize cc: complete cases; eng.: engineered features (Table~\ref{tab:k1}).}
+\end{tabular}
+\end{table}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V10_iteration_comparison.png}
+\caption{\textbf{V10: on identical rows and folds the transformed data lower error by 14\%, most in
+Asia and Africa, and engineered features carry most of the gain.} (a) Regional RMSE for both
+iterations. (b) All configurations; grey is iteration~1, blue iteration~2, orange the ablations.}
+\label{fig:v10}
+\end{figure*}
+
+SHAP values~\cite{lundberg2017shap} (Fig.~\ref{fig:v11}a) rank phone ownership first, then log
+broadband, then \texttt{landline\_peak}. Ownership is observed in only 11\% of rows, so for most rows
+it is a MICE estimate built from the other indicators and acts as a composite index rather than a
+measurement. Partial dependence (Fig.~\ref{fig:v12b}a--c) shows the shape of the learned effects:
+predicted internet use is flat while broadband stays on the floor below about 3 per 100 and rises
+between 3 and 30 per 100 (a 14-point range); the landline peak adds a further 12 points across its
+range, and the years since mobile overtook landlines 5 points. The ICE curves are roughly parallel,
+so the effects are mostly additive. The residual map (Fig.~\ref{fig:v11}b) shows where infrastructure
+under-explains adoption (blue: the Gulf states, Cuba, Bhutan, Paraguay) and where it over-explains it
+(red: Mongolia, China, Egypt, Italy, East Africa). Kosovo's residual of +65 reflects missing data
+rather than behaviour, because every infrastructure field is empty for it.
+
+\inference{The model has learned the floor effect of V2 and the history effect of K1.3 as
+explicit shapes. The remaining residuals have a clear geography, which points to factors outside
+the dataset such as policy, price and censorship.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.40\textwidth]{V11a_shap_beeswarm.png}\hfill
+\includegraphics[width=0.58\textwidth]{V11b_residual_choropleth.png}
+\caption{\textbf{V11: imputed ownership, broadband and the landline peak drive the model, and its
+remaining errors are geographically clustered.} (a) SHAP beeswarm over 600 sampled rows. (b) Mean
+out-of-fold residual for 2015--2024 per country; an interactive version is in
+\texttt{outputs/} and the demonstrator.}
+\label{fig:v11}
+\end{figure*}
+
+\subsection{RQ1 and RQ3: drift and the forecast ($V_3$, $M_2$, $V_4$)}
+\textit{Drift chart (Fig.~\ref{fig:v13}).} After 2020 the target crosses the 0.2 threshold (mean PSI
+0.44 in 2022--2024) while every input stays below 0.2 until 2023.
+
+\inference{The same infrastructure now coincides with more internet use, so the input-to-output
+relationship has shifted, which is concept drift in the sense of Gama et~al.~\cite{gama2014}. A model
+trained up to 2020 cannot know this, and its forecasts should be expected to be too low and too
+confident.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.92\textwidth]{V13_psi_drift_chart.png}
+\caption{\textbf{V13: after 2020 the target drifts past the retraining threshold while the inputs do
+not.} PSI against the 2015--2020 baseline for the target (black) and the main features, with action
+thresholds. Ownership-based features are omitted because too few countries report them per year for
+a stable PSI.}
+\label{fig:v13}
+\end{figure*}
+
+\textit{Forecast (Fig.~\ref{fig:v12}).} Quantile gradient boosting trained on years up to 2020
+forecasts 735 country-years in 2021--2025 with an RMSE of 10.1 points ($R^2=0.84$). As the drift
+chart anticipates, the errors are one-sided: 71\% of forecasts are too low (mean error +4.9 points)
+and the nominal 80\% interval covers only 50\% of outcomes. CQR widens the interval by 4.7 points and
+restores 83\% coverage (78--93\% in each year with $n\ge180$; 2025 has only ten rows). The
+calibration curve (Fig.~\ref{fig:v12b}d) repeats the test at five nominal levels: the raw intervals
+cover 27, 37, 45, 50 and 68\% at nominal 50--90\%, whereas CQR covers 50, 62, 74, 83 and 94\%, within
+four points of the diagonal at every level.
+
+\inference{Uncertainty must be re-calibrated whenever the drift chart crosses its threshold; the
+conformal cone matches observed outcomes at every level, the raw cone at none.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V12_forecast_fan_chart.png}
+\caption{\textbf{V12: forecasts made in 2020 are too low after the shift, and conformal
+re-calibration restores the nominal coverage.} Six countries: training data (black), median forecast
+(dashed), raw 80\% quantile band (dark), conformal band (light) and the hidden 2021--2025 outcomes
+(red). Right: coverage per year.}
+\label{fig:v12}
+\end{figure*}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V12b_pdp_calibration.png}
+\caption{\textbf{V12b: the model has learned the broadband floor and a history effect, and only the
+conformal intervals are calibrated.} (a--c) Partial dependence (black) and 60 ICE curves (blue) for
+log broadband, landline peak and years since mobile overtook landlines. (d) Empirical coverage in
+2021--2025 against nominal coverage for raw and conformal intervals.}
+\label{fig:v12b}
+\end{figure*}
+
+% =========================================================================================
+\section{Discussion}\label{sec:disc}
+% =========================================================================================
+\subsection{Knowledge $K_2$: answering the central question}\label{sec:k2}
+Fig.~\ref{fig:v14} assembles the answer from both iterations. Diffusion followed one S-curve
+everywhere but took off 6--12 years later outside Europe, and late starters did not climb faster
+(panel a). In the 2023 cross-section, broadband ($\rho=0.79$) and the landline peak (0.81) separate
+countries, whereas mobile, raw or capped, reaches only 0.52--0.53 and SIMs per owner 0.00 (panel b).
+Mobile is saturated (capped median 100 per 100) in both the majority and the early-saturating
+archetypes, and late starters trail at 79, whereas fixed infrastructure separates all three, with
+median broadband of 0, 17 and 40 per 100 (panel c). The feedback loop improved every quantity it
+could be checked on: error on the same rows, cluster separation and interval coverage (panel d).
+
+The answer to A1's question is therefore that mobile leapfrogging happened but did not close the
+divide. The divide is a delay on a common S-curve; it is narrowing in relative terms but not
+closing in absolute terms; and fixed infrastructure, not mobile saturation, marks where a country
+stands on the curve.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V14_synthesis_answer.png}
+\caption{\textbf{V14: the divide is a delay on one S-curve, and fixed infrastructure rather than
+mobile marks a country's position on it.} (a) Median take-off year by region with bootstrap
+intervals. (b) Spearman $\rho$ with internet use in 2023 for raw (grey) and transformed (blue)
+features. (c) Mobile, broadband and landlines in 2022 by trajectory archetype. (d) Iteration~1
+against iteration~2 on three checks.}
+\label{fig:v14}
+\end{figure*}
+
+\subsection{A1's visual claims, re-tested}
+Table~\ref{tab:a1} lists each A1 claim, the A3 test applied to it and the verdict. Five of six are
+confirmed and quantified; one, that the gap kept widening, is refined, because the A3 data show the
+absolute gap peaking in 2014.
+
+\begin{table*}[!t]
+\centering
+\caption{A1's visual claims re-tested in A3}
+\label{tab:a1}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}Y Y Y l@{}}
+\toprule
+A1 claim (appendix figure) & A3 test & Result & Verdict \\
+\midrule
+Regions are years behind Europe (Fig.~14) & logistic $t_0$, Kruskal--Wallis, Holm-corrected Mann--Whitney (V1) & Africa +11.9 yr, $p=10^{-15}$ & confirmed \\
+The gap widened (Fig.~11) & $\sigma$-convergence, Gini, regional gap (V1b) & absolute gap peaked 2014 (64 pp), now 52; Gini 0.81$\rightarrow$0.19 & refined \\
+Broadband matters more than mobile (Figs.~19--20) & bootstrap Spearman by year; permutation importance; partial dependence (V2, V7, V12b) & 0.80 vs 0.42 in 2024; mobile importance 0.02 & confirmed \\
+Subscriptions are not people (Figs.~10, 18) & SIMs per owner; anomaly tags (V3, V6) & median 1.34 SIMs per owner & confirmed \\
+Same level today, opposite histories (Fig.~5) & DTW trajectory clusters vs snapshot clusters (V8, V8b) & 37 of 133 regrouped; silhouette 0.52 vs 0.35 & confirmed \\
+Four kinds of country (Fig.~23) & $k$-means/GMM/Ward with stability (V5) & three stable-ish archetypes, ARI 0.64 & confirmed, weaker \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{What the second iteration learned}
+Iteration~2 added three things that iteration~1 could not provide. First, archetypes are defined by
+paths: trajectory clusters are better separated (0.52 against 0.35 in their own space), regroup 37 of
+133 countries and form a single timing continuum (V8, V8b). Second, a country's infrastructure
+history improves prediction for countries the model has never seen, most in Asia and Africa (V10),
+through learned effects that can be read directly (V12b). Third, the world after 2020 is not the
+training world: the drift chart flags the shift before the forecast errors confirm it, and
+conformal re-calibration restores trustworthy uncertainty (V12, V12b, V13).
+
+\subsection{Threats to validity}
+\textit{Internal validity.} Leakage is controlled by country-grouped folds, past-only features,
+in-fold imputation, a temporal holdout and an automated guard. The comparison between iterations
+uses the same rows and folds, so the 14\% gain is not an artefact of different samples.
+\textit{External validity.} Results describe country-level averages; sub-national divides (urban
+against rural) are invisible in the data. \textit{Construct validity.} ``Internet user'' is a
+survey-based ITU definition whose recall window varies across countries~\cite{itu2023}, and
+subscriptions count SIM cards rather than people (V3). \textit{Conclusion validity.} Many tests are
+run; the regional comparisons are Holm-corrected, and every interval is a bootstrap or a conformal
+interval rather than a normal approximation.
+
+\subsection{Limitations}\label{sec:limits}
+\begin{itemize}
+\item \textit{Association, not cause.} No income variable is used, by design, so national wealth
+  may drive both infrastructure and use; no causal effect is identified.
+\item \textit{Missing not at random.} Ownership and broadband are missing mostly for less-connected
+  country-years (V3b). MICE with missingness flags reduces this bias without removing it, and
+  imputed ownership dominates SHAP for this reason.
+\item \textit{Moderate stability.} Snapshot clusters reach a bootstrap ARI of 0.64 and are reported
+  as a description of 2024, not as a taxonomy.
+\item \textit{Heuristic artefact rules.} The rules are conservative (ten cells) and every removal is
+  listed in \texttt{outputs/p1\_artifact\_log.csv}.
+\item \textit{Exchangeability.} Conformal coverage assumes it, and drift violates it; a larger shift
+  after 2024 would require re-calibration again.
+\item \textit{Logistic extrapolation.} Saturation levels are poorly identified for countries still
+  before their inflection point, so $L$ is not interpreted for late starters.
+\end{itemize}
+
+\subsection{Reproducibility and system architecture}
+Fig.~\ref{fig:v0b} shows how the workflow is implemented. A single module (\texttt{src/common.py})
+defines the panel, regions, thresholds, artefact rules and engineered features, so the feedback loop
+is one definition shared by every analysis. Three analysis modules write tables and figures, and the
+report, the deck and the application only read those artefacts. Every figure and number is produced
+by \texttt{python src/run\_all.py} in about five minutes with fixed seeds.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V0b_system_architecture.pdf}
+\caption{\textbf{V0b: one shared core, three analysis modules, and delivery channels that only read
+generated artefacts.} \textcircled{\scriptsize 1} inputs from A1; \textcircled{\scriptsize 2} the shared
+core that implements the feedback-loop transformation; \textcircled{\scriptsize 3} analysis modules;
+\textcircled{\scriptsize 4} generated figures and tables; \textcircled{\scriptsize 5} report, deck and
+browser application.}
+\label{fig:v0b}
+\end{figure*} The interactive
+demonstrator runs locally (\texttt{streamlit run app.py}) or in a web browser without installation
+through a WebAssembly build of the same application.
+
+% =========================================================================================
+\section{Conclusion and Future Work}
+% =========================================================================================
+One labelled feedback loop turned A1's visual impressions into four tested inferences and a data
+transformation, and the second iteration improved on the first in cluster separation, prediction
+error on identical rows and calibration of uncertainty. Mobile leapfrogging did not close the
+digital divide: the divide is a delay of 6--12 years on a shared S-curve, it is narrowing only in
+relative terms, late starters close the smallest share of their remaining gap, and fixed
+infrastructure, not mobile, marks where a country stands.
+
+Three extensions follow directly. Affordability data (the price of a mobile-broadband basket as a
+share of income) would test whether the residual geography of V11 reflects price. Sub-national data
+would expose the urban--rural divide hidden by country averages. A third iteration with a
+drift-triggered retraining rule (retrain when PSI exceeds 0.2) would close the loop
+automatically rather than by analyst inspection.
+
+% =========================================================================================
+\section*{Individual Contributions}
+\begin{table}[!h]
+\centering
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}l Y@{}}
+\toprule
+Member & Contribution \\
+\midrule
+Parikshith & Research questions; statistical analysis: logistic diffusion
+fits, rank tests, convergence analysis, segmented regression, bootstrap correlations (V1, V1b, V2,
+V3); data-quality and missingness analysis (V3b); artefact rules and engineered features of the
+feedback-loop transformation, shared data module (V9); synthesis of the answer
+(V14); workflow and system architecture diagrams (V0, V0b); integration and report \\
+Sindhoor & PCA; $k$-means, GMM and Ward clustering with $k$-selection and bootstrap stability;
+Isolation Forest and LOF anomaly ranking (V4--V6); DTW trajectory clustering, dendrogram and t-SNE
+map, snapshot-versus-trajectory comparison (V8, V8b) \\
+Varshith & Leakage guards; Ridge, Random Forest and gradient-boosting models with ablations (V7,
+V10); SHAP and residual map (V11); PSI drift chart (V13); quantile forecast with conformal
+re-calibration, partial dependence and calibration curve (V12, V12b); browser demonstrator \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{thebibliography}{99}
+\bibitem{keim2008scope} D.~A. Keim, F.~Mansmann, J.~Schneidewind, J.~Thomas, and H.~Ziegler,
+``Visual analytics: Scope and challenges,'' in \emph{Visual Data Mining}, LNCS 4404. Berlin, Germany: Springer, 2008, pp.~76--90.
+\bibitem{keim2008challenges} D.~Keim, G.~Andrienko, J.-D. Fekete, C.~G\"org, J.~Kohlhammer, and
+G.~Melan\c{c}on, ``Visual analytics: Definition, process, and challenges,'' in \emph{Information
+Visualization}, LNCS 4950. Berlin, Germany: Springer, 2008, pp.~154--175.
+\bibitem{card1999} S.~K. Card, J.~D. Mackinlay, and B.~Shneiderman, Eds., \emph{Readings in
+Information Visualization: Using Vision to Think}. San Francisco, CA, USA: Morgan Kaufmann, 1999.
+\bibitem{sacha2014} D.~Sacha, A.~Stoffel, F.~Stoffel, B.~C. Kwon, G.~Ellis, and D.~A. Keim,
+``Knowledge generation model for visual analytics,'' \emph{IEEE Trans. Vis. Comput. Graphics},
+vol.~20, no.~12, pp.~1604--1613, 2014.
+\bibitem{wang2024va4ml} J.~Wang, S.~Liu, and W.~Zhang, ``Visual analytics for machine learning: A
+data perspective survey,'' \emph{IEEE Trans. Vis. Comput. Graphics}, vol.~30, no.~12, pp.~7637--7656, 2024.
+\bibitem{munzner2014} T.~Munzner, \emph{Visualization Analysis and Design}. Boca Raton, FL, USA: CRC Press, 2014.
+\bibitem{owid} H.~Ritchie, E.~Mathieu, M.~Roser, and E.~Ortiz-Ospina, ``Internet,'' Our World in
+Data, 2023. [Online]. Available: \url{https://ourworldindata.org/internet}
+\bibitem{itu2023} International Telecommunication Union, \emph{Measuring Digital Development: Facts
+and Figures 2023}. Geneva, Switzerland: ITU, 2023.
+\bibitem{rogers2003} E.~M. Rogers, \emph{Diffusion of Innovations}, 5th~ed. New York, NY, USA: Free Press, 2003.
+\bibitem{comin2010} D.~Comin and B.~Hobijn, ``An exploration of technology diffusion,''
+\emph{Amer. Econ. Rev.}, vol.~100, no.~5, pp.~2031--2059, 2010.
+\bibitem{kruskal1952} W.~H. Kruskal and W.~A. Wallis, ``Use of ranks in one-criterion variance
+analysis,'' \emph{J. Amer. Statist. Assoc.}, vol.~47, no.~260, pp.~583--621, 1952.
+\bibitem{holm1979} S.~Holm, ``A simple sequentially rejective multiple test procedure,''
+\emph{Scand. J. Statist.}, vol.~6, no.~2, pp.~65--70, 1979.
+\bibitem{cleveland1979} W.~S. Cleveland, ``Robust locally weighted regression and smoothing
+scatterplots,'' \emph{J. Amer. Statist. Assoc.}, vol.~74, no.~368, pp.~829--836, 1979.
+\bibitem{efron1993} B.~Efron and R.~J. Tibshirani, \emph{An Introduction to the Bootstrap}.
+New York, NY, USA: Chapman \& Hall, 1993.
+\bibitem{jolliffe2016} I.~T. Jolliffe and J.~Cadima, ``Principal component analysis: A review and
+recent developments,'' \emph{Phil. Trans. R. Soc. A}, vol.~374, no.~2065, 2016, Art.~no.~20150202.
+\bibitem{rousseeuw1987} P.~J. Rousseeuw, ``Silhouettes: A graphical aid to the interpretation and
+validation of cluster analysis,'' \emph{J. Comput. Appl. Math.}, vol.~20, pp.~53--65, 1987.
+\bibitem{hubert1985} L.~Hubert and P.~Arabie, ``Comparing partitions,'' \emph{J. Classification},
+vol.~2, pp.~193--218, 1985.
+\bibitem{liu2008if} F.~T. Liu, K.~M. Ting, and Z.-H. Zhou, ``Isolation forest,'' in \emph{Proc.
+IEEE Int. Conf. Data Mining}, 2008, pp.~413--422.
+\bibitem{breunig2000lof} M.~M. Breunig, H.-P. Kriegel, R.~T. Ng, and J.~Sander, ``LOF: Identifying
+density-based local outliers,'' in \emph{Proc. ACM SIGMOD}, 2000, pp.~93--104.
+\bibitem{sakoe1978dtw} H.~Sakoe and S.~Chiba, ``Dynamic programming algorithm optimization for
+spoken word recognition,'' \emph{IEEE Trans. Acoust., Speech, Signal Process.}, vol.~26, no.~1, pp.~43--49, 1978.
+\bibitem{aghabozorgi2015} S.~Aghabozorgi, A.~S. Shirkhorshidi, and T.~Y. Wah, ``Time-series
+clustering: A decade review,'' \emph{Inf. Syst.}, vol.~53, pp.~16--38, 2015.
+\bibitem{vandermaaten2008} L.~van der Maaten and G.~Hinton, ``Visualizing data using t-SNE,''
+\emph{J. Mach. Learn. Res.}, vol.~9, pp.~2579--2605, 2008.
+\bibitem{breiman2001rf} L.~Breiman, ``Random forests,'' \emph{Mach. Learn.}, vol.~45, no.~1,
+pp.~5--32, 2001.
+\bibitem{ke2017lightgbm} G.~Ke \emph{et al.}, ``LightGBM: A highly efficient gradient boosting
+decision tree,'' in \emph{Proc. Adv. Neural Inf. Process. Syst.}, 2017, pp.~3146--3154.
+\bibitem{friedman2001} J.~H. Friedman, ``Greedy function approximation: A gradient boosting
+machine,'' \emph{Ann. Statist.}, vol.~29, no.~5, pp.~1189--1232, 2001.
+\bibitem{goldstein2015} A.~Goldstein, A.~Kapelner, J.~Bleich, and E.~Pitkin, ``Peeking inside the
+black box: Visualizing statistical learning with plots of individual conditional expectation,''
+\emph{J. Comput. Graph. Statist.}, vol.~24, no.~1, pp.~44--65, 2015.
+\bibitem{vanbuuren2011mice} S.~van Buuren and K.~Groothuis-Oudshoorn, ``mice: Multivariate
+imputation by chained equations in R,'' \emph{J. Statist. Softw.}, vol.~45, no.~3, pp.~1--67, 2011.
+\bibitem{lundberg2017shap} S.~M. Lundberg and S.-I. Lee, ``A unified approach to interpreting model
+predictions,'' in \emph{Proc. Adv. Neural Inf. Process. Syst.}, 2017, pp.~4765--4774.
+\bibitem{romano2019cqr} Y.~Romano, E.~Patterson, and E.~Cand\`es, ``Conformalized quantile
+regression,'' in \emph{Proc. Adv. Neural Inf. Process. Syst.}, 2019, pp.~3543--3553.
+\bibitem{gama2014} J.~Gama, I.~\v{Z}liobait\.{e}, A.~Bifet, M.~Pechenizkiy, and A.~Bouchachia, ``A
+survey on concept drift adaptation,'' \emph{ACM Comput. Surv.}, vol.~46, no.~4, pp.~1--37, 2014.
+\bibitem{siddiqi2006} N.~Siddiqi, \emph{Credit Risk Scorecards: Developing and Implementing
+Intelligent Credit Scoring}. Hoboken, NJ, USA: Wiley, 2006.
+\bibitem{pedregosa2011} F.~Pedregosa \emph{et al.}, ``Scikit-learn: Machine learning in Python,''
+\emph{J. Mach. Learn. Res.}, vol.~12, pp.~2825--2830, 2011.
+\end{thebibliography}
+
+\onecolumn
+\appendix
+\section*{Appendix: A1 Report (included for completeness; not part of the A3 assessment)}
+\includepdf[pages=-,scale=0.92,pagecommand={}]{A1_Report_Appendix.pdf}
+
+\end{document}

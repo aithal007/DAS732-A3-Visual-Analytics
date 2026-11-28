@@ -1,0 +1,132 @@
+{
+  "cv": {
+    "I1 Ridge (raw, complete case)": {
+      "rmse_mean": 13.980787345846213,
+      "rmse_std": 1.3142444330174563,
+      "mae_mean": 10.87313495402958,
+      "mae_std": 1.0563461963694192,
+      "r2_mean": 0.7971061681439447,
+      "r2_std": 0.020005778650667435,
+      "n_rows": 4089
+    },
+    "I1 Random Forest (raw, complete case)": {
+      "rmse_mean": 11.461080083984513,
+      "rmse_std": 0.502767935153054,
+      "mae_mean": 8.137903515128867,
+      "mae_std": 0.4989153981669384,
+      "r2_mean": 0.8631099246199934,
+      "r2_std": 0.010773846937141576,
+      "n_rows": 4089
+    },
+    "I1 HistGBM (raw, complete case)": {
+      "rmse_mean": 11.765620417518196,
+      "rmse_std": 0.7716902533386151,
+      "mae_mean": 8.29937615691033,
+      "mae_std": 0.6307602523161684,
+      "r2_mean": 0.8558666052675011,
+      "r2_std": 0.013212027532675452,
+      "n_rows": 4089
+    },
+    "I2 HistGBM (engineered + MICE), same rows as I1": {
+      "rmse_mean": 10.16120613100588,
+      "rmse_std": 0.5799007372300251,
+      "mae_mean": 7.314578892637563,
+      "mae_std": 0.45453854271853644,
+      "r2_mean": 0.8918395969749977,
+      "r2_std": 0.016278501908637645,
+      "n_rows": 4089
+    },
+    "Ablation A: raw features + MICE, all rows": {
+      "rmse_mean": 10.673141820174575,
+      "rmse_std": 0.640412264515956,
+      "mae_mean": 6.60342677525382,
+      "mae_std": 0.43935075947464614,
+      "r2_mean": 0.8920063293151724,
+      "r2_std": 0.01175908847203818,
+      "n_rows": 6223
+    },
+    "Ablation B: engineered + median imputation, all rows": {
+      "rmse_mean": 9.13523437914061,
+      "rmse_std": 0.7082365707393411,
+      "mae_mean": 5.8643815324064885,
+      "mae_std": 0.43380518348026764,
+      "r2_mean": 0.9204303990326208,
+      "r2_std": 0.014002030990512658,
+      "n_rows": 6223
+    },
+    "I2 HistGBM (engineered + MICE), all rows": {
+      "rmse_mean": 8.840718281913935,
+      "rmse_std": 0.49863467086436114,
+      "mae_mean": 5.641240314944653,
+      "mae_std": 0.33539087365985615,
+      "r2_mean": 0.9256071004418327,
+      "r2_std": 0.010749571812854235,
+      "n_rows": 6223
+    }
+  },
+  "forecast": {
+    "train_rows": 5488,
+    "test_rows": 735,
+    "holdout_rmse": 10.107992119111794,
+    "holdout_mae": 7.219018499644697,
+    "holdout_r2": 0.8401990454369851,
+    "coverage_80_quantile": 0.5047619047619047,
+    "coverage_80_cqr": 0.8312925170068027,
+    "cqr_margin_pp": 4.68519814067864,
+    "mean_width_raw": 17.002665015096703,
+    "mean_width_cqr": 26.11241225916174,
+    "mean_signed_error": 4.881225913333191,
+    "share_underpredicted": 0.7115646258503401
+  },
+  "regional_same_rows": {
+    "Africa": {
+      "n": 934.0,
+      "rmse_i1": 11.444,
+      "rmse_i2": 9.435,
+      "median_resid_i1": -1.042,
+      "median_resid_i2": -0.772
+    },
+    "Asia": {
+      "n": 987.0,
+      "rmse_i1": 14.638,
+      "rmse_i2": 11.636,
+      "median_resid_i1": -0.12,
+      "median_resid_i2": 0.61
+    },
+    "Europe": {
+      "n": 1028.0,
+      "rmse_i1": 9.553,
+      "rmse_i2": 8.658,
+      "median_resid_i1": 0.502,
+      "median_resid_i2": 0.039
+    },
+    "North America": {
+      "n": 490.0,
+      "rmse_i1": 11.918,
+      "rmse_i2": 11.997,
+      "median_resid_i1": -2.689,
+      "median_resid_i2": -3.626
+    },
+    "Oceania": {
+      "n": 190.0,
+      "rmse_i1": 13.563,
+      "rmse_i2": 11.423,
+      "median_resid_i1": 1.522,
+      "median_resid_i2": 1.05
+    },
+    "Other": {
+      "n": 185.0,
+      "rmse_i1": 10.6,
+      "rmse_i2": 10.411,
+      "median_resid_i1": -0.832,
+      "median_resid_i2": -0.445
+    },
+    "South America": {
+      "n": 275.0,
+      "rmse_i1": 7.347,
+      "rmse_i2": 7.44,
+      "median_resid_i1": -0.342,
+      "median_resid_i2": 1.905
+    }
+  }
+}

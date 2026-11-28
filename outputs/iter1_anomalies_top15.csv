@@ -1,0 +1,16 @@
+code,anomaly_rank,name,region,reason,anomaly_combined,if_score,lof_score,in_top15_IF,in_top15_LOF,mobile_subs_per100,sim_per_owner,telephone_lines_per100,internet_users_share_pct,internet_delta10
+FJI,1,Fiji,Oceania,multi-SIM inflation,0.9963,0.6591,5.5069,True,True,574.1523,6.9426,8.3728,74.7052,37.3052
+MCO,2,Monaco,Europe,extreme Landlines/100,0.9926,0.68,3.1023,True,True,107.4008,1.0794,95.4777,99.0449,6.6449
+HKG,3,Hong Kong,Asia,multi-SIM inflation,0.9889,0.6027,3.1464,True,True,364.849,3.7192,44.5748,95.7554,15.8891
+AND,4,Andorra,Europe,multi-SIM inflation,0.9741,0.5692,1.7562,True,True,155.6921,1.6101,64.9454,94.3976,8.2976
+KIR,5,Kiribati,Oceania,fast climber,0.963,0.544,1.4944,True,True,53.5244,0.9011,0.0104,89.4403,77.1903
+MUS,6,Mauritius,Africa,multi-SIM inflation + high landline / low internet,0.9296,0.5265,1.3264,True,True,172.6836,1.9403,36.8794,73.3079,28.5047
+UGA,7,Uganda,Africa,multi-SIM inflation + laggard,0.9259,0.5785,1.2298,True,False,83.165,1.9207,0.3918,8.9498,3.5498
+ARE,8,United Arab Emirates,Asia,multi-SIM inflation,0.9185,0.5096,1.4196,False,True,203.2064,2.0321,20.797,100.0,9.6
+CIV,9,Cote d'Ivoire,Africa,multi-SIM inflation,0.9148,0.5146,1.2821,True,True,183.876,2.8159,0.7663,41.4322,31.4322
+TCD,10,Chad,Africa,multi-SIM inflation,0.9037,0.5518,1.1946,True,False,72.929,1.6463,0.0,12.6269,9.7269
+MOZ,11,Mozambique,Africa,multivariate outlier,0.8926,0.5315,1.202,True,False,49.5048,0.6196,0.0818,20.5273,14.5273
+ECU,12,Ecuador,South America,multi-SIM inflation,0.8889,0.5106,1.265,False,True,101.5983,1.6574,6.7181,77.1727,31.5823
+IRN,13,Iran,Asia,multi-SIM inflation,0.8889,0.4897,1.3743,False,True,174.0664,2.0054,30.8252,85.3404,45.9868
+MNE,14,Montenegro,Europe,multi-SIM inflation,0.8889,0.4888,1.4165,False,True,221.6873,2.3336,30.1047,88.8826,24.9957
+COD,15,Democratic Republic of Congo,Africa,extreme Phone owners %,0.8852,0.5417,1.1726,True,False,58.5322,1.3213,0.0,19.6735,16.6735

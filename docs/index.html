@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>From Snapshots to Trajectories</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/browser@1.12.2/build/stlite.css" />
+<style>
+  body { margin: 0; background: #ffffff; font-family: "Segoe UI", system-ui, sans-serif; }
+  #loading { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center;
+             justify-content: center; color: #1F2328; gap: 10px; }
+  #loading small { color: #6E7781; }
+</style>
+</head>
+<body>
+<div id="loading"><b>Loading the A3 visual analytics demo…</b>
+  <small>Python runs in your browser (Pyodide). First load takes 20-60 s.</small></div>
+<div id="root"></div>
+<script type="module">
+import { mount } from "https://cdn.jsdelivr.net/npm/@stlite/browser@1.12.2/build/stlite.js";
+const files = {
+  "app.py": {
+    "url": "./app.py"
+  },
+  "data/processed/panel_iteration2.csv": {
+    "url": "./data/processed/panel_iteration2.csv"
+  },
+  "data/processed/p3_iter1_oof.csv": {
+    "url": "./data/processed/p3_iter1_oof.csv"
+  },
+  "data/processed/p3_iter2_oof.csv": {
+    "url": "./data/processed/p3_iter2_oof.csv"
+  },
+  "data/processed/p3_forecast_holdout.csv": {
+    "url": "./data/processed/p3_forecast_holdout.csv"
+  },
+  "data/raw/master_dataset.csv": {
+    "url": "./data/raw/master_dataset.csv"
+  },
+  "outputs/p3_cv_results.csv": {
+    "url": "./outputs/p3_cv_results.csv"
+  },
+  "outputs/p3_regional_rmse_same_rows.csv": {
+    "url": "./outputs/p3_regional_rmse_same_rows.csv"
+  },
+  "outputs/p3_psi_drift.csv": {
+    "url": "./outputs/p3_psi_drift.csv"
+  },
+  "outputs/p1_artifact_log.csv": {
+    "url": "./outputs/p1_artifact_log.csv"
+  },
+  "outputs/iter1_assignments.csv": {
+    "url": "./outputs/iter1_assignments.csv"
+  },
+  "outputs/iter2_assignments.csv": {
+    "url": "./outputs/iter2_assignments.csv"
+  },
+  "outputs/p1_logistic_fits.csv": {
+    "url": "./outputs/p1_logistic_fits.csv"
+  },
+  "outputs/p1_spearman_by_year.csv": {
+    "url": "./outputs/p1_spearman_by_year.csv"
+  },
+  "outputs/p3_model_metrics.json": {
+    "url": "./outputs/p3_model_metrics.json"
+  },
+  "outputs/p1_sigma_convergence.csv": {
+    "url": "./outputs/p1_sigma_convergence.csv"
+  },
+  "outputs/p1_beta_convergence.csv": {
+    "url": "./outputs/p1_beta_convergence.csv"
+  },
+  "outputs/p1_coverage_by_year.csv": {
+    "url": "./outputs/p1_coverage_by_year.csv"
+  },
+  "outputs/iter2_tsne_embedding.csv": {
+    "url": "./outputs/iter2_tsne_embedding.csv"
+  },
+  "outputs/p3_interval_calibration.csv": {
+    "url": "./outputs/p3_interval_calibration.csv"
+  },
+  "images/V0_workflow_architecture.png": {
+    "url": "./images/V0_workflow_architecture.png"
+  },
+  "images/V0b_system_architecture.png": {
+    "url": "./images/V0b_system_architecture.png"
+  },
+  "images/V8_trajectory_archetypes.png": {
+    "url": "./images/V8_trajectory_archetypes.png"
+  },
+  "images/V14_synthesis_answer.png": {
+    "url": "./images/V14_synthesis_answer.png"
+  }
+};
+mount({
+  requirements: ["plotly"],
+  entrypoint: "app.py",
+  files,
+  streamlitConfig: {
+    "theme.base": "light", "theme.primaryColor": "#2A78D6", "theme.backgroundColor": "#FFFFFF",
+    "theme.secondaryBackgroundColor": "#F6F8FA", "theme.textColor": "#1F2328",
+    "client.toolbarMode": "viewer"
+  }
+}, document.getElementById("root"));
+const obs = new MutationObserver(() => {
+  if (document.querySelector('[data-testid="stAppViewContainer"]')) {
+    document.getElementById("loading").remove(); obs.disconnect();
+  }
+});
+obs.observe(document.body, { childList: true, subtree: true });
+</script>
+</body>
+</html>

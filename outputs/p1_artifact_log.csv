@@ -1,0 +1,11 @@
+code,entity,year,variable,value,reference,rule
+FJI,Fiji,2023,mobile_subs_per100,361.04865,110.6653,A: level shift vs 5-yr median
+FJI,Fiji,2024,mobile_subs_per100,574.15234,111.74912,A: level shift vs 5-yr median
+ATG,Antigua and Barbuda,2005,broadband_subs_per100,7.2866817,2.1113074,B: one-year spike that reverts
+KNA,Saint Kitts and Nevis,2017,broadband_subs_per100,62.214664,30.117897,B: one-year spike that reverts
+LCA,Saint Lucia,2019,broadband_subs_per100,8.884899,18.227062,B: one-year spike that reverts
+LCA,Saint Lucia,2020,broadband_subs_per100,19.972511,8.884899,B: one-year spike that reverts
+PLW,Palau,2013,broadband_subs_per100,10.227788,5.054883,B: one-year spike that reverts
+TUV,Tuvalu,2009,broadband_subs_per100,0.95593154,2.8098052,B: one-year spike that reverts
+LBN,Lebanon,2016,telephone_lines_per100,28.724415,15.648572,B: one-year spike that reverts
+KHM,Cambodia,2014,internet_users_share_pct,14.0,6.0,B: one-year spike that reverts

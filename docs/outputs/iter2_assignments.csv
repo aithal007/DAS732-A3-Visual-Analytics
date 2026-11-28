@@ -1,0 +1,182 @@
+code,traj_cluster,name,iter1_cluster
+AFG,0,,
+AGO,0,Angola,0.0
+ALB,1,Albania,1.0
+AND,1,Andorra,2.0
+ARE,2,United Arab Emirates,2.0
+ARG,1,Argentina,1.0
+ARM,1,Armenia,1.0
+ATG,1,,
+AUS,2,Australia,2.0
+AUT,2,Austria,2.0
+AZE,1,Azerbaijan,1.0
+BDI,0,,
+BEL,2,Belgium,2.0
+BEN,0,Benin,0.0
+BFA,0,Burkina Faso,0.0
+BGD,0,Bangladesh,0.0
+BGR,1,,
+BHR,1,Bahrain,1.0
+BHS,1,Bahamas,1.0
+BIH,1,Bosnia and Herzegovina,1.0
+BLR,1,Belarus,2.0
+BLZ,1,,
+BOL,1,Bolivia,1.0
+BRA,1,Brazil,1.0
+BRB,1,,
+BRN,1,Brunei,1.0
+BTN,1,Bhutan,1.0
+BWA,1,Botswana,0.0
+CAF,0,,
+CAN,2,Canada,2.0
+CHE,2,Switzerland,2.0
+CHL,1,Chile,1.0
+CHN,1,China,2.0
+CIV,0,Cote d'Ivoire,0.0
+CMR,0,,
+COD,0,Democratic Republic of Congo,0.0
+COG,0,,
+COL,1,Colombia,1.0
+COM,0,,
+CPV,1,Cape Verde,1.0
+CRI,1,Costa Rica,1.0
+CUB,1,Cuba,0.0
+CYP,1,Cyprus,2.0
+CZE,1,Czechia,1.0
+DEU,2,Germany,2.0
+DJI,1,,
+DMA,1,,
+DNK,2,Denmark,2.0
+DOM,1,Dominican Republic,1.0
+DZA,1,Algeria,1.0
+ECU,1,Ecuador,0.0
+EGY,1,Egypt,1.0
+ESP,1,Spain,2.0
+EST,2,Estonia,2.0
+ETH,0,Ethiopia,0.0
+FIN,2,Finland,1.0
+FJI,1,Fiji,1.0
+FRA,1,,
+FSM,0,,
+GAB,1,Gabon,1.0
+GBR,2,United Kingdom,2.0
+GEO,1,Georgia,1.0
+GHA,1,Ghana,0.0
+GIN,0,,
+GMB,0,Gambia,0.0
+GNB,0,,
+GNQ,1,,
+GRC,1,Greece,2.0
+GRD,1,,
+GTM,1,Guatemala,0.0
+GUY,1,,
+HKG,2,Hong Kong,2.0
+HND,1,Honduras,0.0
+HRV,1,Croatia,2.0
+HTI,0,,
+HUN,1,Hungary,2.0
+IDN,1,Indonesia,0.0
+IND,1,India,0.0
+IRL,1,Ireland,2.0
+IRN,1,Iran,1.0
+IRQ,1,Iraq,1.0
+ISL,2,Iceland,2.0
+ISR,1,,
+ITA,1,Italy,2.0
+JAM,1,Jamaica,1.0
+JOR,1,Jordan,1.0
+JPN,2,,
+KAZ,1,Kazakhstan,1.0
+KEN,0,Kenya,0.0
+KGZ,1,Kyrgyzstan,1.0
+KHM,1,Cambodia,0.0
+KIR,1,Kiribati,0.0
+KNA,1,,
+KOR,2,South Korea,2.0
+KWT,1,,
+LAO,1,,
+LBN,1,,
+LBR,0,,
+LBY,1,,
+LCA,1,,
+LIE,2,Liechtenstein,2.0
+LKA,0,Sri Lanka,0.0
+LSO,0,Lesotho,0.0
+LTU,1,Lithuania,1.0
+LUX,2,,
+LVA,1,Latvia,1.0
+MAC,1,Macao,1.0
+MAR,1,Morocco,1.0
+MCO,2,Monaco,2.0
+MDA,1,Moldova,1.0
+MDG,0,,
+MDV,1,Maldives,1.0
+MEX,1,Mexico,1.0
+MHL,1,,
+MKD,1,North Macedonia,2.0
+MLI,0,,
+MLT,1,Malta,2.0
+MNG,1,Mongolia,1.0
+MOZ,0,Mozambique,0.0
+MRT,0,Mauritania,0.0
+MUS,1,Mauritius,2.0
+MWI,0,Malawi,0.0
+MYS,1,Malaysia,1.0
+NAM,1,Namibia,0.0
+NER,0,Niger,0.0
+NGA,0,Nigeria,0.0
+NIC,1,Nicaragua,0.0
+NLD,2,Netherlands,2.0
+NOR,2,Norway,1.0
+NPL,0,Nepal,0.0
+NZL,2,New Zealand,1.0
+OMN,1,Oman,1.0
+PAK,0,Pakistan,0.0
+PAN,1,,
+PER,1,Peru,1.0
+PHL,1,Philippines,0.0
+PNG,0,,
+POL,1,,
+PRI,1,,
+PRT,1,Portugal,2.0
+PRY,1,,
+PSE,1,,
+QAT,1,Qatar,1.0
+ROU,1,Romania,1.0
+RUS,1,,
+RWA,0,Rwanda,0.0
+SAU,1,Saudi Arabia,2.0
+SEN,1,Senegal,0.0
+SGP,2,Singapore,2.0
+SLB,0,,
+SLE,0,,
+SLV,1,El Salvador,1.0
+SMR,2,,
+SOM,0,,
+STP,1,Sao Tome and Principe,0.0
+SUR,1,,
+SVK,1,Slovakia,1.0
+SVN,1,Slovenia,2.0
+SWE,2,Sweden,1.0
+SWZ,1,Eswatini,0.0
+SYC,1,Seychelles,1.0
+TCD,0,Chad,0.0
+TGO,0,Togo,0.0
+THA,1,Thailand,1.0
+TJK,0,,
+TON,1,,
+TTO,1,Trinidad and Tobago,1.0
+TUN,1,Tunisia,1.0
+TUR,1,Turkey,1.0
+TZA,0,Tanzania,0.0
+UGA,0,Uganda,0.0
+UKR,1,,
+URY,1,Uruguay,2.0
+USA,2,United States,2.0
+UZB,1,Uzbekistan,1.0
+VCT,1,Saint Vincent and the Grenadines,1.0
+VEN,1,Venezuela,1.0
+VNM,1,Vietnam,1.0
+ZAF,1,South Africa,1.0
+ZMB,0,Zambia,0.0
+ZWE,0,Zimbabwe,0.0

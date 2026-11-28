@@ -1,0 +1,221 @@
+Loaded C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\data\raw\master_dataset.csv: 12599 country-year rows, 220 countries, years 1960-2025
+
+==============================================================================
+ITERATION 1
+==============================================================================
+
+=== Snapshot coverage (why 2024 is used; 2025 sparse) ===
+      countries_in_file  complete_core_cases  nn_Internet %  nn_Mobile subs/100  nn_Phone owners %  nn_Landlines/100  nn_Broadband/100
+year                                                                                                                                  
+2021                216                  170            180                 208                186               205               204
+2022                219                  176            182                 209                186               212               206
+2023                200                  151            181                 172                186               165               169
+2024                196                  135            182                 151                188               146               151
+2025                 12                    0             10                   0                  7                 0                 0
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\iter1_snapshot_coverage.csv  (5 rows)
+
+Iteration 1 snapshot 2024: 196 country rows -> n = 135 complete cases across 5 core features (61 dropped, NO imputation).
+
+=== Region counts (complete cases) ===
+                n
+region           
+Europe         37
+Africa         36
+Asia           35
+North America  14
+South America   9
+Oceania         4
+
+=== Edge cases in snapshot (kept; flagged) ===
+                                                n
+mobile_subs_per100 > 100 (multi-SIM markets)  104
+mobile_subs_per100 > 150                       23
+broadband == 0                                  1
+landlines < 1 per 100                          25
+phone ownership >= 99%                          7
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\images\V4_pca_biplot.png
+
+=== PCA loadings ===
+                   PC1    PC2    PC3    PC4    PC5
+Internet %       0.500 -0.053 -0.460 -0.187  0.707
+Mobile subs/100  0.225  0.964  0.111  0.090  0.009
+Phone owners %   0.504 -0.038 -0.421 -0.267 -0.704
+Landlines/100    0.439 -0.147  0.755 -0.462  0.047
+Broadband/100    0.502 -0.213  0.171  0.820 -0.043
+
+=== Explained variance ===
+     var_ratio     cum
+PC1     0.6415  0.6415
+PC2     0.1785  0.8200
+PC3     0.1117  0.9317
+PC4     0.0404  0.9721
+PC5     0.0279  1.0000
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\iter1_pca_loadings.csv  (5 rows)
+
+Chosen k = 3 (max k-means silhouette within k in 3..6 with every cluster >= 4; GMM-BIC minimum at k = 5).
+
+=== Cluster validation by k ===
+   sil_kmeans  sil_gmm  sil_ward  min_size_kmeans  inertia   gmm_bic   gmm_aic
+k                                                                             
+2       0.447    0.397     0.450               45  359.882  1300.598  1181.482
+3       0.329    0.287     0.466               37  280.102  1237.249  1057.122
+4       0.347    0.252     0.304                2  207.376  1176.528   935.390
+5       0.308    0.213     0.296                2  168.823  1174.530   872.381
+6       0.285    0.203     0.267                2  142.228  1222.930   859.771
+7       0.280    0.210     0.265                1  128.385  1304.295   880.124
+8       0.282    0.153     0.242                1  114.176  1374.953   889.772
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\iter1_cluster_validation.csv  (7 rows)
+
+=== Bootstrap ARI stability (B = 200) ===
+        ARI_mean  ARI_sd  ARI_p05
+kmeans     0.640   0.203    0.341
+gmm        0.488   0.145    0.276
+ward       0.724   0.197    0.345
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\iter1_bootstrap_ari.csv  (3 rows)
+
+=== Between-method ARI (final k) ===
+        kmeans    gmm   ward
+kmeans   1.000  0.632  0.535
+gmm      0.632  1.000  0.469
+ward     0.535  0.469  1.000
+
+=== Cluster sizes ===
+                             kmeans  gmm  ward
+cluster(0=low connectivity)                   
+0                                41   44    42
+1                                57   59     2
+2                                37   32    91
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\iter1_cluster_sizes.csv  (3 rows)
+
+=== Silhouette at final k ===
+        silhouette
+kmeans       0.329
+gmm          0.287
+ward         0.466
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\images\V5a_cluster_validation.png
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\images\V5b_parallel_profiles.png
+
+=== K-means cluster medians (raw units) ===
+    n  internet_users_share_pct  mobile_subs_per100  mobile_phone_ownership_share_pct  telephone_lines_per100  broadband_subs_per100
+c                                                                                                                                   
+0  41                     49.49               94.25                              68.6                    0.76                   1.47
+1  57                     87.69              124.62                              90.9                   10.79                  20.31
+2  37                     94.38              129.15                              97.4                   30.10                  39.23
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\iter1_kmeans_cluster_medians.csv  (3 rows)
+
+=== Top 15 anomalies (IF + LOF rank-average) ===
+      anomaly_rank                          name         region                                              reason  anomaly_combined  if_score  lof_score  in_top15_IF  in_top15_LOF  mobile_subs_per100  sim_per_owner  telephone_lines_per100  internet_users_share_pct  internet_delta10
+code                                                                                                                                                                                                                                                                                        
+FJI              1                          Fiji        Oceania                                 multi-SIM inflation              1.00      0.66       5.51         True          True              574.15           6.94                    8.37                     74.71             37.31
+MCO              2                        Monaco         Europe                               extreme Landlines/100              0.99      0.68       3.10         True          True              107.40           1.08                   95.48                     99.04              6.64
+HKG              3                     Hong Kong           Asia                                 multi-SIM inflation              0.99      0.60       3.15         True          True              364.85           3.72                   44.57                     95.76             15.89
+AND              4                       Andorra         Europe                                 multi-SIM inflation              0.97      0.57       1.76         True          True              155.69           1.61                   64.95                     94.40              8.30
+KIR              5                      Kiribati        Oceania                                        fast climber              0.96      0.54       1.49         True          True               53.52           0.90                    0.01                     89.44             77.19
+MUS              6                     Mauritius         Africa  multi-SIM inflation + high landline / low internet              0.93      0.53       1.33         True          True              172.68           1.94                   36.88                     73.31             28.50
+UGA              7                        Uganda         Africa                       multi-SIM inflation + laggard              0.93      0.58       1.23         True         False               83.17           1.92                    0.39                      8.95              3.55
+ARE              8          United Arab Emirates           Asia                                 multi-SIM inflation              0.92      0.51       1.42        False          True              203.21           2.03                   20.80                    100.00              9.60
+CIV              9                 Cote d'Ivoire         Africa                                 multi-SIM inflation              0.91      0.51       1.28         True          True              183.88           2.82                    0.77                     41.43             31.43
+TCD             10                          Chad         Africa                                 multi-SIM inflation              0.90      0.55       1.19         True         False               72.93           1.65                    0.00                     12.63              9.73
+MOZ             11                    Mozambique         Africa                                multivariate outlier              0.89      0.53       1.20         True         False               49.50           0.62                    0.08                     20.53             14.53
+ECU             12                       Ecuador  South America                                 multi-SIM inflation              0.89      0.51       1.26        False          True              101.60           1.66                    6.72                     77.17             31.58
+IRN             13                          Iran           Asia                                 multi-SIM inflation              0.89      0.49       1.37        False          True              174.07           2.01                   30.83                     85.34             45.99
+MNE             14                    Montenegro         Europe                                 multi-SIM inflation              0.89      0.49       1.42        False          True              221.69           2.33                   30.10                     88.88             25.00
+COD             15  Democratic Republic of Congo         Africa                              extreme Phone owners %              0.89      0.54       1.17         True         False               58.53           1.32                    0.00                     19.67             16.67
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\iter1_anomalies_top15.csv  (15 rows)
+
+Top-15 agreement between IF and LOF top-15 lists: 7 countries | Spearman(IF, LOF) = 0.77
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\images\V6a_anomaly_lollipop.png
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\images\V6b_anomaly_pca_overlay.png
+
+Links to Assignment-1 figures (edit A1_LINKS in config):
+  A1 Fig. 5: same landline level today, opposite histories -> landline_peak feature
+  A1 Fig. 10: multi-SIM inflation by region -> multi-SIM anomaly tag (V6), V3
+  A1 Fig. 17: every country's two-decade climb -> trajectory clusters (V8)
+  A1 Fig. 18: owning a phone is not being online -> sim_per_owner
+  A1 Fig. 23: two infrastructures, four kinds of country -> iteration-1 clusters (V5)
+  A1 Fig. 26: correlation structure of the five measures -> PCA (V4)
+  Fig. 6/9/10 -> relate to mobile vs landline vs internet patterns; Fig. 17/18 -> relate to multi-SIM / growth-trajectory cases (check against your A1 captions).
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\iter1_assignments.csv  (135 rows)
+
+==============================================================================
+FEEDBACK LOOP FEATURES
+==============================================================================
+Countries in feedback table: 220 | in Iteration 1 sample: 135
+
+=== Engineered feature coverage ===
+                                non_null  coverage_%
+sim_per_owner                        144        65.5
+multi_SIM                            144        65.5
+landline_peak                        213        96.8
+landline_decline                     213        96.8
+leapfrog_index                       151        68.6
+years_since_mobile_gt_landline       211        95.9
+broadband_log1p                      151        68.6
+broadband_zero_flag                  151        68.6
+
+=== Engineered feature summary ===
+                                count   mean    std   min    25%    50%    75%     max
+sim_per_owner                   144.0   1.49   0.62  0.62   1.21   1.36   1.60    6.94
+multi_SIM                       144.0   0.36   0.48  0.00   0.00   0.00   1.00    1.00
+landline_peak                   213.0  26.27  24.50  0.02   4.58  21.05  41.50  140.09
+landline_decline                213.0  11.39  14.05  0.00   1.13   5.98  16.41   69.66
+leapfrog_index                  151.0  14.00  18.18  0.76   3.29   6.01  16.83   89.46
+years_since_mobile_gt_landline  211.0  21.50   3.17  0.00  20.00  22.00  24.00   30.00
+broadband_log1p                 151.0   2.55   1.23  0.00   1.68   3.03   3.54    4.04
+broadband_zero_flag             151.0   0.01   0.08  0.00   0.00   0.00   0.00    1.00
+
+multi_SIM flagged (ratio > 1.5): 52 of 144 with ownership data
+landline_current from a year earlier than 2024: 67 countries (see landline_current_year)
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\feedback_features.csv  (220 rows)
+[feedback] 10 artefact cells set to NaN ({'broadband_subs_per100': 6, 'internet_users_share_pct': 1, 'mobile_subs_per100': 2, 'telephone_lines_per100': 1}); 13 engineered features added
+
+==============================================================================
+ITERATION 2 - TRAJECTORIES
+==============================================================================
+Trajectory panel 2000-2025: 210 countries with any data -> 195 with >= 18 observed years -> n = 181 after gap handling (14 dropped for unfillable edges). Cells filled: 225 (interior linear interpolation; edge carry <= 3 yrs).
+DTW backend: numpy-fallback  (Sakoe-Chiba radius 5 yrs; raw percentage-point scale, not z-normalised)
+
+=== Trajectory clustering: k scan (average-linkage on DTW; min cluster size >= 5) ===
+   silhouette_dtw  min_cluster_size
+k                                  
+2           0.576                43
+3           0.536                25
+4           0.507                 1
+5           0.419                 1
+6           0.430                 1
+7           0.426                 1
+8           0.416                 1
+Chosen k2 = 3
+
+Overlap Iteration 1 x Iteration 2: n = 133 (Iter1 n = 135, Iter2 n = 181).
+
+=== Contingency: Iteration 1 clusters x trajectory clusters ===
+traj_cluster    0   1   2
+iter1_cluster            
+0              25  16   0
+1               0  53   4
+2               0  17  18
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\iter2_crosstab.csv  (3 rows)
+
+=== Silhouette comparison (shared n = 133) ===
+                            Iter-1 feature space (2024 z-scores)  Trajectory space (DTW 2000-25)
+Iter-1 clusters (k-means)                                  0.330                           0.345
+Iter-2 trajectory clusters                                 0.176                           0.525
+ARI(Iter1 k=3, Iter2 k=3) = 0.304 | ARI with Iter2 forced to k=3: 0.304
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\iter2_comparison.csv  (2 rows)
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\images\V8a_alluvial.png
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\V8_sankey_interactive.html (optional interactive Sankey)
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\images\V8b_trajectory_small_multiples.png
+
+=== Trajectory cluster summary ===
+                n       medoid  median_2000  median_2010  median_2025  mean_gain_pp
+traj_cluster                                                                       
+0              43     Tanzania          0.1          3.1         32.5          32.7
+1             113     Maldives          2.9         33.7         84.5          77.6
+2              25  South Korea         39.2         80.3         95.8          57.5
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\iter2_cluster_summary.csv  (3 rows)
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\images\V8c_before_after_silhouette_ari.png
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\iter2_assignments.csv  (181 rows)
+  [saved] C:\Users\Parikshith\Desktop\DV_ass1\ass3\A3_submission\outputs\feedback_features.csv  (220 rows)
+
+Done. Figures in ./images, tables in ./outputs (feedback_features.csv lists the engineered features per country).
