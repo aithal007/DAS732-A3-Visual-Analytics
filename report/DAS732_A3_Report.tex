@@ -57,7 +57,9 @@ member, each drawn unrolled with its question, hypotheses, plugged-in visualizat
 and a single labelled feedback loop. In the statistical workflow (W1), logistic diffusion fits and
 rank tests show take-off delays of 6--12 years, and the feedback loop re-expresses every curve in its
 own time and scale: aligned at their take-off years, 201 country curves collapse onto one S-curve and
-the cross-country spread falls from 32 to 10 percentage points. In the unsupervised workflow (W2),
+the cross-country spread falls from 32 to 10 percentage points; a direct test then shows that countries
+which skipped landlines are saturated on mobile yet only 44\% online (93\% where landlines were built). In
+the unsupervised workflow (W2),
 bootstrap co-assignment and anomaly persistence show that 2024 snapshot clusters are only moderately
 stable (ARI 0.64) and that Fiji's anomaly is a transient recording artefact; the feedback loop turns
 snapshots into 26-year trajectories compared by dynamic time warping, which regroups 37 of 133
@@ -114,7 +116,7 @@ its own time that turns ``years behind'' into a tested delay; (iii) stability an
 that separates structural anomalies from recording artefacts; (iv) a leakage-safe comparison of the
 supervised iterations on identical rows and folds; (v) a drift chart that links forecast
 mis-calibration to a post-2020 shift, with a calibration curve for the re-calibrated intervals; and
-(vi) a reproducible pipeline (Fig.~\ref{fig:v0b}) with an interactive demonstrator that runs in a web
+(vi) a reproducible pipeline (Section~\ref{sec:repro}) with an interactive demonstrator that runs in a web
 browser.
 
 \begin{figure*}[!t]
@@ -212,8 +214,8 @@ the same reason as in A1: the question concerns infrastructure, and adding incom
 different question. The consequence, that all results are associations, is discussed in
 Section~\ref{sec:limits}.
 
-\subsection{Data quality and missingness (W1, step 1)}
-Fig.~\ref{fig:v3b} measures coverage against all 217 countries. Mobile subscriptions and landlines
+\subsection{Data quality and missingness (W1, before step 1)}
+Coverage was measured against all 217 countries. Mobile subscriptions and landlines
 are observed for more than 95\% of countries from 1990 to 2022; broadband begins around 2000 and
 passes 80\% only in 2005; ownership exists only in survey years from 2014; and 2023--2025 thin out
 sharply, which is why the snapshot year is 2024 and the forecast horizon ends in 2025. Coverage is
@@ -225,16 +227,6 @@ share is 50\% in country-years without an ownership survey and 75\% in those wit
 The first iterations therefore use complete cases only, and W3's second iteration uses multivariate
 imputation fitted in-fold together with explicit missingness flags, so the model can learn that a
 missing survey is itself informative.}
-
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=\textwidth]{V3b_data_quality_missingness.png}
-\caption{\textbf{V3b (W1, step 1): coverage is uneven in time and space, and ownership is missing
-mainly for less-connected country-years, so missingness cannot be ignored.} (a) Share of all 217
-countries observed per indicator and year. (b) Coverage by region, 2010--2025. (c) Internet share of
-country-years with and without each indicator.}
-\label{fig:v3b}
-\end{figure*}
 
 % =========================================================================================
 \section{Workflow Design and Methods}\label{sec:methods}
@@ -289,16 +281,16 @@ times that reverts within 1.25 times. Ten cells removed & a rule, not a hand edi
 countries and indicators \\
 & K1.2 Subscriptions overstate people & $\rho$ 0.52 against 0.89 (V3); importance near zero (V7) &
 \textbf{T2} SIMs per owner, multi-SIM flag (1.5), mobile capped at 100 & new measurement scale \\
-& K1.3 Calendar-time levels mix \emph{when} with \emph{how far} & take-off delays (V1); Gini and s.d.\
-disagree (V1b a--b) & \textbf{T3} each curve re-indexed to years since its take-off, $t-t_0$, and divided
+& K1.3 Calendar-time levels mix \emph{when} with \emph{how far} & take-off delays (V1); Gini 0.81$\rightarrow$0.19 while the s.d.\
+rose until 2013 (V1e) & \textbf{T3} each curve re-indexed to years since its take-off, $t-t_0$, and divided
 by its saturation $L$; \textbf{T4} headroom $h=(y_{2024}-y_{2014})/(100-y_{2014})$ & new coordinate
 system for every series \\
 & K1.4 Broadband has a floor; data are missing not at random & floor holds 29\% of rows (V2); MNAR test
-(V3b) & \textbf{T5} $\log(1+\text{broadband})$, floor flag; missingness flags (used by W3) & non-linear
+(Mann--Whitney $p=10^{-41}$) & \textbf{T5} $\log(1+\text{broadband})$, floor flag; missingness flags (used by W3) & non-linear
 re-expression \\
 \midrule
 W2 & K1.1 Snapshot clusters are only moderately stable & ARI 0.64, mixed and legacy co-assigned in 46\%
-of resamples (V5b); 15 border countries (V5c) & \textbf{T2} snapshot $\rightarrow$ trajectory: each
+of resamples (V5b); 15 border countries (silhouette $<0.10$) & \textbf{T2} snapshot $\rightarrow$ trajectory: each
 country becomes its 2000--2025 internet curve (181 countries, interior gaps interpolated) & a new data
 representation \\
 & K1.2 Fiji is a transient anomaly; Monaco and Hong Kong are structural & flagged 2 of 6 years versus 6
@@ -313,7 +305,7 @@ features defined by W1's $K_1$: landline peak and decline, leapfrog index, years
 landlines, per-owner and capped mobile, log broadband, floor flag, momentum & new predictors encoding
 history \\
 & K1.2 Errors are largest where histories differ & residuals by level (V7) & (as above) & \\
-& K1.3 Complete cases drop rows missing not at random & V3b & \textbf{T3} MICE fitted inside each
+& K1.3 Complete cases drop rows missing not at random & MNAR test in W1 ($p=10^{-41}$) & \textbf{T3} MICE fitted inside each
 training fold, with missingness flags: 2{,}134 more rows & new rows, no leakage \\
 & (inner loop) the target drifts after 2020 & PSI 0.44 (V13) & \textbf{T4} conformal re-calibration
 of the forecast intervals & intervals re-derived \\
@@ -446,16 +438,17 @@ Fig. & Analytic task & Idiom and encoding & Why & Rejected alternative \\
 \midrule
 V0, W1--W3 & show the process, the loop and the evidence & unrolled node-link diagram; colour = Keim stage; figure thumbnails in stages; numbered path & order and causality are positional; evidence sits where it was produced & cyclic diagram (ambiguous passes)~\cite{keim2008scope} \\
 V1 & compare timing across regions & fitted curves; box + strip of $t_0$; scatter $t_0$--$k$ & every country visible, uncertainty shown & regional mean lines only (hide spread) \\
+V1d & where is the delay? & choropleth, sequential colour-blind-safe scale (viridis); hatched = no fit & position in space is read directly & rainbow map (false boundaries) \\
+V1e & is the gap closing? & indexed lines on one axis; headroom scatter with fit & absolute vs relative inequality on one scale & dual-axis chart (misleading coupling) \\
+V1f & did leapfrogging close the gap? & log-$x$ scatter sized by mobile; box + strip & groups and every country visible & bar of group means (hides spread) \\
 V1c & test ``delay, not difference'' & same curves in calendar vs own time; regional medians; IQR bars & a collapse is visible and measured & overlay of fitted curves only \\
-V1b & is the gap closing? & indexed lines (one axis); headroom scatter with fit & absolute vs relative inequality on one scale & dual-axis chart (misleading scale coupling) \\
 V2 & shape of a relation; change of correlation & log-$x$ scatter + segmented fit + LOWESS; CI bands & floor visible on log axis & single pooled $r$ (hides time trend) \\
 V3 & measurement validity & scatter with reference lines; histogram; time series & ratio lines read directly & table of ratios \\
-V3b & data quality & heatmaps (year $\times$ indicator, region $\times$ indicator); paired boxes & dense, exact values printed & bar per year (too many bars) \\
 V4 & structure of 5-D data & biplot + loading heatmap & points and variables together & scatter-plot matrix (10 panels) \\
-V5, V5b, V5c & choose $k$ and test stability & small multiples of criteria; co-assignment matrix ordered by cluster; silhouette knife plot & stability per pair and per country, not one number & a single ARI value \\
+V5, V5b & choose $k$ and test stability & small multiples of criteria; co-assignment matrix ordered by cluster & stability per pair, not one number & a single ARI value \\
 V6, V6b, V6c & rank, track and explain outliers & lollipop + PCA overlay; country $\times$ year strip; diverging bars & persistence separates artefacts from structure & one-year ranking only \\
 V7 & diagnose a model & predicted--actual scatter; residual boxes; importance bars & error by region and level & single RMSE number \\
-V8, V8a--V8d & compare trajectory groups and iterations & warping connectors; dendrogram with cuts; small multiples with IQR; ridgelines; side-by-side embeddings with movers ringed & paths and changes shown, not summarised & spaghetti plot of 181 lines \\
+V8, V8a, V8d & compare trajectory groups and iterations & warping connectors; small multiples with IQR; side-by-side embeddings with movers ringed & paths and changes shown, not summarised & spaghetti plot of 181 lines \\
 V9 & show the transformation & before/after lines; diverging bars & what changed, per feature & prose only \\
 V10 & compare iterations & dumbbell plot; grouped bars with s.d. & direction and size of change & two separate tables \\
 V11 & explain and localise error & SHAP beeswarm; diverging choropleth (zero = white) & polarity needs a diverging scale & rainbow map \\
@@ -481,9 +474,10 @@ transformed data; the numbered analysis path (bottom).}
 
 \hyp{Q1.}{When did each country take off, is the gap between countries closing, and do the indicators
 measure what they appear to measure?}
-Four hypotheses are tested (Fig.~\ref{fig:w1}): H1.1 the divide is a time delay on one common S-curve;
+Five hypotheses are tested (Fig.~\ref{fig:w1}): H1.1 the divide is a time delay on one common S-curve;
 H1.2 the divide is closing; H1.3 mobile subscriptions count connected people; H1.4 internet use rises
-linearly with fixed broadband.
+linearly with fixed broadband; and H1.5, A1's own conclusion stated as a test, countries that leapfrogged
+landlines with mobile caught up online.
 
 \subsection{Iteration 1: raw levels in calendar time}
 \textit{Diffusion is an S-curve shifted by region (Fig.~\ref{fig:v1}).} The logistic model fits 201
@@ -500,11 +494,31 @@ are mixed; this motivates T3.}
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{V1_diffusion_scurves.png}
-\caption{\textbf{V1 (W1, step 2): every region follows an S-curve, shifted by up to 12 years, and late
+\caption{\textbf{V1 (W1, step 1): every region follows an S-curve, shifted by up to 12 years, and late
 adopters do not catch up faster.} Left: observed series (thin) and logistic curves with region-median
 parameters (thick). Centre: take-off year by region with every country overplotted. Right: take-off
 year against growth rate; two countries reach the $k\le2$ bound.}
 \label{fig:v1}
+\end{figure*}
+
+\textit{Where the delay lies (Fig.~\ref{fig:v1d}).} Mapped, the take-off year forms contiguous areas
+rather than scattered outliers: North America's two large economies, Western and Northern Europe,
+Japan, South Korea and Australia took off by about 2005; South America, Russia and China around
+2008--2012; and most of sub-Saharan Africa, South Asia and Indonesia after 2015. The regional medians
+are 2006 for Europe, 2012 for North and South America (North America here includes Central America and
+the Caribbean), 2013 for Asia and 2017 for Africa and Oceania.
+
+\inference{The delay is geographic, so regions are a meaningful unit for the later tests, and any
+calendar-time comparison mixes a country's position with the year it started; this strengthens the
+case for T3.}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V1d_takeoff_map.png}
+\caption{\textbf{V1d (W1, step 2): take-off is a spatial pattern, with most of Africa 12 years behind
+Europe.} Take-off year $t_0$ of each country's logistic fit on a sequential, colour-blind-safe scale;
+hatched countries have no reliable fit ($R^2<0.9$) or no data. The box lists regional medians.}
+\label{fig:v1d}
 \end{figure*}
 
 \textit{A broadband floor and the decoupling of mobile (Fig.~\ref{fig:v2}).} Of 3{,}629
@@ -552,7 +566,7 @@ Right: Fiji's mobile series against ownership and internet use.}
 \label{fig:v3}
 \end{figure*}
 
-\textit{Is the divide closing in raw terms? (Fig.~\ref{fig:v1b}a--b).} Relative inequality between
+\textit{Is the divide closing in raw terms? (Fig.~\ref{fig:v1e}a).} Relative inequality between
 countries fell steadily: the Gini coefficient of internet shares dropped from 0.81 in 1995 to 0.19 in
 2024. Absolute spread did not: the cross-country standard deviation rose until 2013 (29.3 points) and
 has fallen only since, and the gap between the median European and the median African country peaked
@@ -588,7 +602,7 @@ features.}
 \label{fig:v9}
 \end{figure*}
 
-\subsection{Iteration 2: own time, own scale and headroom}
+\subsection{Iteration 2: own time, own scale, headroom and the leapfrog test}
 \textit{Delay, not difference (Fig.~\ref{fig:v1c}).} In calendar years the 201 well-fitted curves
 spread over two decades, and the mean cross-country IQR is 32.0 points. Re-indexed to each country's
 own take-off year the IQR falls to 13.6, and divided also by each country's saturation level it falls
@@ -609,20 +623,40 @@ cross-country IQR in the three representations.}
 \label{fig:v1c}
 \end{figure*}
 
-\textit{Closing in headroom terms (Fig.~\ref{fig:v1b}c).} Between 2014 and 2024, countries that
+\textit{Closing in headroom terms (Fig.~\ref{fig:v1e}b).} Between 2014 and 2024, countries that
 started higher closed a \emph{larger} share of their remaining headroom (Spearman $\rho=+0.52$,
 $p=10^{-13}$, 175 countries): 32 of 51 African countries closed less than 40\% of their gap, whereas
 28 of 39 European countries closed more than 60\% (medians 32\% and 67\%).
 
 \begin{figure*}[!t]
 \centering
-\includegraphics[width=\textwidth]{V1b_convergence.png}
-\caption{\textbf{V1b (W1, step 7): relative inequality has fallen, but absolute spread only since 2013,
-and low starters close a smaller share of their remaining gap.} (a), (b) Iteration~1, raw levels:
-median country, 10th--90th percentile band and the Europe--Africa median gap; standard deviation and
-Gini, each indexed to its own maximum. (c) Iteration~2, headroom: share of the gap closed 2014--2024
-against the 2014 level, with an OLS fit.}
-\label{fig:v1b}
+\includegraphics[width=\textwidth]{V1e_headroom_closing.png}
+\caption{\textbf{V1e (W1, step 7): the divide is closing only in relative terms, and the countries
+furthest behind close the smallest share of their remaining gap.} (a) Iteration~1, raw levels: Gini
+coefficient and the Europe--Africa median gap, each indexed to its own maximum. (b) Iteration~2,
+headroom (T4): share of the gap closed 2014--2024 against the 2014 level, with an OLS fit and
+regional medians.}
+\label{fig:v1e}
+\end{figure*}
+
+\textit{Did leapfrogging close the divide? (Fig.~\ref{fig:v1f}).} The engineered features of T2 allow
+A1's conclusion to be tested directly. In 2024 ($n=143$ countries), the landline peak a country ever
+reached correlates with internet use at $\rho=0.82$, and at 0.86 within Africa alone ($n=39$), whereas
+capped mobile reaches only 0.47. Twenty-two countries never built landlines (peak below 5 per 100) yet
+are saturated on mobile (capped at least 80 per 100); 17 of them are African. Their median internet use
+is 44\%, against 93\% in the 73 countries whose landline peak exceeded 20 per 100 (Mann--Whitney
+$p=10^{-11}$). The landline peak is not a cause: it also stands for the national investment and income
+that built both networks, and no income variable is used (Section~\ref{sec:limits}).
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{V1f_leapfrog_test.png}
+\caption{\textbf{V1f (W1, step 8): leapfrogging did not close the divide.} (a) Internet use in 2024
+against the landline peak (log scale), coloured by region and sized by capped mobile; the shaded band
+marks countries that never built landlines. (b) Countries that leapfrogged (landline peak $<5$,
+capped mobile $\ge80$ per 100) against countries that built landlines (peak $\ge20$), with every
+country overplotted.}
+\label{fig:v1f}
 \end{figure*}
 
 \subsection{Knowledge $K_2$ and the analysis path}
@@ -630,13 +664,14 @@ H1.1 is supported: the divide is a delay of 6--12 years on one common curve, as 
 Hobijn~\cite{comin2010} found for earlier technologies. H1.2 is refined: the divide is closing in
 relative terms only, and the countries furthest behind close the smallest share of their gap, so there
 is no $\beta$-convergence in headroom. H1.3 and H1.4 are rejected, and their rejection defines the
-features that W3 uses.
+features that W3 uses. H1.5 is rejected: countries that skipped landlines reached mobile saturation
+but not internet use, so leapfrogging happened without closing the divide.
 
-\textit{Analysis path.} Coverage was checked first (V3b) because every later test depends on what is
-observed. The take-off fits (V1) raised the delay hypothesis; the broadband relation (V2) and the
+\textit{Analysis path.} Coverage was checked first (coverage counts and the MNAR test) because every later test
+depends on what is observed. The take-off fits (V1) raised the delay hypothesis and the map (V1d) showed that it is geographic; the broadband relation (V2) and the
 measurement test (V3) followed because A1's evidence rested on these two indicators, and V3 exposed
-Fiji. After the transformation, V9 verified it, V1c tested the delay hypothesis in aligned time, and
-V1b tested closing in headroom terms. The result enters the synthesis (V14a).
+Fiji. After the transformation, V9 verified it, V1c tested the delay hypothesis in aligned time,
+V1e tested closing in headroom terms, and V1f tested leapfrogging directly with the engineered features. The result enters the synthesis (V14a).
 
 % =========================================================================================
 \section{Workflow W2: Unsupervised Mining}\label{sec:w2}
@@ -695,12 +730,12 @@ bands; raw medians are printed under each axis.}
 \label{fig:v5}
 \end{figure*}
 
-\textit{Stability (Figs.~\ref{fig:v5b} and~\ref{fig:v5c}).} Bootstrap refits agree with the reference
+\textit{Stability (Fig.~\ref{fig:v5b}).} Bootstrap refits agree with the reference
 labels at a mean ARI of $0.64\pm0.20$, and the co-assignment matrix shows where the disagreement lies:
 mobile-first countries stay together in 92\% of refits and are almost never grouped with the legacy
 group, but mixed and legacy countries share a cluster in 46\% of refits, and 45\% of all country pairs
 fall between 0.1 and 0.9. Gabon (0.40), Fiji (0.50) and Venezuela (0.62) are the least stable members.
-The silhouette knife plot confirms it per country: $k=2$ has a higher mean (0.45) but two misassigned
+Per-country silhouettes confirm it: $k=2$ has a higher mean (0.45) but two misassigned
 countries (El Salvador, South Africa), whereas $k=3$ has none, yet 15 of 135 countries, among them
 Sweden, Norway, Denmark, Ireland, China and Fiji, have silhouettes below 0.10.
 
@@ -712,15 +747,6 @@ bootstrap refits in which two countries share a cluster, ordered by cluster and 
 it. Dark blocks are stable groups; the mixed--legacy off-diagonal block (about 0.46) shows where the
 boundary moves.}
 \label{fig:v5b}
-\end{figure*}
-
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.86\textwidth]{V5c_silhouette_knife.png}
-\caption{\textbf{V5c (W2, step 4): $k=3$ misassigns no country, but 15 lie on a cluster border.}
-Per-country silhouettes for $k=2$ and $k=3$, sorted within each cluster; the dashed line is the mean and
-the lowest countries are labelled.}
-\label{fig:v5c}
 \end{figure*}
 
 \inference{H2.1 is refined: three types exist and are ordered by connectivity, but the boundary between
@@ -740,7 +766,7 @@ Uganda on low internet use and ownership ($-1.6$ each).
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{V6_anomalies.png}
-\caption{\textbf{V6 (W2, step 5): both detectors rank Fiji first, and most anomalies are multi-SIM
+\caption{\textbf{V6 (W2, step 4): both detectors rank Fiji first, and most anomalies are multi-SIM
 markets.} (a) Top-15 anomaly percentiles with rule-based reason tags and each detector's percentile.
 (b) The same countries in PCA space, sized by anomaly score.}
 \label{fig:v6}
@@ -749,7 +775,7 @@ markets.} (a) Top-15 anomaly percentiles with rule-based reason tags and each de
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\columnwidth]{V6b_anomaly_persistence.png}
-\caption{\textbf{V6b (W2, step 5): four anomalies persist every year; Fiji appears only in 2023--24.}
+\caption{\textbf{V6b (W2, step 4): four anomalies persist every year; Fiji appears only in 2023--24.}
 Per-year Isolation Forest flags, 2019--2024; colour encodes the persistence class, grey marks years
 without complete data.}
 \label{fig:v6b}
@@ -758,7 +784,7 @@ without complete data.}
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\columnwidth]{V6c_anomaly_why.png}
-\caption{\textbf{V6c (W2, step 6): each top anomaly is unusual on one indicator.} Feature z-score minus
+\caption{\textbf{V6c (W2, step 5): each top anomaly is unusual on one indicator.} Feature z-score minus
 the cluster-mean z-score for the five highest 2024 scores.}
 \label{fig:v6c}
 \end{figure}
@@ -781,27 +807,18 @@ them 0.17 apart, five times closer than the same-year distance of 0.86.
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{V8a_dtw_alignment.png}
-\caption{\textbf{V8a (W2, step 7): why the transformation uses DTW.} The same pair of curves compared
+\caption{\textbf{V8a (W2, step 6): why the transformation uses DTW.} The same pair of curves compared
 along DTW's warping path (left, grey connectors) and year by year (right, shaded gap).}
 \label{fig:v8a}
 \end{figure*}
 
 \subsection{Iteration 2: trajectories under DTW}
-\textit{The hierarchy (Fig.~\ref{fig:v8b}).} The DTW dendrogram preserves distances well (cophenetic
+\textit{The hierarchy.} The DTW dendrogram preserves distances well (cophenetic
 correlation 0.72). Its first split separates 43 late starters from all other countries; the second
 separates 25 early saturators from a majority of 113 (silhouette 0.54 at $k=3$). The next cut only
 splits off a single country, so $k=3$ is the natural cut. Leaf colours show that geography explains
 part, not all, of the tree: 33 of 51 African countries are late starters, every South American country
 is in the majority, and 16 of 42 European countries are early saturators.
-
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=\textwidth]{V8b_dtw_dendrogram.png}
-\caption{\textbf{V8b (W2, step 8): late starters split from all others at the root, and $k=3$ is the
-natural cut.} Average-linkage dendrogram of 181 trajectories; leaf labels coloured by region; solid line
-at $k=3$, dashed at $k=4,5$.}
-\label{fig:v8b}
-\end{figure*}
 
 \textit{The archetypes (Fig.~\ref{fig:v8}).} T0 late starters (43 countries, medoid Tanzania, median
 0\%$\rightarrow$33\%), T1 the S-curve majority (113, Maldives, 3\%$\rightarrow$84\%) and T2 early
@@ -811,28 +828,19 @@ trajectory space than the snapshot labels (silhouette 0.52 against 0.35 on the 1
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{V8_trajectory_archetypes.png}
-\caption{\textbf{V8 (W2, step 9): grouping by path yields three S-curve archetypes that cut across the
+\caption{\textbf{V8 (W2, step 7): grouping by path yields three S-curve archetypes that cut across the
 2024 snapshot clusters.} Top: the three DTW archetypes (all members faint, IQR band, median, medoid) and
 their mix by region. Bottom left: snapshot clusters against trajectory archetypes ($n=133$). Bottom
 right: each labelling is coherent only in its own space.}
 \label{fig:v8}
 \end{figure*}
 
-\textit{Timing (Fig.~\ref{fig:v8c}).} The archetypes are ordered in time: the median year of crossing
+\textit{Timing.} The archetypes are ordered in time: the median year of crossing
 50\% is 2001 for early saturators, 2014 for the majority and 2023 for the five late starters that have
 crossed (38 have not). The majority, however, spans 17 years, and a Euclidean $k$-means on the same
 curves aligns more closely with timing ($\eta^2=0.82$ against 0.59 for DTW). This is the intended
 behaviour of T3: DTW groups curves by shape and tolerates shifts, so the majority is one shape reached
 at different times, which is W1's delay finding seen from the clustering side.
-
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=\textwidth]{V8c_takeoff_ridgeline.png}
-\caption{\textbf{V8c (W2, step 10): archetypes are ordered in time, but DTW groups by shape.} Year in
-which internet use first crosses 50\%, per archetype, for DTW clusters (left) and Euclidean $k$-means
-clusters (right); dots are countries, dashed lines medians.}
-\label{fig:v8c}
-\end{figure*}
 
 \textit{What the feedback loop changed (Fig.~\ref{fig:v8d}).} On the 133 countries present in both
 iterations, the two labellings agree only weakly (ARI 0.30) and 37 countries change group after
@@ -845,7 +853,7 @@ membership (median silhouette 0.28 against 0.39 for countries that stayed).
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{V8d_iteration_embedding.png}
-\caption{\textbf{V8d (W2, step 11): the feedback loop regroups 37 of 133 countries.} The same t-SNE
+\caption{\textbf{V8d (W2, step 8): the feedback loop regroups 37 of 133 countries.} The same t-SNE
 map~\cite{vandermaaten2008} of the snapshot features coloured by iteration-1 clusters (left) and
 iteration-2 archetypes (right); colours matched by the Hungarian method, movers ringed.}
 \label{fig:v8d}
@@ -860,9 +868,9 @@ of a visual comparison.
 
 \textit{Analysis path.} The biplot (V4) showed structure and two extreme countries; the $k$ scan (V5)
 chose three groups; because a single ARI hides where groups are unstable, co-assignment (V5b) and
-silhouettes (V5c) located the unstable boundary. The anomaly ranking (V6) raised the question of error
+per-country silhouettes located the unstable boundary. The anomaly ranking (V6) raised the question of error
 versus behaviour, which persistence (V6b) and deviation profiles (V6c) answered. After $T$, V8a
-justified the distance, V8b fixed the cut, V8 described the archetypes, V8c checked timing and V8d
+justified the distance, the dendrogram fixed $k=3$, V8 described the archetypes, timing was checked and V8d
 measured what the loop changed. The result enters the synthesis (V14c).
 
 % =========================================================================================
@@ -1057,8 +1065,9 @@ three, with median broadband of 0, 17 and 40 per 100 (W2; panel c). Every feedba
 quantity it could be checked on: error on the same rows, cluster separation and interval coverage
 (panel d).
 
-The answer to A1's question is therefore that mobile leapfrogging happened but did not close the
-divide. The divide is a delay on a common S-curve; it is narrowing in relative terms but not
+W1's direct test agrees: the 22 countries that skipped landlines and saturated on mobile have a median
+of 44\% online, against 93\% where landlines were built (V1f). The answer to A1's question is therefore
+that mobile leapfrogging happened but did not close the divide. The divide is a delay on a common S-curve; it is narrowing in relative terms but not
 closing in absolute terms; and fixed infrastructure, not mobile saturation, marks where a country
 stands on the curve.
 
@@ -1088,11 +1097,12 @@ absolute gap peaking in 2014.
 A1 claim (appendix figure) & A3 test & Result & Workflow & Verdict \\
 \midrule
 Regions are years behind Europe (Fig.~14) & logistic $t_0$, Kruskal--Wallis, Holm-corrected Mann--Whitney; alignment (V1, V1c) & Africa +11.9 yr, $p=10^{-15}$; aligned spread 32$\rightarrow$10 pp & W1 & confirmed \\
-The gap widened (Fig.~11) & $\sigma$-convergence, Gini, regional gap, headroom (V1b) & absolute gap peaked 2014 (64 pp), now 52; Gini 0.81$\rightarrow$0.19 & W1 & refined \\
+The gap widened (Fig.~11) & $\sigma$-convergence, Gini, regional gap, headroom (V1e) & absolute gap peaked 2014 (64 pp), now 52; Gini 0.81$\rightarrow$0.19 & W1 & refined \\
 Broadband matters more than mobile (Figs.~19--20) & bootstrap Spearman by year; permutation importance; partial dependence (V2, V7, V12b) & 0.80 vs 0.42 in 2024; mobile importance 0.02 & W1, W3 & confirmed \\
 Subscriptions are not people (Figs.~10, 18) & SIMs per owner; anomaly persistence (V3, V6b) & median 1.34 SIMs per owner; Fiji transient & W1, W2 & confirmed \\
 Same level today, opposite histories (Fig.~5) & DTW trajectory clusters vs snapshot clusters (V8, V8d) & 37 of 133 regrouped; silhouette 0.52 vs 0.35 & W2 & confirmed \\
-Four kinds of country (Fig.~23) & $k$-means/GMM/Ward with stability (V5, V5b, V5c) & three archetypes, ARI 0.64, 15 border countries & W2 & confirmed, weaker \\
+Mobile let countries skip fixed lines (A1 conclusion) & leapfroggers vs landline builders, Mann--Whitney; Spearman within Africa (V1f) & 44\% vs 93\% online, $p=10^{-11}$; $\rho=0.86$ within Africa & W1 & refined: skipped, not caught up \\
+Four kinds of country (Fig.~23) & $k$-means/GMM/Ward with stability (V5, V5b) & three archetypes, ARI 0.64, 15 border countries & W2 & confirmed, weaker \\
 \bottomrule
 \end{tabularx}
 \end{table*}
@@ -1122,7 +1132,7 @@ bootstrap or a conformal interval rather than a normal approximation.
 \item \textit{Association, not cause.} No income variable is used, by design, so national wealth
   may drive both infrastructure and use; no causal effect is identified.
 \item \textit{Missing not at random.} Ownership and broadband are missing mostly for less-connected
-  country-years (V3b). MICE with missingness flags reduces this bias without removing it, and
+  country-years (Mann--Whitney $p=10^{-41}$). MICE with missingness flags reduces this bias without removing it, and
   imputed ownership dominates SHAP for this reason.
 \item \textit{Moderate stability.} Snapshot clusters reach a bootstrap ARI of 0.64 and are reported
   as a description of 2024, not as a taxonomy.
@@ -1134,8 +1144,8 @@ bootstrap or a conformal interval rather than a normal approximation.
   before their inflection point, so $L$ is not interpreted for late starters.
 \end{itemize}
 
-\subsection{Reproducibility and system architecture}
-Fig.~\ref{fig:v0b} shows how the workflows are implemented. A single module (\texttt{src/common.py})
+\subsection{Reproducibility and system architecture}\label{sec:repro}
+A single module (\texttt{src/common.py})
 defines the panel, regions, thresholds, artefact rules and engineered features, so the shared parts of
 the feedback loops have one definition. Three groups of analysis modules, one per workflow, write tables
 and figures; the workflow diagrams are generated from those figures; and the report, the deck and the
@@ -1143,16 +1153,7 @@ application only read the generated artefacts. Every figure and number is produc
 \texttt{python src/run\_all.py} and \texttt{python src/build\_diagrams.py} in about five minutes with
 fixed seeds.
 
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=\textwidth]{V0b_system_architecture.pdf}
-\caption{\textbf{V0b: one shared core, three workflow modules, and delivery channels that only read
-generated artefacts.} \textcircled{\scriptsize 1} inputs from A1; \textcircled{\scriptsize 2} the shared
-core that implements the shared transformations; \textcircled{\scriptsize 3} analysis modules of W1, W2
-and W3; \textcircled{\scriptsize 4} generated figures, tables and diagrams; \textcircled{\scriptsize 5}
-report, deck and browser application.}
-\label{fig:v0b}
-\end{figure*} The interactive
+The interactive
 demonstrator runs locally (\texttt{streamlit run app.py}) or in a web browser without installation
 through a WebAssembly build of the same application.
 
@@ -1184,13 +1185,13 @@ Member & Contribution \\
 \midrule
 Parikshith & Workflow W1 (statistical analysis): logistic diffusion fits, rank tests, convergence and
 headroom analysis, alignment in own time, segmented regression, bootstrap correlations, data-quality and
-missingness analysis (V1, V1b, V1c, V2, V3, V3b); shared transformation core with artefact rules and
-engineered features (V9); main question, workflow diagrams and system architecture (V0, W1--W3, V0b);
+missingness analysis, take-off map and leapfrog test (V1, V1c, V1d, V1e, V1f, V2, V3); shared transformation core with artefact rules and
+engineered features (V9); main question, workflow diagrams and system architecture (V0, W1--W3);
 synthesis (V14); integration and report \\
 Sindhoor & Workflow W2 (unsupervised mining): PCA; $k$-means, GMM and Ward clustering with $k$-selection,
 bootstrap co-assignment and silhouette analysis; Isolation Forest and LOF anomalies with per-year
-persistence and deviation profiles (V4, V5, V5b, V5c, V6, V6b, V6c); DTW trajectory clustering,
-dendrogram, timing and iteration comparison (V8, V8a--V8d) \\
+persistence and deviation profiles (V4, V5, V5b, V6, V6b, V6c); DTW trajectory clustering,
+dendrogram, timing and iteration comparison (V8, V8a, V8d) \\
 Varshith & Workflow W3 (supervised learning): leakage guards; Ridge, Random Forest and gradient-boosting
 models with ablations (V7, V10); SHAP and residual map (V11); PSI drift chart (V13); quantile forecast
 with conformal re-calibration, partial dependence and calibration curve (V12, V12b); browser

@@ -224,8 +224,6 @@ with tabs[0]:
                                        "snapshot → trajectories under DTW"),
         "W3 Supervised · Varshith": ("W3_workflow_supervised.png",
                                      "history features, fair comparison, drift, conformal forecast"),
-        "System architecture (V0b)": ("V0b_system_architecture.png",
-                                      "one shared core, three workflow modules, delivery reads artefacts only"),
     }
     pick = st.radio("Diagram", list(DIAGRAMS), horizontal=True, label_visibility="collapsed")
     fname, sub = DIAGRAMS[pick]
@@ -245,7 +243,7 @@ with tabs[1]:
     tracker(["D1"])
     c1, c2 = st.columns([1.5, 1])
     with c1:
-        b = card("Coverage by year (V3b)", "% of all 217 countries observed")
+        b = card("Coverage by year (data quality)", "% of all 217 countries observed")
         cov = D["cov"]
         fig = go.Figure(go.Heatmap(z=cov.values, x=cov.columns.astype(int), y=cov.index, colorscale="Blues",
                                    zmin=0, zmax=100, hovertemplate="%{y}<br>%{x}: %{z:.0f}%<extra></extra>",
@@ -281,7 +279,7 @@ with tabs[2]:
         fig.update_yaxes(range=[0, 100])
         show(fig, 390, b)
     with c2:
-        b = card("Is the divide closing? (V1b)", "absolute spread and relative inequality, each indexed to its peak")
+        b = card("Is the divide closing? (convergence)", "absolute spread and relative inequality, each indexed to its peak")
         sg = D["sig"]
         fig = go.Figure([
             go.Scatter(x=sg.year, y=sg.sd / sg.sd.max() * 100, name="s.d. (absolute spread)",
@@ -306,7 +304,7 @@ with tabs[2]:
         fig.update_yaxes(range=[0, 1.02], title="Spearman ρ")
         show(fig, 360, b)
     with c2:
-        b = card("Headroom closed 2014→2024 (V1b)", "each dot a country; hover for names")
+        b = card("Headroom closed 2014→2024 (convergence)", "each dot a country; hover for names")
         bt = D["beta"].copy()
         bt["entity"] = bt.code.map(D["panel"].drop_duplicates("code").set_index("code").entity)
         bt["closed_pct"] = bt.closed * 100
@@ -321,9 +319,11 @@ with tabs[2]:
         "varying (ρ 0.88 → 0.42) while broadband still does (0.80).",
         "The divide is a delay that is narrowing only in relative terms; late starters are not catching up.")
 
-    gallery("W1 evidence figures: iteration 1 and iteration 2 (V1c, V1b, V2, V3)", [
+    gallery("W1 evidence figures: iteration 1 and iteration 2 (V1d, V1c, V1e, V1f, V2, V3)", [
+        ("V1d_takeoff_map.png", "V1d where: take-off year on the map"),
         ("V1c_takeoff_alignment.png", "V1c iteration 2: aligned at own take-off, one S-curve"),
-        ("V1b_convergence.png", "V1b raw levels vs headroom"),
+        ("V1e_headroom_closing.png", "V1e is the gap closing? raw levels vs headroom"),
+        ("V1f_leapfrog_test.png", "V1f leapfrog test: skipped landlines, still behind"),
         ("V2_floor_effect_decoupling.png", "V2 broadband floor, mobile decoupling"),
         ("V3_multisim_inflation.png", "V3 SIMs per owner, Fiji")])
 
@@ -351,9 +351,8 @@ with tabs[3]:
         "Countries differ mostly in fixed infrastructure; one recording error distorts a single-year snapshot.",
         "Snapshot archetypes reproduce A1 but are fragile, and Fiji 2023-24 is an error to remove (K1.1).")
 
-    gallery("W2 evidence figures: stability and anomaly persistence (V5b, V5c, V6b, V6c)", [
+    gallery("W2 evidence figures: stability and anomaly persistence (V5b, V6b, V6c)", [
         ("V5b_bootstrap_coassignment.png", "V5b bootstrap co-assignment"),
-        ("V5c_silhouette_knife.png", "V5c silhouettes, border countries"),
         ("V6b_anomaly_persistence.png", "V6b persistent vs transient anomalies"),
         ("V6c_anomaly_why.png", "V6c why each anomaly is unusual")])
 
@@ -444,10 +443,8 @@ with tabs[6]:
         "Countries at the same 2024 level got there along different paths.",
         "Archetypes are paths, not positions, and they form one continuum ordered by timing.")
 
-    gallery("W2 evidence figures: why DTW, the hierarchy, timing, what moved (V8a-V8d)", [
+    gallery("W2 evidence figures: why DTW and what moved (V8a, V8d)", [
         ("V8a_dtw_alignment.png", "V8a DTW vs same-year distance"),
-        ("V8b_dtw_dendrogram.png", "V8b DTW dendrogram, k = 3 cut"),
-        ("V8c_takeoff_ridgeline.png", "V8c 50 % crossing by archetype"),
         ("V8d_iteration_embedding.png", "V8d countries that moved between iterations")])
 
 # ================================================================ 7 models

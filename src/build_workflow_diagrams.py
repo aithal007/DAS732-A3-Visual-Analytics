@@ -154,17 +154,19 @@ W1 = dict(
     question=r"When did each country take off, is the gap between countries closing, and do the indicators "
              r"measure what they appear to measure?",
     hyp=[("H1.1", r"The divide is a time delay on one common S-curve, not a different curve", "ok",
-          r"V1: take-off year differs by region ($p=4\times10^{-17}$); V1c: aligned curves collapse, spread 32$\rightarrow$10 pp"),
+          r"V1, V1d: take-off year differs by region ($p=4\times10^{-17}$), Africa 12 yr after Europe; V1c: aligned curves collapse, spread 32$\rightarrow$10 pp"),
          ("H1.2", r"The divide is closing", "part",
-          r"V1b: relative gap closes (Gini 0.81$\rightarrow$0.19); low starters close the \emph{smallest} share of headroom ($\rho=+0.52$)"),
+          r"V1e: relative gap closes (Gini 0.81$\rightarrow$0.19); low starters close the \emph{smallest} share of headroom ($\rho=+0.52$)"),
          ("H1.3", r"Mobile subscriptions count connected people", "no",
           r"V3: 1.34 SIMs per owner; $\rho$ 0.52 vs 0.89 for ownership; Fiji 111$\rightarrow$574 = recording artefact"),
          ("H1.4", r"Internet use rises linearly with fixed broadband", "no",
-          r"V2: floor below 1 per 100 (29\% of rows); segmented fit, $F=21.4$, $p=6\times10^{-10}$")],
+          r"V2: floor below 1 per 100 (29\% of rows); segmented fit, $F=21.4$, $p=6\times10^{-10}$"),
+         ("H1.5", r"Countries that leapfrogged landlines with mobile caught up online", "no",
+          r"V1f: leapfroggers 44\,\% online vs 93\,\% for landline builders ($p=10^{-11}$); landline peak $\rho=0.82$, mobile 0.47")],
     it1=[(r"Raw OWID panel", r"217 countries, 1990--2025\\complete cases only\\coverage + MNAR test"),
          (r"Visual exploration of raw levels", [
-             ("V3b_data_quality_missingness.png", 1, r"\textbf{V3b} coverage; ownership missing not at random"),
-             ("V1_diffusion_scurves.png", 2, r"\textbf{V1} same S-curve, take-off 6--12 yr later"),
+             ("V1_diffusion_scurves.png", 1, r"\textbf{V1} same S-curve, take-off 6--12 yr later"),
+             ("V1d_takeoff_map.png", 2, r"\textbf{V1d} where: take-off year on the map"),
              ("V2_floor_effect_decoupling.png", 3, r"\textbf{V2} broadband floor; mobile decouples"),
              ("V3_multisim_inflation.png", 4, r"\textbf{V3} SIMs $\neq$ people; Fiji spike")], 2),
          (r"Statistical models", r"logistic fit $y=L/(1+e^{-k(t-t_0)})$\\Kruskal--Wallis + Holm\\segmented regression, $F$-test\\bootstrap Spearman CIs\\Mann--Whitney MNAR test"),
@@ -179,14 +181,16 @@ W1 = dict(
          (r"Visual exploration of the transformed data", [
              ("V9_feedback_transformation.png", 5, r"\textbf{V9} what $T$ changed: removed cells, new features"),
              ("V1c_takeoff_alignment.png", 6, r"\textbf{V1c} aligned at own take-off: one S-curve"),
-             ("V1b_convergence.png", 7, r"\textbf{V1b} headroom: low starters close less")], 2),
-         (r"Statistics on $D_2$", r"cross-country IQR in calendar vs aligned time\\$\sigma$-convergence, Gini\\$\beta$-convergence on headroom (OLS, Spearman)"),
-         (r"Knowledge $K_2$", r"\textbf{H1.1} delay of 6--12 years on one curve\\\textbf{H1.2} closing in relative terms only; the furthest behind close least\\$\rightarrow$ feeds the synthesis (V14) and W3's features")],
-    path=r"\textcircled{\scriptsize 1} check what is observed (V3b) $\rightarrow$ \textcircled{\scriptsize 2} fit and compare take-off years (V1) "
-         r"$\rightarrow$ \textcircled{\scriptsize 3} test the broadband relation and its change over time (V2) $\rightarrow$ "
-         r"\textcircled{\scriptsize 4} test what mobile subscriptions count, which exposes Fiji (V3) $\rightarrow$ $K_1$ $\rightarrow$ $T$ "
-         r"$\rightarrow$ \textcircled{\scriptsize 5} verify the transformation (V9) $\rightarrow$ \textcircled{\scriptsize 6} test the "
-         r"delay hypothesis in aligned time (V1c) $\rightarrow$ \textcircled{\scriptsize 7} test closing in headroom terms (V1b) $\rightarrow$ synthesis V14.",
+             ("V1e_headroom_closing.png", 7, r"\textbf{V1e} headroom: low starters close least"),
+             ("V1f_leapfrog_test.png", 8, r"\textbf{V1f} leapfroggers stay behind")], 2),
+         (r"Statistics on $D_2$", r"cross-country IQR in calendar vs aligned time\\$\sigma$-convergence, Gini\\$\beta$-convergence on headroom (OLS, Spearman)\\leapfrog test: Mann--Whitney, Spearman"),
+         (r"Knowledge $K_2$", r"\textbf{H1.1} delay of 6--12 years on one curve\\\textbf{H1.2} closing in relative terms only; the furthest behind close least\\\textbf{H1.5} leapfrogging did not close the divide\\$\rightarrow$ feeds the synthesis (V14) and W3's features")],
+    path=r"check what is observed (coverage, MNAR test) $\rightarrow$ \textcircled{\scriptsize 1} fit and compare take-off years (V1) "
+         r"$\rightarrow$ \textcircled{\scriptsize 2} locate the delay in space (V1d) $\rightarrow$ \textcircled{\scriptsize 3} test the broadband "
+         r"relation and its change over time (V2) $\rightarrow$ \textcircled{\scriptsize 4} test what mobile subscriptions count, which exposes "
+         r"Fiji (V3) $\rightarrow$ $K_1$ $\rightarrow$ $T$ $\rightarrow$ \textcircled{\scriptsize 5} verify the transformation (V9) $\rightarrow$ "
+         r"\textcircled{\scriptsize 6} test the delay hypothesis in aligned time (V1c) $\rightarrow$ \textcircled{\scriptsize 7} test closing in "
+         r"headroom terms (V1e) $\rightarrow$ \textcircled{\scriptsize 8} test leapfrogging with the engineered features (V1f) $\rightarrow$ synthesis V14.",
 )
 
 W2 = dict(
@@ -194,21 +198,20 @@ W2 = dict(
     owner="Sindhoor Ganapathi Hegde", qid="Q2",
     question=r"Which kinds of countries exist, how stable are those kinds, and which countries do not fit any of them?",
     hyp=[("H2.1", r"Countries form stable connectivity types in the 2024 snapshot", "part",
-          r"V5, V5b: $k=3$, silhouette 0.33, bootstrap ARI 0.64; V5c: 15 of 135 on a border"),
+          r"V5, V5b: $k=3$, silhouette 0.33, bootstrap ARI 0.64; 15 of 135 on a border"),
          ("H2.2", r"The top anomalies are genuinely unusual countries", "part",
           r"V6b: 4 persistent every year (structural: Monaco, Hong Kong); 16 transient (artefact candidates: Fiji)"),
          ("H2.3", r"Countries at the same level today share the same history (A1 Fig.~5)", "no",
           r"V8, V8d: 37 of 133 change group, ARI 0.30; movers had weaker iteration-1 silhouettes (median 0.28 vs 0.39)"),
          ("H2.4", r"Grouping by path orders countries by adoption timing", "part",
-          r"V8c: medians 2001 / 2014 / 2023, but DTW groups by shape ($\eta^2$ 0.59 vs 0.82)")],
+          r"V8: 50\,\% crossing medians 2001 / 2014 / 2023, but DTW groups by shape ($\eta^2$ 0.59 vs 0.82)")],
     it1=[(r"2024 snapshot", r"135 complete-case countries\\5 z-scored indicators\\raw data, no imputation"),
          (r"Visual exploration of the snapshot", [
              ("V4_pca_biplot.png", 1, r"\textbf{V4} PCA: 82\,\% on two axes"),
              ("V5_cluster_validation_profiles.png", 2, r"\textbf{V5} $k$ scan: $k=3$"),
              ("V5b_bootstrap_coassignment.png", 3, r"\textbf{V5b} stability, ARI 0.64"),
-             ("V5c_silhouette_knife.png", 4, r"\textbf{V5c} 15 border countries"),
-             ("V6b_anomaly_persistence.png", 5, r"\textbf{V6b} persistent vs transient"),
-             ("V6c_anomaly_why.png", 6, r"\textbf{V6c} why each is unusual")], 3),
+             ("V6b_anomaly_persistence.png", 4, r"\textbf{V6b} persistent vs transient"),
+             ("V6c_anomaly_why.png", 5, r"\textbf{V6c} why each is unusual")], 3),
          (r"Mining models", r"PCA\\$k$-means, GMM, Ward, $k=2..8$\\silhouette, bootstrap ARI (200)\\Isolation Forest + LOF (V6)\\per-year Isolation Forest"),
          (r"Inferences $K_1$", r"\textbf{K1.1} clusters are moderately stable; mixed vs legacy blur\\\textbf{K1.2} Fiji is a \emph{transient} anomaly = artefact; Monaco, Hong Kong are structural\\\textbf{K1.3} one year cannot show a path: same level, different histories")],
     T=(r"Feedback loop: transformation $T$ (a new data representation and a new distance, not a filter)",
@@ -219,19 +222,17 @@ W2 = dict(
        r"\textbf{T4} average-linkage hierarchy instead of centroids"),
     it2=[(r"Trajectory panel", r"181 curves, 2000--2025\\artefacts removed\\$181\times181$ DTW matrix"),
          (r"Visual exploration of the trajectories", [
-             ("V8a_dtw_alignment.png", 7, r"\textbf{V8a} why DTW: shifted curves"),
-             ("V8b_dtw_dendrogram.png", 8, r"\textbf{V8b} hierarchy, $k=3$ cut"),
-             ("V8_trajectory_archetypes.png", 9, r"\textbf{V8} three path archetypes"),
-             ("V8c_takeoff_ridgeline.png", 10, r"\textbf{V8c} 50\,\% crossing by group"),
-             ("V8d_iteration_embedding.png", 11, r"\textbf{V8d} who moved between iterations")], 3),
+             ("V8a_dtw_alignment.png", 6, r"\textbf{V8a} why DTW: shifted curves"),
+             ("V8_trajectory_archetypes.png", 7, r"\textbf{V8} three path archetypes"),
+             ("V8d_iteration_embedding.png", 8, r"\textbf{V8d} who moved between iterations")], 3),
          (r"Trajectory mining", r"DTW + average linkage\\$k$ by silhouette\\cophenetic correlation\\Hungarian matching, ARI\\$\eta^2$ of take-off year"),
          (r"Knowledge $K_2$", r"\textbf{H2.3} archetypes are paths: late starters, S-curve majority, early saturators\\37 of 133 regrouped, silhouette 0.52 vs 0.35\\$\rightarrow$ feeds the synthesis (V14)")],
     path=r"\textcircled{\scriptsize 1} structure of the snapshot (V4) $\rightarrow$ \textcircled{\scriptsize 2} choose $k$ (V5) $\rightarrow$ "
-         r"\textcircled{\scriptsize 3} test stability (V5b) $\rightarrow$ \textcircled{\scriptsize 4} find border countries (V5c) $\rightarrow$ "
-         r"\textcircled{\scriptsize 5} anomalies over time (V6, V6b) $\rightarrow$ \textcircled{\scriptsize 6} explain them (V6c) $\rightarrow$ $K_1$ "
-         r"$\rightarrow$ $T$ $\rightarrow$ \textcircled{\scriptsize 7} justify DTW (V8a) $\rightarrow$ \textcircled{\scriptsize 8} cut the hierarchy (V8b) "
-         r"$\rightarrow$ \textcircled{\scriptsize 9} read the archetypes (V8) $\rightarrow$ \textcircled{\scriptsize 10} check timing (V8c) $\rightarrow$ "
-         r"\textcircled{\scriptsize 11} compare iterations (V8d) $\rightarrow$ synthesis V14.",
+         r"\textcircled{\scriptsize 3} test stability and border countries (V5b) $\rightarrow$ "
+         r"\textcircled{\scriptsize 4} anomalies over time (V6, V6b) $\rightarrow$ \textcircled{\scriptsize 5} explain them (V6c) $\rightarrow$ $K_1$ "
+         r"$\rightarrow$ $T$ $\rightarrow$ \textcircled{\scriptsize 6} justify DTW (V8a) $\rightarrow$ cut the hierarchy at $k=3$ "
+         r"$\rightarrow$ \textcircled{\scriptsize 7} read the archetypes and their timing (V8) $\rightarrow$ "
+         r"\textcircled{\scriptsize 8} compare iterations (V8d) $\rightarrow$ synthesis V14.",
 )
 
 W3 = dict(
@@ -306,12 +307,12 @@ def master() -> str:
     L.append(rf"\node[txt=1.6cm] at (16.4,{top - 0.6}) {{\textbf{{Synthesis}}\\[2pt]\img{{V14_synthesis_answer.png}}{{1.6}}{{1.4}}\\[2pt]V14: the divide is a delay on one S-curve; fixed infrastructure, not mobile, marks the position}};")
 
     lanes = [
-        ("W1", "Statistics", "Parikshith", r"When, and is it closing?", "V1_diffusion_scurves.png", "V3b, V1, V2, V3",
+        ("W1", "Statistics", "Parikshith", r"When, and is it closing?", "V1_diffusion_scurves.png", "V1, V1d, V2, V3",
          r"delay; SIMs $\neq$ people; Fiji artefact; floor", r"shared T1 (artefacts); own time $t-t_0$; headroom; per owner",
-         "V1c_takeoff_alignment.png", "V9, V1c, V1b", r"one curve, 6--12 yr delay; low starters close least"),
-        ("W2", "Unsupervised", "Sindhoor", r"Which kinds of countries?", "V5b_bootstrap_coassignment.png", "V4, V5, V5b, V5c, V6, V6b, V6c",
+         "V1c_takeoff_alignment.png", "V9, V1c, V1e, V1f", r"one curve, 6--12 yr delay; low starters close least; leapfrogging did not close it"),
+        ("W2", "Unsupervised", "Sindhoor", r"Which kinds of countries?", "V5b_bootstrap_coassignment.png", "V4, V5, V5b, V6, V6b, V6c",
          r"unstable borders; no history; \textbf{Fiji transient} $\Rightarrow$ shared T1", r"artefacts out; snapshot$\rightarrow$curves; DTW",
-         "V8_trajectory_archetypes.png", "V8a, V8b, V8, V8c, V8d", r"three path archetypes; 37 of 133 regroup"),
+         "V8_trajectory_archetypes.png", "V8a, V8, V8d", r"three path archetypes; 37 of 133 regroup"),
         ("W3", "Supervised", "Varshith", r"Predict and forecast?", "V7_baseline_diagnostics.png", "V7",
          r"broadband only; mid-level errors; MNAR", r"13 history features \textbf{from W1's $K_1$}; in-fold MICE; drift$\Rightarrow$CQR",
          "V12_forecast_fan_chart.png", "V10, V11, V12b, V13, V12", r"$-14$\,\% error; drift; 83\,\% coverage"),

@@ -1,4 +1,4 @@
-"""Data-story deck for the video demo / live viva: slides/DAS732_A3_DataStory.pptx (35 slides)
+"""Data-story deck for the video demo / live viva: slides/DAS732_A3_DataStory.pptx (32 slides)
 
 Structure: main question and V0 -> workflow W1 (Parikshith) -> W2 (Sindhoor) -> W3 (Varshith) -> synthesis.
 Design rules (from A1/A2 feedback): every report figure appears; every slide title is the finding;
@@ -218,9 +218,9 @@ text_slide("One main question, three workflows, one synthesis", "QUESTION", "Q",
                               "and does feeding each iteration's inferences back into the data change the answer?")],
     [M(" ")],
     [B("W1 Statistics (Parikshith)  "), N("when did countries take off, is the gap closing, what do the indicators "
-                                           "measure?  "), M("V3b, V1, V2, V3 → V9, V1c, V1b")],
+                                           "measure?  "), M("V1, V1d, V2, V3 → V9, V1c, V1e, V1f")],
     [B("W2 Unsupervised (Sindhoor)  "), N("which kinds of countries exist, how stable, which fit none?  "),
-     M("V4-V6c → V8a-V8d")],
+     M("V4-V6c → V8a, V8, V8d")],
     [B("W3 Supervised (Varshith)  "), N("can infrastructure predict unseen countries and years; can we trust it?  "),
      M("V7 → V10-V13")],
     [M(" ")],
@@ -245,21 +245,11 @@ fig_slide("V0  Three unrolled workflows answer one question; each has exactly on
           "its inferences, the red feedback loop that transforms the data, iteration 2 and its knowledge. Bold notes "
           "mark knowledge passed between workflows, and all three meet in the synthesis.")
 
-fig_slide("V0b  One shared core, three workflow modules, every number read from generated artefacts",
-          "V0b_system_architecture.png", "SYSTEM", "Q", [], P, {
-              "Observation": "common.py holds the panel, artefact rules and engineered features; W1-W3 modules write "
-                             "tables and figures; report, deck and app only read them.",
-              "Cause": "Shared transformations must be one definition, or the workflows drift apart.",
-              "Inference": "Two commands (run_all.py, build_diagrams.py) reproduce every figure, number and diagram."},
-          "[Parikshith, 0:00-0:30] How it is built: one shared core holds the data loading, the artefact rules and the "
-          "engineered features. One module group per workflow writes tables and figures; the workflow diagrams are "
-          "generated from those figures; the report, the deck and the app only read them.")
-
 # ------------------------------------------------------------------ W1 Parikshith
 fig_slide("W1  Statistical workflow: hypotheses, plugged-in evidence, a numbered path and one feedback loop",
           split_workflow("W1_workflow_statistics.png"), "W1", "Q", TRACK, P, {
               "Observation": "H1.1 delay on one curve: supported. H1.2 closing: refined. H1.3 subscriptions = "
-                             "people: rejected. H1.4 linear broadband: rejected.",
+                             "people: rejected. H1.4 linear broadband: rejected. H1.5 leapfroggers caught up: rejected.",
               "Cause": "Raw calendar-time levels mix when a country started with how far it has come.",
               "Inference": "T re-expresses every curve in its own time and scale, and the gap in headroom: a new "
                            "coordinate system, not a filter."},
@@ -268,17 +258,6 @@ fig_slide("W1  Statistical workflow: hypotheses, plugged-in evidence, a numbered
           "is the feedback loop: it re-expresses each country's curve in its own time and scale. Iteration 2 tests "
           "the hypotheses again on the transformed data.")
 
-fig_slide("V3b  Data are missing not at random, so the method changes between iterations",
-          "V3b_data_quality_missingness.png", "W1 · ITER 1", "D", ["D1", "V1"], P, {
-              "Observation": "Broadband starts ~2000, ownership only in survey years, 2025 nearly empty. Without an "
-                             "ownership survey a country-year is 50% online vs 75% with one (p = 1e-41).",
-              "Cause": "Statistics are collected less often where connectivity is low.",
-              "Inference": "Iteration 1: complete cases only. W3's iteration 2: in-fold MICE plus missingness "
-                           "flags, never a global mean."},
-          "[Parikshith, 0:00-0:35] Step 1, data quality. Broadband exists only from about 2000, ownership only in "
-          "survey years. The gaps are not random: country-years without an ownership survey are far less online, 50 "
-          "against 75 percent. So first iterations use complete cases, and W3 later imputes inside each training fold.")
-
 fig_slide("V1  Every region follows an S-curve, up to 12 years late, and late starters do not catch up",
           "V1_diffusion_scurves.png", "W1 · ITER 1", "V", ["D1", "V1", "M1"], P, {
               "Observation": "Logistic fits 201 of 203 countries (median R² 0.99). Africa takes off in 2017, "
@@ -286,9 +265,20 @@ fig_slide("V1  Every region follows an S-curve, up to 12 years late, and late st
               "Cause": "Adoption is one diffusion process (Rogers); regions entered it at different times.",
               "Inference": "H1.1 is raised: is the divide only a DELAY? Calendar-time plots cannot tell, so the "
                            "loop will re-index time."},
-          "[Parikshith, 0:00-0:40] Step 2. I fitted a logistic S-curve to every country; 201 of 203 fit with R-squared "
+          "[Parikshith, 0:00-0:40] Step 1. I fitted a logistic S-curve to every country; 201 of 203 fit with R-squared "
           "above 0.9. The take-off year differs by region with p of 4 times 10 to the minus 17: Africa takes off in "
           "2017, almost 12 years after Europe, and later starters do not grow faster.")
+
+fig_slide("V1d  Take-off is a spatial pattern: most of Africa took off 12 years after Europe",
+          "V1d_takeoff_map.png", "W1 · ITER 1", "V", ["D1", "V1"], P, {
+              "Observation": "Take-off year on the map: Europe median 2006, the Americas 2012, Asia 2013, Africa and "
+                             "Oceania 2017. Contiguous areas, not outliers.",
+              "Cause": "Diffusion spread outward from early-networked economies.",
+              "Inference": "The delay is geographic; calendar-time comparisons mix WHERE with WHEN, so T3 "
+                           "re-indexes time."},
+          "[Parikshith, 0:00-0:30] Step 2, where. The same take-off year on the map. North America, Western Europe, "
+          "Japan and Australia took off first; most of Africa and South Asia about twelve years later. The delay "
+          "is geographic, not a few outliers.")
 
 fig_slide("V2  Broadband has a floor and a non-linear effect; mobile stopped separating countries after 2005",
           "V2_floor_effect_decoupling.png", "W1 · ITER 1", "V", ["D1", "V1", "M1"], P, {
@@ -318,9 +308,9 @@ text_slide("W1 feedback loop: four inferences become a new coordinate system for
                [N("   → T1: two rules on every country; 10 cells removed")],
                [B("K1.2  Subscriptions overstate people  "), M("(V3)")],
                [N("   → T2: SIMs per owner, mobile capped at 100")],
-               [B("K1.3  Calendar levels mix WHEN with HOW FAR  "), M("(V1, V1b)")],
+               [B("K1.3  Calendar levels mix WHEN with HOW FAR  "), M("(V1)")],
                [N("   → T3: own time t - t0 and own scale y/L;  T4: headroom")],
-               [B("K1.4  Broadband floor; data MNAR  "), M("(V2, V3b)")],
+               [B("K1.4  Broadband floor; data MNAR  "), M("(V2; MNAR test)")],
                [N("   → T5: log broadband, floor and missingness flags (used by W3)")]],
            "[Parikshith, 0:00-0:40] The feedback loop of W1. Fiji becomes a rule applied to every country. Subscriptions "
            "are normalised by owners. And the key step: each curve is re-indexed to its own take-off year and divided "
@@ -338,15 +328,27 @@ fig_slide("V1c  Re-indexed to its own take-off, every country follows one S-curv
           "countries falls from 32 to under 10 points. The six regional medians sit on top of each other. The divide "
           "is a delay, not a different curve.")
 
-fig_slide("V1b  In headroom terms the divide is not closing: low starters close the smallest share of their gap",
-          "V1b_convergence.png", "W1 · ITER 2", "V", ["D2", "V2", "M2", "K2"], P, {
-              "Observation": "Raw: Gini 0.81 → 0.19, but the Europe-Africa gap peaked at 64 pp in 2014. Headroom: "
-                             "rho = +0.52; 32 of 51 African countries closed < 40% of their gap.",
-              "Cause": "Raw levels are bounded at 100%: leaders saturate, so relative measures shrink.",
+fig_slide("V1e  Closing only in relative terms: the countries furthest behind close the smallest share of their gap",
+          "V1e_headroom_closing.png", "W1 · ITER 2", "V", ["D2", "V2", "M2", "K2"], P, {
+              "Observation": "Raw: Gini 0.81 → 0.19, but the Europe-Africa gap peaked at 64 pp in 2014, still 52. "
+                             "Headroom: rho = +0.52; Africa closed a median 32% of its gap, Europe 67%.",
+              "Cause": "Levels are bounded at 100%: leaders saturate, so relative measures shrink on their own.",
               "Inference": "H1.2 refined: closing in relative terms only; the furthest behind close least."},
-          "[Parikshith, 0:00-0:35] Step 7. Is the divide closing? On raw levels the answers disagree. Measured as "
-          "headroom, the share of the remaining gap closed, countries that started higher closed more: rho 0.52. So "
-          "it is closing in relative terms only.")
+          "[Parikshith, 0:00-0:35] Step 7. Is the divide closing? On raw levels the two measures disagree. Measured "
+          "as headroom, the share of the remaining gap each country closed, Africa closed a third, Europe two "
+          "thirds. It is closing in relative terms only.")
+
+fig_slide("V1f  Leapfrogging did not close the divide: skipped landlines, saturated on mobile, under half online",
+          "V1f_leapfrog_test.png", "W1 · ITER 2", "V", ["D2", "V2", "M2", "K2"], P, {
+              "Observation": "22 countries never built landlines but are saturated on mobile: median 44% online vs "
+                             "93% for landline builders (p = 1e-11). Landline peak rho 0.82, mobile 0.47.",
+              "Cause": "The landline network stands for the investment that also built broadband (association, "
+                       "not cause).",
+              "Inference": "H1.5 rejected: leapfrogging happened, but it did not bring people online."},
+          "[Parikshith, 0:00-0:40] Step 8 tests A1's own conclusion with the engineered features. Twenty-two "
+          "countries, most of them African, skipped landlines and are saturated on mobile, yet only 44 percent "
+          "are online, against 93 percent where landlines were built. Leapfrogging happened; it did not close the "
+          "divide.")
 
 # ------------------------------------------------------------------ W2 Sindhoor
 fig_slide("W2  Unsupervised workflow: from an unstable snapshot to path archetypes under DTW",
@@ -391,22 +393,13 @@ fig_slide("V5b  Snapshot clusters are only moderately stable: mixed and legacy s
           "200 bootstrap refits. The mobile-first block is solid. But mixed and legacy countries share a cluster in 46 "
           "percent of refits: the boundary moves.")
 
-fig_slide("V5c  k = 3 misassigns no country, but 15 of 135 sit on a cluster border",
-          "V5c_silhouette_knife.png", "W2 · ITER 1", "M", ["M1", "V1"], S_, {
-              "Observation": "k = 2: mean 0.45 but two negative silhouettes. k = 3: mean 0.33, none negative, 15 below "
-                             "0.10 (Sweden, Norway, China, Fiji ...).",
-              "Cause": "Countries between two connectivity levels are close to two centroids.",
-              "Inference": "The snapshot labels are least reliable exactly for these border countries."},
-          "[Sindhoor, 0:00-0:30] Step 4, per country. k equal to 2 has a higher mean but misassigns two countries. k "
-          "equal to 3 misassigns none, yet 15 countries, like Sweden, Norway and China, sit on a border.")
-
 fig_slide("V6  Both detectors rank Fiji first; most anomalies are multi-SIM markets",
           "V6_anomalies.png", "W2 · ITER 1", "M", ["M1", "V1"], S_, {
               "Observation": "Isolation Forest and LOF share 7 of their top 15 (Spearman 0.77). Fiji ranks first "
                              "in both; Monaco for landlines.",
               "Cause": "Multi-SIM inflation and one recording error create the most isolated points.",
               "Inference": "Is each anomaly a country or an error? One year cannot tell."},
-          "[Sindhoor, 0:00-0:30] Step 5. Isolation Forest and LOF, rank-averaged. Both put Fiji first; most others are "
+          "[Sindhoor, 0:00-0:30] Step 4. Isolation Forest and LOF, rank-averaged. Both put Fiji first; most others are "
           "multi-SIM markets, and Monaco has 95 landlines per 100.")
 
 fig_slide("V6b  Four anomalies persist every year (structural); Fiji appears only in 2023-24 (artefact)",
@@ -415,7 +408,7 @@ fig_slide("V6b  Four anomalies persist every year (structural); Fiji appears onl
                              "every year; 16 transient, Fiji only 2023-24; 164 never.",
               "Cause": "A real market is unusual every year; a recording error appears and disappears.",
               "Inference": "H2.2 refined: keep structural anomalies, remove transient ones by rule (shared T1)."},
-          "[Sindhoor, 0:00-0:35] Step 5 over time. I refitted the detector every year. Monaco, Hong Kong, Andorra and "
+          "[Sindhoor, 0:00-0:35] Step 4 over time. I refitted the detector every year. Monaco, Hong Kong, Andorra and "
           "Burundi are flagged every year: real markets. Fiji appears only in 2023 and 2024: a recording error. That "
           "becomes the shared artefact rule.")
 
@@ -425,12 +418,12 @@ fig_slide("V6c  Each top anomaly is unusual on one indicator",
                              "Uganda -1.6 on internet and ownership.",
               "Cause": "Multi-SIM markets and legacy landlines, plus one recording error.",
               "Inference": "The anomaly explanations match W1's V3: subscriptions are not people."},
-          "[Sindhoor, 0:00-0:30] Step 6, why. Each bar is how far a country is from its own cluster. Fiji and Hong Kong "
+          "[Sindhoor, 0:00-0:30] Step 5, why. Each bar is how far a country is from its own cluster. Fiji and Hong Kong "
           "on mobile, Monaco and Andorra on landlines.")
 
 text_slide("W2 feedback loop: snapshots become trajectories under a time-shift-invariant distance", "W2 · LOOP",
            "LOOP", ["K1", "LOOP", "D2"], S_, [
-               [B("K1.1  Snapshot clusters only moderately stable  "), M("(V5b, V5c)")],
+               [B("K1.1  Snapshot clusters only moderately stable  "), M("(V5b)")],
                [N("   → T2: each country becomes its 2000-2025 curve (181 countries)")],
                [B("K1.2  Fiji transient = artefact; Monaco structural  "), M("(V6b, V6c)")],
                [N("   → T1: shared artefact rule; structural anomalies kept")],
@@ -443,15 +436,6 @@ text_slide("W2 feedback loop: snapshots become trajectories under a time-shift-i
            "almost seven years apart, and DTW scores them five times closer than a same-year comparison.",
            size=14, img="V8a_dtw_alignment.png", split=4)
 
-fig_slide("V8b  Late starters split from all others at the root; k = 3 is the natural cut",
-          "V8b_dtw_dendrogram.png", "W2 · ITER 2", "M", ["D2", "M2", "V2"], S_, {
-              "Observation": "Cophenetic correlation 0.72. First split: 43 late starters; second: 25 early saturators "
-                             "vs 113. k = 4 only splits off one country.",
-              "Cause": "DTW distances separate late, shifted and early curves.",
-              "Inference": "Three groups are the structure in the data, not an arbitrary choice."},
-          "[Sindhoor, 0:00-0:30] Iteration 2, step 8. The DTW dendrogram: late starters split off at the root, early "
-          "saturators next, and the next cut only removes one country. So three groups.")
-
 fig_slide("V8  Grouped by PATH, countries form three S-curve archetypes that cut across the 2024 snapshot",
           "V8_trajectory_archetypes.png", "W2 · ITER 2", "M", ["D2", "M2", "V2"], S_, {
               "Observation": "Late starters (43), S-curve majority (113), early saturators (25). Silhouette 0.52 vs "
@@ -459,18 +443,9 @@ fig_slide("V8  Grouped by PATH, countries form three S-curve archetypes that cut
               "Cause": "Countries at the same 2024 level reached it along different paths.",
               "Inference": "Archetypes are paths, not positions: A1's 'same place, opposite histories' found by a "
                            "model."},
-          "[Sindhoor, 0:00-0:40] Step 9. Three path archetypes: late starters like Tanzania, the S-curve majority like "
+          "[Sindhoor, 0:00-0:40] Step 7. Three path archetypes: late starters like Tanzania, the S-curve majority like "
           "the Maldives, early saturators like South Korea. They separate far better than the snapshot clusters, "
           "silhouette 0.52 against 0.35.")
-
-fig_slide("V8c  Archetypes are ordered in time, but DTW groups by shape",
-          "V8c_takeoff_ridgeline.png", "W2 · ITER 2", "M", ["M2", "V2"], S_, {
-              "Observation": "Median 50% crossing: 2001, 2014, 2023 (38 late starters not yet). The majority spans "
-                             "17 years; Euclidean eta² 0.82 vs DTW 0.59.",
-              "Cause": "DTW tolerates time shifts by design.",
-              "Inference": "The majority is one shape reached at different times: W1's delay, seen from clustering."},
-          "[Sindhoor, 0:00-0:35] Step 10. The archetypes are ordered in time, but the majority spans 17 years. That is "
-          "intended: DTW groups by shape, so the majority is one curve reached at different times, which matches W1.")
 
 fig_slide("V8d  The feedback loop regroups 37 of 133 countries",
           "V8d_iteration_embedding.png", "W2 · ITER 2", "M", ["M2", "V2", "K2"], S_, {
@@ -478,7 +453,7 @@ fig_slide("V8d  The feedback loop regroups 37 of 133 countries",
                              "majority; Sweden, Norway: mixed → early saturators.",
               "Cause": "A single year hides when and how fast a country got where it is.",
               "Inference": "H2.3 rejected: same level today does not mean same history."},
-          "[Sindhoor, 0:00-0:35] Step 11, what the loop changed. The same map, coloured by iteration 1 and iteration 2. "
+          "[Sindhoor, 0:00-0:35] Step 8, what the loop changed. The same map, coloured by iteration 1 and iteration 2. "
           "37 of 133 countries change group: India and Indonesia move to the majority, Sweden and Norway become early "
           "saturators.")
 
@@ -510,7 +485,7 @@ text_slide("W3 feedback loop: new predictors and new rows, then a drift-triggere
                [N("   → T2: 13 past-only features from W1's K1 (landline peak, leapfrog, log broadband ...)")],
                [B("K1.2  Errors largest where histories differ  "), M("(V7)")],
                [N("   → (same features)")],
-               [B("K1.3  Complete cases drop MNAR rows  "), M("(V3b)")],
+               [B("K1.3  Complete cases drop MNAR rows  "), M("(W1 MNAR test)")],
                [N("   → T3: MICE inside each training fold + flags: 2,134 more rows")],
                [B("Inner loop  "), N("drift chart > 0.2 → conformal re-calibration")]],
            "[Varshith, 0:00-0:35] My feedback loop adds thirteen past-only features, defined from W1's inferences, "

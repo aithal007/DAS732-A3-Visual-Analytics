@@ -13,7 +13,7 @@ Figures
   V9  Feedback loop made visible: what the transformation changed (artefact repair,
       engineered vs raw feature association with the target, coverage).
   V14 Synthesis of the answer from both iterations.
-  (V0 and V0b, the workflow and system architecture, are TikZ diagrams in report/diagrams/.)
+  (V0 and W1-W3, the workflow diagrams, are TikZ diagrams in report/diagrams/.)
 Tables in outputs/p1_*.csv
 """
 from __future__ import annotations
@@ -259,23 +259,28 @@ def fig_v3_multisim(df: pd.DataFrame):
     xx = np.linspace(0, 100, 50)
     ax.plot(xx, xx, color=INK, lw=1.2, label="1 SIM per owner")
     ax.plot(xx, MULTI_SIM_RATIO * xx, color=BAD, lw=1.4, ls="--", label=f"{MULTI_SIM_RATIO} SIMs per owner (flag)")
-    for nm in ["Fiji", "Hong Kong", "Cote d'Ivoire", "India", "United States", "Uganda"]:
+    for nm, dx, dy, ha in [("Fiji", -10, -4, "right"), ("Hong Kong", -10, -4, "right"),
+                           ("Cote d'Ivoire", -8, 8, "right"), ("Uganda", 6, 8, "left")]:
         r_ = latest[latest.entity == nm]
         if len(r_):
-            ax.annotate(f"{nm} {int(r_.year.iloc[0])}", (r_.mobile_phone_ownership_share_pct.iloc[0],
-                        r_.mobile_subs_per100.iloc[0]), xytext=(-8, 6), textcoords="offset points",
-                        fontsize=7.5, ha="right")
+            ax.annotate(nm, (r_.mobile_phone_ownership_share_pct.iloc[0], r_.mobile_subs_per100.iloc[0]),
+                        xytext=(dx, dy), textcoords="offset points", fontsize=8.5, ha=ha, color=INK,
+                        arrowprops=dict(arrowstyle="-", color=MUTED, lw=0.6))
     ax.set(xlabel="adults owning a mobile phone (%)", ylabel="mobile subscriptions per 100 people",
            ylim=(0, 600), xlim=(20, 102), title="Subscriptions count SIMs, not people")
-    ax.legend(loc="upper left")
+    for r in REGION_ORDER:
+        ax.scatter([], [], s=18, color=REGION_COLORS[r], label=r)
+    ax.legend(loc="upper left", ncol=2, fontsize=7.8)
 
     ax = axs[1]
     ax.hist(latest.spo.clip(upper=4), bins=30, color=ACCENT, alpha=0.8)
     ax.axvline(MULTI_SIM_RATIO, color=BAD, ls="--", lw=1.4)
     ax.axvline(fence, color=MUTED, ls=":", lw=1.2)
-    ax.text(MULTI_SIM_RATIO + 0.05, ax.get_ylim()[1] * 0.85, f"flag ≥ {MULTI_SIM_RATIO}\n{share:.0%} of countries",
-            fontsize=8, color=BAD)
-    ax.text(fence + 0.05, ax.get_ylim()[1] * 0.55, f"Tukey fence\n{fence:.2f}", fontsize=8, color=MUTED)
+    ax.text(2.45, ax.get_ylim()[1] * 0.85, f"multi-SIM flag ≥ {MULTI_SIM_RATIO}\n{share:.0%} of countries",
+            fontsize=8.5, color=BAD)
+    ax.annotate("", (MULTI_SIM_RATIO, ax.get_ylim()[1] * 0.86), xytext=(2.43, ax.get_ylim()[1] * 0.88),
+                arrowprops=dict(arrowstyle="->", color=BAD, lw=0.8))
+    ax.text(fence + 0.07, ax.get_ylim()[1] * 0.45, f"Tukey fence\n{fence:.2f}", fontsize=8.5, color=MUTED)
     ax.set(xlabel="SIMs per phone owner (clipped at 4)", ylabel="countries (latest year)",
            title=f"Median {latest.spo.median():.2f} SIMs per owner")
 

@@ -1,7 +1,7 @@
 """
 p2_sindhoor_evidence.py - Workflow W2 evidence figures (Sindhoor), run on the SHARED pipeline.
 
-Sindhoor's diagnostic library (p2_sindhoor_diagnostics.py) draws eight evidence views for the
+Sindhoor's diagnostic library (p2_sindhoor_diagnostics.py) draws eight evidence views (five are report figures) for the
 unsupervised workflow. This adapter feeds it the team's data instead of its own loader, so every
 number agrees with the rest of the report:
 
@@ -13,12 +13,13 @@ number agrees with the rest of the report:
 
 Figures (images/):
   V5b_bootstrap_coassignment.png   iteration 1 - how stable is each snapshot cluster?
-  V5c_silhouette_knife.png         iteration 1 - which countries sit on a cluster border?
   V6b_anomaly_persistence.png      iteration 1 - persistent (structural) vs transient (artefact) anomalies
   V6c_anomaly_why.png              iteration 1 - which indicator makes each top anomaly unusual?
   V8a_dtw_alignment.png            transformation - why DTW: same S-curve, shifted in time
-  V8b_dtw_dendrogram.png           iteration 2 - the DTW hierarchy and its k = 3 cut
-  V8c_takeoff_ridgeline.png        iteration 2 - year of crossing 50 % by archetype
+
+The silhouette knife plot, the DTW dendrogram and the take-off ridgeline are still computed, because
+the report quotes their numbers (15 border countries, cophenetic correlation, 50 % crossing medians
+and eta-squared), but they are no longer saved as report figures: the numbers are reported in the text.
   V8d_iteration_embedding.png      iteration 2 - which countries changed group between iterations
 
     python src/p2_sindhoor_evidence.py
@@ -43,12 +44,9 @@ I2 = ["T0 late starters", "T1 S-curve majority", "T2 early saturators"]
 
 RENAME = {
     "v1_bootstrap_coassignment.png": "V5b_bootstrap_coassignment.png",
-    "v2_silhouette_knife_k2_vs_k3.png": "V5c_silhouette_knife.png",
     "v6_anomaly_persistence_strip.png": "V6b_anomaly_persistence.png",
     "v7_anomaly_why_bullets.png": "V6c_anomaly_why.png",
     "v4_dtw_alignment_illustration.png": "V8a_dtw_alignment.png",
-    "v5_dtw_dendrogram.png": "V8b_dtw_dendrogram.png",
-    "v3_years_to_50pct_ridgeline.png": "V8c_takeoff_ridgeline.png",
     "v8_embedding_iter1_vs_iter2.png": "V8d_iteration_embedding.png",
 }
 _PENDING: dict = {}
@@ -88,6 +86,12 @@ def _finish(name: str, finding: str, keep_subtitle: bool = True):
     fig.savefig(IMG / RENAME[name], dpi=220, bbox_inches="tight", facecolor="white")
     plt.close(fig)
     print(f"  [img] {RENAME[name]}")
+
+
+def _drop(name: str, finding: str):
+    """Statistics only: close a computed figure that is no longer part of the report and log its number."""
+    plt.close(_PENDING.pop(name))
+    print("  [text only] " + finding.encode("ascii", "replace").decode())
 
 
 def configure():
@@ -148,7 +152,7 @@ def main():
             f"mixed and legacy countries share a cluster in {blk.iloc[1, 2]:.0%} of resamples")
     sil = sv.plot_silhouette_knife(snap)
     n_border = int((sil["sil_k3"] < 0.10).sum())
-    _finish("v2_silhouette_knife_k2_vs_k3.png",
+    _drop("v2_silhouette_knife_k2_vs_k3.png",
             f"k = 3 has no misassigned country, but {n_border} of {len(sil)} sit on a border (silhouette < 0.10)")
 
     # ---------------- iteration 1: anomalies over time
@@ -172,11 +176,11 @@ def main():
             f"{pair.lag_years:.0f} years apart, so DTW scores them {pair.euclid_over_dtw:.0f} times closer "
             f"than the same-year (Euclidean) distance", keep_subtitle=False)
     sv.plot_dendrogram(tr)
-    _finish("v5_dtw_dendrogram.png",
+    _drop("v5_dtw_dendrogram.png",
             f"Late starters split from all others at the root; cophenetic correlation {sv.SUMMARY['cophenetic_corr']:.2f}")
     sv.plot_ridgeline(tr)
     t = pd.read_csv(OUT / "p2_v3_years_to_50pct_by_country.csv").groupby("cluster_dtw").years_to_50pct.median()
-    _finish("v3_years_to_50pct_ridgeline.png",
+    _drop("v3_years_to_50pct_ridgeline.png",
             f"The archetypes are ordered in time (median 50 % crossing {t.iloc[2]:.0f}, {t.iloc[1]:.0f}, "
             f"{t.iloc[0]:.0f}), but DTW groups by shape: the majority spans 17 years, so timing alone "
             f"(Euclidean η² {sv.SUMMARY['eta2_euclid']:.2f} vs DTW {sv.SUMMARY['eta2_dtw']:.2f}) separates dates better")

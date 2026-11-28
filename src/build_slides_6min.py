@@ -1,6 +1,6 @@
 """6-minute video cut: deck + shot-by-shot recording script (slides AND the live app on localhost).
 
-Reads the full deck built by build_slides.py, keeps 20 story slides in order, moves 15 supporting slides
+Reads the full deck built by build_slides.py, keeps 20 story slides in order, moves 12 supporting slides
 to the end as hidden appendix slides, writes per-slide speaker notes, and writes
 video/VIDEO_SCRIPT_6min.md: every shot has a time, speaker, screen (slide or app tab), action and words.
 
@@ -40,73 +40,73 @@ SHOTS = [
      "diagram selector. Point at the hypotheses, then at thumbnails 1 to 4, then at the red band.",
      "In our app, this is my workflow, W1. The question and four hypotheses are written at the top, each with its "
      "verdict, and the figures are plugged in, numbered in the order I read them.", 3),
-    (7, "Parikshith", "Alt+Tab back to PowerPoint; advance to V1.",
+    (5, "Parikshith", "Alt+Tab back to PowerPoint; advance to V1.",
      "A logistic S-curve fits 201 of 203 countries. Africa takes off in 2017, almost 12 years after Europe, "
      "and the test is highly significant. Is the divide only a delay? In calendar time we cannot tell.", 0),
-    (9, "Parikshith", "Next slide (V3). Point at Fiji's red line.",
+    (8, "Parikshith", "Next slide (V3). Point at Fiji's red line.",
      "Mobile counts SIMs, not people: 1.34 per owner. And Fiji jumps from 111 to 574 subscriptions in two years "
      "with ownership flat: a recording error.", 0),
-    (10, "Parikshith", "Next slide (W1 feedback loop, V9 underneath).",
+    (9, "Parikshith", "Next slide (W1 feedback loop, V9 underneath).",
      "So my feedback loop changes the data, not just filters it. Artefacts are removed by rule, mobile is "
      "normalised per owner, and every curve is re-indexed to its own take-off year and its own saturation level.", 0),
-    (11, "Parikshith", "Next slide (V1c). Point at panel b, then panel d.",
+    (10, "Parikshith", "Next slide (V1c). Point at panel b, then panel d.",
      "Iteration 2. In their own time, 201 curves collapse onto one S-curve, and the spread between countries falls "
-     "from 32 to under 10 points. The divide is a delay.", 0),
-    (12, "Parikshith", "Next slide (V1b). Point at panel c.",
-     "And in headroom terms, the countries furthest behind close the smallest share of their gap: it is closing in "
-     "relative terms only.", 0),
+     "from 32 to under 10 points. The divide is a delay, closing only in relative terms.", 0),
+    (12, "Parikshith", "Next slide (V1f). Point at panel b, the two medians.",
+     "Last, A1's own conclusion. Twenty-two countries skipped landlines and saturated on mobile, yet only 44 "
+     "percent are online, against 93 where landlines were built. Leapfrogging did not close the divide.", 0),
     (13, "Sindhoor", "Next slide (W2 workflow).",
      "My workflow, W2, clusters countries. Its question: which kinds of countries exist, how stable are those kinds, "
      "and which countries fit none of them? Here are my hypotheses, my numbered path and my feedback loop.", 0),
     (16, "Sindhoor", "Next slide (V5b). Point at the mixed-legacy off-diagonal block.",
      "The 2024 snapshot gives three clusters, but they are only moderately stable: over 200 bootstrap refits, mixed "
      "and legacy countries share a cluster 46 percent of the time, and 15 countries sit right on a cluster border.", 0),
-    (19, "Sindhoor", "Next slide (V6b). Point at the red rows, then at Fiji.",
+    (18, "Sindhoor", "Next slide (V6b). Point at the red rows, then at Fiji.",
      "For anomalies, I refitted the detector every year. Monaco and Hong Kong are flagged every year: real markets. "
      "Fiji is flagged only in 2023 and 2024: a recording error, which becomes the shared artefact rule.", 0),
     ("APP:Mine", "Sindhoor", "Alt+Tab to the browser, click the Mine tab. Click WARD under 'Clustering method'; "
      "hover the two light-blue bubbles (Fiji, Hong Kong); point at row 1 of 'Top anomalies'.",
      "In the app, switching to Ward shows a tiny cluster of just Fiji and Hong Kong, and Fiji is the top anomaly "
      "for both detectors.", 3),
-    (21, "Sindhoor", "Alt+Tab back to PowerPoint; advance to the W2 feedback-loop slide (V8a underneath).",
+    (20, "Sindhoor", "Alt+Tab back to PowerPoint; advance to the W2 feedback-loop slide (V8a underneath).",
      "My feedback loop turns each country into its whole curve, from 2000 to 2025, and compares curves with dynamic "
      "time warping. Brazil and Bolivia follow one curve seven years apart, and DTW scores them five times closer.", 0),
-    (23, "Sindhoor", "Next slide (V8).",
+    (21, "Sindhoor", "Next slide (V8).",
      "In iteration 2, late starters split off at the root of the tree, and we get three path archetypes: late "
      "starters, the S-curve majority and early saturators. They "
      "separate far better than the snapshot clusters, silhouette 0.52 against 0.35.", 0),
-    (25, "Sindhoor", "Next slide (V8d). Point at the ringed countries.",
+    (22, "Sindhoor", "Next slide (V8d). Point at the ringed countries.",
      "And the loop changed the answer: 37 of 133 countries regroup. India and Indonesia join the majority, and "
      "Sweden and Norway become early saturators.", 0),
     ("APP:Archetypes", "Sindhoor", "Alt+Tab to the browser, click the Archetypes tab. Hover India near the "
      "orange/blue boundary of the t-SNE map.",
      "On the trajectory map, India sits right on the boundary between the late starters and the majority.", 3),
-    (26, "Varshith", "Alt+Tab back to PowerPoint; advance to W3 workflow.",
+    (23, "Varshith", "Alt+Tab back to PowerPoint; advance to W3 workflow.",
      "My workflow, W3, predicts internet use. The raw baseline explains 86 percent of variance for unseen "
      "countries, but leans on broadband alone. My feedback loop adds 13 history features defined by W1, and "
      "imputation inside each training fold.", 0),
-    (29, "Varshith", "Next slide (V10).",
+    (26, "Varshith", "Next slide (V10).",
      "Same countries, same folds, same rows: error falls from 11.77 to 10.16 points, minus 14 percent, most in Asia "
      "and Africa.", 0),
-    (32, "Varshith", "Next slide (V13).",
+    (29, "Varshith", "Next slide (V13).",
      "Then the drift chart: after 2020 the target shifts past the 0.2 threshold while the inputs do not, so a model "
      "trained to 2020 will forecast too low: the same infrastructure now means more people online.", 0),
-    (33, "Varshith", "Next slide (V12).",
+    (30, "Varshith", "Next slide (V12).",
      "And it does: the raw 80 percent band covers only 50 percent of outcomes. Conformal re-calibration restores 83 "
      "percent.", 0),
     ("APP:Forecast & drift", "Varshith", "Alt+Tab to the browser, click Forecast & drift (India). Click 'raw "
      "quantile', then 'conformal (CQR)'.",
      "In the app, India's hidden points fall above the raw band, and inside the conformal one.", 3),
-    (34, "Parikshith", "Alt+Tab back to PowerPoint; advance to V14.",
+    (31, "Parikshith", "Alt+Tab back to PowerPoint; advance to V14.",
      "Putting the three workflows together: every region is on one S-curve, 6 to 12 years behind Europe; "
      "broadband and the landline peak, not mobile, separate countries today; and every feedback loop improved its "
      "check.", 0),
-    (35, "Varshith", "Next slide (conclusion). Stop recording after 'Thank you'.",
+    (32, "Varshith", "Next slide (conclusion). Stop recording after 'Thank you'.",
      "So mobile leapfrogging happened, but it did not close the divide. We cannot claim causation, and the "
      "forecasts assume no further drift. Thank you.", 0),
 ]
-STORY = [1, 2, 3, 7, 9, 10, 11, 12, 13, 16, 19, 21, 23, 25, 26, 29, 32, 33, 34, 35]   # full-deck numbers in the video
-APPENDIX = [4, 5, 6, 8, 14, 15, 17, 18, 20, 22, 24, 27, 28, 30, 31]                   # hidden, for questions
+STORY = [1, 2, 3, 5, 8, 9, 10, 12, 13, 16, 18, 20, 21, 22, 23, 26, 29, 30, 31, 32]   # full-deck numbers in the video
+APPENDIX = [4, 6, 7, 11, 14, 15, 17, 19, 24, 25, 27, 28]                   # hidden, for questions
 
 prs = Presentation(FULL)
 full_notes = {i: s.notes_slide.notes_text_frame.text for i, s in enumerate(prs.slides, 1)}
