@@ -127,8 +127,9 @@ def fig_v1_diffusion(df: pd.DataFrame):
         if len(r_):
             ax.annotate(nm, (r_.t0_takeoff.iloc[0], r_.k_growth.iloc[0]), fontsize=7.5,
                         xytext=(4, 3), textcoords="offset points")
-    fig.suptitle(f"V1  Internet diffusion as logistic S-curves: {len(good)} of {len(fits)} countries fit with R² ≥ 0.9 "
-                 f"(median R² {fits.r2.median():.3f})", x=0.01, ha="left", fontsize=12.5, weight="bold")
+    fig.suptitle(f"V1  Every region follows the same S-curve, up to 12 years late, and late starters do not catch up "
+                 f"({len(good)} of {len(fits)} logistic fits with R² ≥ 0.9)", x=0.01, ha="left", fontsize=12.5,
+                 weight="bold")
     fig.tight_layout()
     savefig(fig, "V1_diffusion_scurves.png")
     return fits, pw, (H, p_kw), (rho, p)
@@ -227,7 +228,8 @@ def fig_v2_floor_effect(df: pd.DataFrame):
     ax.set(xlabel="year", ylabel="Spearman ρ with internet users % (95% bootstrap CI)", ylim=(-0.1, 1.05),
            title="Mobile subscriptions decouple from internet use as they saturate")
     ax.legend(loc="lower left")
-    fig.suptitle("V2  The broadband floor effect and the decoupling of mobile (country-years 2005-2024)",
+    fig.suptitle("V2  Broadband has a floor and a non-linear effect; mobile stopped separating countries once it "
+                 "saturated (2005-2024)",
                  x=0.01, ha="left", fontsize=12.5, weight="bold")
     fig.tight_layout()
     savefig(fig, "V2_floor_effect_decoupling.png")
@@ -291,7 +293,8 @@ def fig_v3_multisim(df: pd.DataFrame):
     ax.plot(f.year, f[TARGET], "^-", color=INK, lw=1.4, ms=4, label="internet users %")
     ax.annotate("111 → 361 → 574 in two years\nwhile owners stay ~82%:\nrecording artefact, not adoption",
                 (2024, 574), xytext=(2011, 420), fontsize=8, arrowprops=dict(arrowstyle="->", color=BAD))
-    ax.set(xlabel="year", ylabel="value", title="Fiji: the outlier that drives PC2 (see V4, V6)")
+    ax.set(xlabel="year", ylabel="subscriptions per 100 people  /  % of population",
+           title="Fiji: the outlier that drives PC2 (see V4, V6)")
     ax.legend(loc="center left", fontsize=7.6)
     fig.suptitle(f"V3  Multi-SIM inflation: subscriptions correlate ρ={rho_sub:.2f} with internet use, "
                  f"ownership ρ={rho_own:.2f} (latest year per country, n={len(latest)})",
@@ -327,6 +330,10 @@ def fig_v9_transformation(raw: pd.DataFrame, clean: pd.DataFrame, arts: pd.DataF
         a = arts[(arts.entity == nm)]
         ax.scatter(a.year, a.value, marker="x", s=60, color=colr, zorder=5)
     ax.set_yscale("log")
+    from matplotlib.ticker import FixedLocator, NullLocator, ScalarFormatter
+    ax.yaxis.set_major_locator(FixedLocator([20, 30, 50, 100, 200, 300, 600]))
+    ax.yaxis.set_major_formatter(ScalarFormatter())
+    ax.yaxis.set_minor_locator(NullLocator())
     ax.set_xticks(range(2008, 2025, 4))
     ax.set(xlabel="year", ylabel="value (log scale)",
            title=f"T1  {len(arts)} artefact cells removed\n(dotted = raw, x = removed, solid = kept)")
@@ -352,7 +359,8 @@ def fig_v9_transformation(raw: pd.DataFrame, clean: pd.DataFrame, arts: pd.DataF
            title="T3  coverage: why iteration 2 imputes\n(MICE fitted inside each training fold)")
     for i, v in enumerate(cov.values):
         ax.text(v * 100 + 1, i, f"{v:.0%}", va="center", fontsize=7.5)
-    fig.suptitle("V9  The feedback-loop transformation T, made visible: clean (T1) → engineer (T2) → impute & reshape (T3)",
+    fig.suptitle("V9  The feedback loop changes the data: 10 artefact cells removed, 13 features that carry history "
+                 "no single-year value has, and imputation where coverage is low",
                  x=0.01, ha="left", fontsize=12.5, weight="bold")
     fig.tight_layout()
     savefig(fig, "V9_feedback_transformation.png")
@@ -373,9 +381,6 @@ def main():
     print("V9 ..."); fig_v9_transformation(raw, clean, arts)
 
 
-if __name__ == "__main__":
-    main()
-    fig_v14_synthesis()
 
 
 # ======================================================================================
@@ -473,3 +478,7 @@ def fig_v14_synthesis():
                  x=0.01, ha="left", fontsize=13, weight="bold")
     fig.tight_layout()
     savefig(fig, "V14_synthesis_answer.png")
+
+if __name__ == "__main__":
+    main()
+    fig_v14_synthesis()

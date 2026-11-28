@@ -11,7 +11,7 @@ Total **5:59** (speech at 150 words per minute, plus slide changes, app switches
    ```
    It opens **http://localhost:8501**. Backup if it fails: the live copy at https://aithal007.github.io/DAS732-A3-Visual-Analytics/ (first load 20-60 s).
 2. In the browser: click the **Workflow** tab (diagram selector on *Main workflow V0*), scroll to the top, sidebar *Focus country* = **India**, *Model views show* = **Iteration 2**. Zoom the browser to 90% so whole charts fit.
-3. Open `slides/DAS732_A3_DataStory_6min.pptx` in **Slide Show** (F5) on slide 1. Hidden slides 21-35 are skipped automatically; keep them for questions.
+3. Open `slides/DAS732_A3_DataStory_6min.pptx` in **Slide Show** (F5) on slide 1. Hidden slides 21-32 are skipped automatically; keep them for questions.
 4. Only two windows open: PowerPoint and the browser. **Alt+Tab** switches between them.
 5. Record the whole screen with audio: OBS Studio (Display Capture + microphone), or a Teams/Zoom meeting with screen share and Record. One person shares and clicks; each speaker unmutes for their part.
 6. Rehearse once with a timer. If you run long, drop a click, not a sentence.
@@ -69,7 +69,7 @@ Total **5:59** (speech at 150 words per minute, plus slide changes, app switches
 
 **Do:** Alt+Tab to the browser (app on the Workflow tab). Choose 'W1 Statistics' in the diagram selector. Point at the hypotheses, then at thumbnails 1 to 4, then at the red band.
 
-**Say:** "In our app, this is my workflow, W1. The question and four hypotheses are written at the top, each with its verdict, and the figures are plugged in, numbered in the order I read them."
+**Say:** "In our app, this is my workflow, W1. The question and five hypotheses are written at the top, each with its verdict, and the figures are plugged in, numbered in the order I read them."
 
 ### 5. 1:10-1:28 · Parikshith · SLIDE 4: V1  Every region follows an S-curve, up to 12 years late, and late starters do not catch up
 

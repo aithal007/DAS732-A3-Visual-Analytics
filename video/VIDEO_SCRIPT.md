@@ -16,7 +16,7 @@ Length 19:05. Full deck (for the viva). The 6-minute video uses DAS732_A3_DataSt
 
 ## Slide 4: W1  Statistical workflow: hypotheses, plugged-in evidence, a numbered path and one feedback loop
 
-[Parikshith, 1:20-2:00] My workflow, W1, statistics. The question and four hypotheses are written at the top, each with its verdict. Iteration 1 uses four figures, numbered in the order I read them. The red band is the feedback loop: it re-expresses each country's curve in its own time and scale. Iteration 2 tests the hypotheses again on the transformed data.
+[Parikshith, 1:20-2:00] My workflow, W1, statistics. The question and five hypotheses are written at the top, each with its verdict. Iteration 1 uses four figures, numbered in the order I read them. The red band is the feedback loop: it re-expresses each country's curve in its own time and scale. Iteration 2 tests the hypotheses again on the transformed data.
 
 ## Slide 5: V1  Every region follows an S-curve, up to 12 years late, and late starters do not catch up
 

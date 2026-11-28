@@ -38,7 +38,7 @@ SHOTS = [
      "lanes feed one synthesis.", 0),
     ("APP:Workflow", "Parikshith", "Alt+Tab to the browser (app on the Workflow tab). Choose 'W1 Statistics' in the "
      "diagram selector. Point at the hypotheses, then at thumbnails 1 to 4, then at the red band.",
-     "In our app, this is my workflow, W1. The question and four hypotheses are written at the top, each with its "
+     "In our app, this is my workflow, W1. The question and five hypotheses are written at the top, each with its "
      "verdict, and the figures are plugged in, numbered in the order I read them.", 3),
     (5, "Parikshith", "Alt+Tab back to PowerPoint; advance to V1.",
      "A logistic S-curve fits 201 of 203 countries. Africa takes off in 2017, almost 12 years after Europe, "
@@ -165,7 +165,7 @@ L = ["# A3 video: 6-minute shot-by-shot script", "",
      f"   It opens **{LOCAL}**. Backup if it fails: the live copy at {LIVE} (first load 20-60 s).",
      "2. In the browser: click the **Workflow** tab (diagram selector on *Main workflow V0*), scroll to the top, sidebar *Focus country* = **India**, "
      "*Model views show* = **Iteration 2**. Zoom the browser to 90% so whole charts fit.",
-     "3. Open `slides/DAS732_A3_DataStory_6min.pptx` in **Slide Show** (F5) on slide 1. Hidden slides 21-35 are "
+     "3. Open `slides/DAS732_A3_DataStory_6min.pptx` in **Slide Show** (F5) on slide 1. Hidden slides 21-32 are "
      "skipped automatically; keep them for questions.",
      "4. Only two windows open: PowerPoint and the browser. **Alt+Tab** switches between them.",
      "5. Record the whole screen with audio: OBS Studio (Display Capture + microphone), or a Teams/Zoom meeting "

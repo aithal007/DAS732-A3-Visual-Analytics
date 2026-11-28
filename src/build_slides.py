@@ -253,7 +253,7 @@ fig_slide("W1  Statistical workflow: hypotheses, plugged-in evidence, a numbered
               "Cause": "Raw calendar-time levels mix when a country started with how far it has come.",
               "Inference": "T re-expresses every curve in its own time and scale, and the gap in headroom: a new "
                            "coordinate system, not a filter."},
-          "[Parikshith, 0:00-0:40] My workflow, W1, statistics. The question and four hypotheses are written at the "
+          "[Parikshith, 0:00-0:40] My workflow, W1, statistics. The question and five hypotheses are written at the "
           "top, each with its verdict. Iteration 1 uses four figures, numbered in the order I read them. The red band "
           "is the feedback loop: it re-expresses each country's curve in its own time and scale. Iteration 2 tests "
           "the hypotheses again on the transformed data.")
