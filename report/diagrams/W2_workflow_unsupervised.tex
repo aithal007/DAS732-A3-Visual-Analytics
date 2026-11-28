@@ -1,0 +1,130 @@
+\documentclass[tikz,border=3pt]{standalone}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\usepackage[scaled=0.95]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{amssymb,amsmath}
+\definecolor{cD}{HTML}{2A78D6}\definecolor{cV}{HTML}{E69F00}\definecolor{cM}{HTML}{009E73}
+\definecolor{cK}{HTML}{CC79A7}\definecolor{cL}{HTML}{C0392B}\definecolor{ink}{HTML}{1F2328}
+\definecolor{mut}{HTML}{57606A}\definecolor{pan}{HTML}{F3F5F7}\definecolor{ok}{HTML}{1A7F37}
+\definecolor{no}{HTML}{C0392B}\definecolor{part}{HTML}{B35900}
+\tikzset{
+  box/.style={draw=#1, fill=#1!6, rounded corners=3pt, line width=0.8pt},
+  ttl/.style={font=\bfseries\scriptsize, text=ink, anchor=north west, inner sep=2pt},
+  txt/.style={font=\scriptsize, text=ink, anchor=north west, align=left, inner sep=2pt, text width=#1},
+  capt/.style={font=\scriptsize, text=ink, align=center, inner sep=1pt},
+  chip/.style={draw=#1, fill=white, rounded corners=2pt, line width=0.5pt, font=\scriptsize, text=ink,
+               inner sep=1.5pt, align=left},
+  stepn/.style={circle, fill=ink, text=white, font=\bfseries\scriptsize, inner sep=0pt, minimum size=0.36cm},
+  badge/.style={rounded corners=2pt, fill=#1, text=white, font=\bfseries\scriptsize, inner sep=2pt},
+  arr/.style={-{Stealth[length=2.2mm]}, line width=0.9pt, color=#1},
+  verdict/.style={rounded corners=2pt, fill=#1, text=white, font=\bfseries\scriptsize, inner sep=1.6pt},
+}
+\newcommand{\img}[3]{\includegraphics[width=#2cm,height=#3cm,keepaspectratio]{../../images/#1}}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[anchor=north west, font=\bfseries\small, text=ink, inner sep=0] at (0,23.4) {Workflow W2 \textendash{} Unsupervised mining: which kinds of countries exist, and which fit none?};
+\node[anchor=north east, font=\scriptsize, text=mut, inner sep=0] at (18.1,23.38) {Sindhoor Ganapathi Hegde};
+\draw[box=ink, fill=pan] (0,21.849999999999998) rectangle (18.1,22.9);
+\node[badge=ink, anchor=north west] at (0.08,22.82) {Q2};
+\node[txt=16.8cm, font=\small] at (0.75,22.849999999999998) {\textbf{Question.} Which kinds of countries exist, how stable are those kinds, and which countries do not fit any of them?};
+\draw[box=ink, fill=white] (0,18.37) rectangle (18.1,21.70);
+\node[ttl] at (0.08,21.66) {Hypotheses, the test that decides each one, and the verdict};
+\node[anchor=west, font=\bfseries\scriptsize, text=ink] at (0.1,20.92) {H2.1};
+\node[anchor=west, font=\scriptsize, text=ink, text width=7.0cm] at (0.95,20.92) {Countries form stable connectivity types in the 2024 snapshot};
+\node[verdict=part, anchor=west, minimum width=1.55cm, align=center] at (8.15,20.92) {refined};
+\node[anchor=west, font=\scriptsize, text=ink!80, text width=8.1cm] at (9.85,20.92) {V5, V5b: $k=3$, silhouette 0.33, bootstrap ARI 0.64; V5c: 15 of 135 on a border};
+\node[anchor=west, font=\bfseries\scriptsize, text=ink] at (0.1,20.20) {H2.2};
+\node[anchor=west, font=\scriptsize, text=ink, text width=7.0cm] at (0.95,20.20) {The top anomalies are genuinely unusual countries};
+\node[verdict=part, anchor=west, minimum width=1.55cm, align=center] at (8.15,20.20) {refined};
+\node[anchor=west, font=\scriptsize, text=ink!80, text width=8.1cm] at (9.85,20.20) {V6b: 4 persistent every year (structural: Monaco, Hong Kong); 16 transient (artefact candidates: Fiji)};
+\node[anchor=west, font=\bfseries\scriptsize, text=ink] at (0.1,19.48) {H2.3};
+\node[anchor=west, font=\scriptsize, text=ink, text width=7.0cm] at (0.95,19.48) {Countries at the same level today share the same history (A1 Fig.~5)};
+\node[verdict=no, anchor=west, minimum width=1.55cm, align=center] at (8.15,19.48) {rejected};
+\node[anchor=west, font=\scriptsize, text=ink!80, text width=8.1cm] at (9.85,19.48) {V8, V8d: 37 of 133 change group, ARI 0.30; movers had weaker iteration-1 silhouettes (median 0.28 vs 0.39)};
+\node[anchor=west, font=\bfseries\scriptsize, text=ink] at (0.1,18.76) {H2.4};
+\node[anchor=west, font=\scriptsize, text=ink, text width=7.0cm] at (0.95,18.76) {Grouping by path orders countries by adoption timing};
+\node[verdict=part, anchor=west, minimum width=1.55cm, align=center] at (8.15,18.76) {refined};
+\node[anchor=west, font=\scriptsize, text=ink!80, text width=8.1cm] at (9.85,18.76) {V8c: medians 2001 / 2014 / 2023, but DTW groups by shape ($\eta^2$ 0.59 vs 0.82)};
+\node[badge=ink, anchor=south west] at (0,17.90) {ITERATION 1 \textmd{\, raw data}};
+\draw[box=cD] (0.0,11.27) rectangle (2.3,17.82);
+\node[badge=cD, anchor=north west] at (0.08,17.740000000000002) {D1};
+\node[ttl, text width=1.55cm, align=left] at (0.62,17.77) {2024 snapshot};
+\node[txt=2.05cm] at (0.08,17.2) {135 complete-case countries\\5 z-scored indicators\\raw data, no imputation};
+\draw[box=cM] (10.85,11.27) rectangle (14.0,17.82);
+\node[badge=cM, anchor=north west] at (10.93,17.740000000000002) {M1};
+\node[ttl, text width=2.40cm, align=left] at (11.469999999999999,17.77) {Mining models};
+\node[txt=2.90cm] at (10.93,17.2) {PCA\\$k$-means, GMM, Ward, $k=2..8$\\silhouette, bootstrap ARI (200)\\Isolation Forest + LOF (V6)\\per-year Isolation Forest};
+\draw[box=cK] (14.3,11.27) rectangle (18.1,17.82);
+\node[badge=cK, anchor=north west] at (14.38,17.740000000000002) {K1};
+\node[ttl, text width=3.05cm, align=left] at (14.92,17.77) {Inferences $K_1$};
+\node[txt=3.55cm] at (14.38,17.2) {\textbf{K1.1} clusters are moderately stable; mixed vs legacy blur\\\textbf{K1.2} Fiji is a \emph{transient} anomaly = artefact; Monaco, Hong Kong are structural\\\textbf{K1.3} one year cannot show a path: same level, different histories};
+\draw[box=cV] (2.6,11.27) rectangle (10.55,17.82);
+\node[badge=cV, anchor=north west] at (2.68,17.740000000000002) {V1};
+\node[ttl, text width=7.20cm, align=left] at (3.22,17.77) {Visual exploration of the snapshot};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th1) at (3.99,16.18) {\img{V4_pca_biplot.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th1.north west) {1};
+\node[capt, text width=2.41cm, anchor=north] at (3.99,15.06) {\textbf{V4} PCA: 82\,\% on two axes};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th2) at (6.58,16.18) {\img{V5_cluster_validation_profiles.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th2.north west) {2};
+\node[capt, text width=2.41cm, anchor=north] at (6.58,15.06) {\textbf{V5} $k$ scan: $k=3$};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th3) at (9.17,16.18) {\img{V5b_bootstrap_coassignment.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th3.north west) {3};
+\node[capt, text width=2.41cm, anchor=north] at (9.17,15.06) {\textbf{V5b} stability, ARI 0.64};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th4) at (3.99,13.21) {\img{V5c_silhouette_knife.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th4.north west) {4};
+\node[capt, text width=2.41cm, anchor=north] at (3.99,12.08) {\textbf{V5c} 15 border countries};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th5) at (6.58,13.21) {\img{V6b_anomaly_persistence.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th5.north west) {5};
+\node[capt, text width=2.41cm, anchor=north] at (6.58,12.08) {\textbf{V6b} persistent vs transient};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th6) at (9.17,13.21) {\img{V6c_anomaly_why.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th6.north west) {6};
+\node[capt, text width=2.41cm, anchor=north] at (9.17,12.08) {\textbf{V6c} why each is unusual};
+\draw[arr=cD] (2.3,14.54) -- (2.6,14.54);
+\draw[arr=cV] (10.55,14.54) -- (10.85,14.54);
+\draw[arr=cM] (14.0,14.54) -- (14.3,14.54);
+\draw[box=cL, fill=cL!5, line width=1.1pt] (0,9.37) rectangle (18.1,10.92);
+\node[badge=cL, anchor=north west] at (0.08,10.84) {T};
+\node[ttl, text=cL] at (0.5,10.87) {Feedback loop: transformation $T$ (a new data representation and a new distance, not a filter)};
+\node[txt=17.8cm] at (0.08,10.42) {\textbf{T1} transient anomalies become artefact rules applied to every country (Fiji 2023--24 removed) \quad \textbf{T2} snapshot $\rightarrow$ trajectory: each country becomes its 26-year internet curve 2000--2025 (181 countries, interior gaps interpolated, 225 cells) \quad \textbf{T3} Euclidean $\rightarrow$ dynamic time warping distance (Sakoe--Chiba band 5 years), so the same S-curve shifted in time counts as similar \quad \textbf{T4} average-linkage hierarchy instead of centroids};
+\draw[cL, line width=1.6pt, -{Stealth[length=3mm]}] (16.20,11.27) -- (16.20,10.92);
+\node[fill=white, draw=cL, line width=0.8pt, rounded corners=2pt, font=\bfseries\scriptsize, text=cL, inner sep=2pt, anchor=east] at (16.08,11.09) {Feedback loop};
+\node[badge=ink, anchor=south west] at (0,8.70) {ITERATION 2 \textmd{\, transformed data}};
+\draw[box=cD] (0.0,2.0699999999999994) rectangle (2.3,8.62);
+\node[badge=cD, anchor=north west] at (0.08,8.54) {D2};
+\node[ttl, text width=1.55cm, align=left] at (0.62,8.569999999999999) {Trajectory panel};
+\node[txt=2.05cm] at (0.08,7.999999999999999) {181 curves, 2000--2025\\artefacts removed\\$181\times181$ DTW matrix};
+\draw[box=cM] (10.85,2.0699999999999994) rectangle (14.0,8.62);
+\node[badge=cM, anchor=north west] at (10.93,8.54) {M2};
+\node[ttl, text width=2.40cm, align=left] at (11.469999999999999,8.569999999999999) {Trajectory mining};
+\node[txt=2.90cm] at (10.93,7.999999999999999) {DTW + average linkage\\$k$ by silhouette\\cophenetic correlation\\Hungarian matching, ARI\\$\eta^2$ of take-off year};
+\draw[box=cK] (14.3,2.0699999999999994) rectangle (18.1,8.62);
+\node[badge=cK, anchor=north west] at (14.38,8.54) {K2};
+\node[ttl, text width=3.05cm, align=left] at (14.92,8.569999999999999) {Knowledge $K_2$};
+\node[txt=3.55cm] at (14.38,7.999999999999999) {\textbf{H2.3} archetypes are paths: late starters, S-curve majority, early saturators\\37 of 133 regrouped, silhouette 0.52 vs 0.35\\$\rightarrow$ feeds the synthesis (V14)};
+\draw[box=cV] (2.6,2.0699999999999994) rectangle (10.55,8.62);
+\node[badge=cV, anchor=north west] at (2.68,8.54) {V2};
+\node[ttl, text width=7.20cm, align=left] at (3.22,8.569999999999999) {Visual exploration of the trajectories};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th7) at (3.99,6.98) {\img{V8a_dtw_alignment.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th7.north west) {7};
+\node[capt, text width=2.41cm, anchor=north] at (3.99,5.85) {\textbf{V8a} why DTW: shifted curves};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th8) at (6.58,6.98) {\img{V8b_dtw_dendrogram.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th8.north west) {8};
+\node[capt, text width=2.41cm, anchor=north] at (6.58,5.85) {\textbf{V8b} hierarchy, $k=3$ cut};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th9) at (9.17,6.98) {\img{V8_trajectory_archetypes.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th9.north west) {9};
+\node[capt, text width=2.41cm, anchor=north] at (9.17,5.85) {\textbf{V8} three path archetypes};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th10) at (5.28,4.01) {\img{V8c_takeoff_ridgeline.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th10.north west) {10};
+\node[capt, text width=2.41cm, anchor=north] at (5.28,2.88) {\textbf{V8c} 50\,\% crossing by group};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th11) at (7.87,4.01) {\img{V8d_iteration_embedding.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th11.north west) {11};
+\node[capt, text width=2.41cm, anchor=north] at (7.87,2.88) {\textbf{V8d} who moved between iterations};
+\draw[arr=cD] (2.3,5.34) -- (2.6,5.34);
+\draw[arr=cV] (10.55,5.34) -- (10.85,5.34);
+\draw[arr=cM] (14.0,5.34) -- (14.3,5.34);
+\draw[cL, line width=1.6pt, -{Stealth[length=3mm]}] (1.15,9.37) -- (1.15,8.62);
+\node[txt=18.0cm, anchor=north west] at (0,1.82) {\textbf{Analysis path.} \textcircled{\scriptsize 1} structure of the snapshot (V4) $\rightarrow$ \textcircled{\scriptsize 2} choose $k$ (V5) $\rightarrow$ \textcircled{\scriptsize 3} test stability (V5b) $\rightarrow$ \textcircled{\scriptsize 4} find border countries (V5c) $\rightarrow$ \textcircled{\scriptsize 5} anomalies over time (V6, V6b) $\rightarrow$ \textcircled{\scriptsize 6} explain them (V6c) $\rightarrow$ $K_1$ $\rightarrow$ $T$ $\rightarrow$ \textcircled{\scriptsize 7} justify DTW (V8a) $\rightarrow$ \textcircled{\scriptsize 8} cut the hierarchy (V8b) $\rightarrow$ \textcircled{\scriptsize 9} read the archetypes (V8) $\rightarrow$ \textcircled{\scriptsize 10} check timing (V8c) $\rightarrow$ \textcircled{\scriptsize 11} compare iterations (V8d) $\rightarrow$ synthesis V14.};
+
+\end{tikzpicture}
+\end{document}

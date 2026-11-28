@@ -1,0 +1,187 @@
+code,country,n_obs,n_flag,longest_run,max_score,mean_score,frac_flagged,category
+MCO,Monaco,6,6,6,0.718,0.704,1.0,persistent (structural)
+HKG,Hong Kong,6,6,6,0.64,0.622,1.0,persistent (structural)
+BDI,Burundi,5,5,5,0.619,0.607,1.0,persistent (structural)
+AND,Andorra,6,5,5,0.574,0.552,0.833,persistent (structural)
+FSM,Micronesia (country),3,3,2,0.576,0.549,1.0,recurrent
+ARE,United Arab Emirates,6,3,3,0.557,0.527,0.5,recurrent
+TCD,Chad,4,2,1,0.548,0.531,0.5,transient (artefact?)
+ATG,Antigua and Barbuda,4,2,2,0.532,0.524,0.5,transient (artefact?)
+KWT,Kuwait,4,2,2,0.537,0.523,0.5,transient (artefact?)
+BRB,Barbados,4,2,1,0.552,0.521,0.5,transient (artefact?)
+LKA,Sri Lanka,6,2,2,0.545,0.514,0.333,transient (artefact?)
+KIR,Kiribati,6,2,2,0.541,0.501,0.333,transient (artefact?)
+FJI,Fiji,6,2,2,0.662,0.493,0.333,transient (artefact?)
+CAF,Central African Republic,1,1,1,0.542,0.542,1.0,transient (artefact?)
+UGA,Uganda,6,1,1,0.579,0.508,0.167,transient (artefact?)
+COD,Democratic Republic of Congo,6,1,1,0.541,0.507,0.167,transient (artefact?)
+MDG,Madagascar,5,1,1,0.53,0.507,0.2,transient (artefact?)
+ZMB,Zambia,6,1,1,0.54,0.507,0.167,transient (artefact?)
+CUB,Cuba,6,1,1,0.52,0.497,0.167,transient (artefact?)
+IRN,Iran,6,1,1,0.526,0.495,0.167,transient (artefact?)
+LBY,Libya,4,1,1,0.524,0.49,0.25,transient (artefact?)
+MAC,Macao,6,1,1,0.627,0.485,0.167,transient (artefact?)
+FRA,France,5,0,0,0.52,0.514,0.0,never flagged
+PNG,Papua New Guinea,4,0,0,0.517,0.507,0.0,never flagged
+PLW,Palau,2,0,0,0.518,0.504,0.0,never flagged
+ETH,Ethiopia,6,0,0,0.521,0.5,0.0,never flagged
+PAK,Pakistan,3,0,0,0.513,0.5,0.0,never flagged
+CIV,Cote d'Ivoire,6,0,0,0.519,0.498,0.0,never flagged
+SOM,Somalia,3,0,0,0.51,0.497,0.0,never flagged
+GNB,Guinea-Bissau,1,0,0,0.494,0.494,0.0,never flagged
+KEN,Kenya,2,0,0,0.514,0.494,0.0,never flagged
+LAO,Laos,5,0,0,0.503,0.494,0.0,never flagged
+LBR,Liberia,4,0,0,0.505,0.494,0.0,never flagged
+MOZ,Mozambique,6,0,0,0.534,0.493,0.0,never flagged
+MUS,Mauritius,6,0,0,0.524,0.492,0.0,never flagged
+SLV,El Salvador,6,0,0,0.511,0.491,0.0,never flagged
+AFG,Afghanistan,3,0,0,0.505,0.49,0.0,never flagged
+KNA,Saint Kitts and Nevis,4,0,0,0.507,0.488,0.0,never flagged
+NOR,Norway,6,0,0,0.507,0.488,0.0,never flagged
+SLE,Sierra Leone,3,0,0,0.5,0.487,0.0,never flagged
+ECU,Ecuador,6,0,0,0.521,0.486,0.0,never flagged
+NER,Niger,4,0,0,0.515,0.486,0.0,never flagged
+RWA,Rwanda,6,0,0,0.495,0.484,0.0,never flagged
+TZA,Tanzania,6,0,0,0.493,0.482,0.0,never flagged
+JPN,Japan,5,0,0,0.501,0.479,0.0,never flagged
+MNE,Montenegro,6,0,0,0.506,0.479,0.0,never flagged
+BWA,Botswana,2,0,0,0.486,0.478,0.0,never flagged
+BFA,Burkina Faso,6,0,0,0.492,0.477,0.0,never flagged
+BHR,Bahrain,6,0,0,0.487,0.477,0.0,never flagged
+GTM,Guatemala,6,0,0,0.501,0.475,0.0,never flagged
+MWI,Malawi,6,0,0,0.496,0.475,0.0,never flagged
+BGD,Bangladesh,5,0,0,0.489,0.473,0.0,never flagged
+KOR,South Korea,6,0,0,0.479,0.47,0.0,never flagged
+MHL,Marshall Islands,1,0,0,0.466,0.466,0.0,never flagged
+MMR,Myanmar,1,0,0,0.466,0.466,0.0,never flagged
+PRT,Portugal,6,0,0,0.473,0.466,0.0,never flagged
+NPL,Nepal,6,0,0,0.475,0.465,0.0,never flagged
+TON,Tonga,4,0,0,0.51,0.464,0.0,never flagged
+AGO,Angola,5,0,0,0.482,0.463,0.0,never flagged
+DJI,Djibouti,5,0,0,0.473,0.463,0.0,never flagged
+EGY,Egypt,6,0,0,0.476,0.463,0.0,never flagged
+GRC,Greece,6,0,0,0.474,0.463,0.0,never flagged
+JOR,Jordan,6,0,0,0.478,0.463,0.0,never flagged
+TGO,Togo,6,0,0,0.474,0.463,0.0,never flagged
+GIN,Guinea,2,0,0,0.468,0.462,0.0,never flagged
+GRD,Grenada,4,0,0,0.481,0.462,0.0,never flagged
+QAT,Qatar,6,0,0,0.48,0.462,0.0,never flagged
+SAU,Saudi Arabia,6,0,0,0.478,0.461,0.0,never flagged
+DEU,Germany,6,0,0,0.471,0.46,0.0,never flagged
+GNQ,Equatorial Guinea,4,0,0,0.467,0.46,0.0,never flagged
+ZAF,South Africa,6,0,0,0.468,0.46,0.0,never flagged
+SGP,Singapore,6,0,0,0.484,0.459,0.0,never flagged
+SLB,Solomon Islands,4,0,0,0.466,0.458,0.0,never flagged
+BEN,Benin,5,0,0,0.466,0.457,0.0,never flagged
+LIE,Liechtenstein,6,0,0,0.468,0.457,0.0,never flagged
+BEL,Belgium,6,0,0,0.489,0.456,0.0,never flagged
+LBN,Lebanon,4,0,0,0.464,0.456,0.0,never flagged
+VEN,Venezuela,6,0,0,0.482,0.456,0.0,never flagged
+CAN,Canada,6,0,0,0.472,0.455,0.0,never flagged
+ZWE,Zimbabwe,6,0,0,0.48,0.454,0.0,never flagged
+TJK,Tajikistan,5,0,0,0.463,0.452,0.0,never flagged
+GHA,Ghana,6,0,0,0.477,0.451,0.0,never flagged
+BLZ,Belize,4,0,0,0.459,0.45,0.0,never flagged
+CHE,Switzerland,6,0,0,0.473,0.45,0.0,never flagged
+LUX,Luxembourg,4,0,0,0.459,0.45,0.0,never flagged
+PAN,Panama,5,0,0,0.484,0.45,0.0,never flagged
+MDA,Moldova,6,0,0,0.49,0.449,0.0,never flagged
+COM,Comoros,3,0,0,0.462,0.448,0.0,never flagged
+BRN,Brunei,6,0,0,0.468,0.447,0.0,never flagged
+BTN,Bhutan,6,0,0,0.457,0.447,0.0,never flagged
+DNK,Denmark,6,0,0,0.464,0.447,0.0,never flagged
+GMB,Gambia,6,0,0,0.461,0.447,0.0,never flagged
+THA,Thailand,6,0,0,0.463,0.447,0.0,never flagged
+TLS,East Timor,2,0,0,0.453,0.447,0.0,never flagged
+MRT,Mauritania,6,0,0,0.463,0.446,0.0,never flagged
+NRU,Nauru,1,0,0,0.446,0.446,0.0,never flagged
+RUS,Russia,5,0,0,0.45,0.446,0.0,never flagged
+SMR,San Marino,4,0,0,0.462,0.446,0.0,never flagged
+CMR,Cameroon,4,0,0,0.459,0.445,0.0,never flagged
+MLI,Mali,4,0,0,0.453,0.445,0.0,never flagged
+MYS,Malaysia,6,0,0,0.456,0.445,0.0,never flagged
+HND,Honduras,6,0,0,0.451,0.444,0.0,never flagged
+IDN,Indonesia,6,0,0,0.46,0.444,0.0,never flagged
+MAR,Morocco,6,0,0,0.452,0.444,0.0,never flagged
+MLT,Malta,6,0,0,0.451,0.443,0.0,never flagged
+COL,Colombia,6,0,0,0.462,0.442,0.0,never flagged
+LCA,Saint Lucia,4,0,0,0.459,0.442,0.0,never flagged
+NLD,Netherlands,6,0,0,0.457,0.442,0.0,never flagged
+IND,India,6,0,0,0.459,0.441,0.0,never flagged
+LSO,Lesotho,5,0,0,0.451,0.441,0.0,never flagged
+VCT,Saint Vincent and the Grenadines,6,0,0,0.454,0.441,0.0,never flagged
+NGA,Nigeria,6,0,0,0.458,0.44,0.0,never flagged
+HTI,Haiti,4,0,0,0.443,0.439,0.0,never flagged
+IRQ,Iraq,6,0,0,0.471,0.438,0.0,never flagged
+UZB,Uzbekistan,6,0,0,0.466,0.438,0.0,never flagged
+VNM,Vietnam,6,0,0,0.453,0.437,0.0,never flagged
+ISL,Iceland,6,0,0,0.48,0.436,0.0,never flagged
+DOM,Dominican Republic,6,0,0,0.454,0.435,0.0,never flagged
+SWE,Sweden,6,0,0,0.453,0.435,0.0,never flagged
+FIN,Finland,6,0,0,0.465,0.434,0.0,never flagged
+MDV,Maldives,6,0,0,0.474,0.434,0.0,never flagged
+CHN,China,6,0,0,0.451,0.433,0.0,never flagged
+GBR,United Kingdom,6,0,0,0.451,0.433,0.0,never flagged
+MEX,Mexico,6,0,0,0.438,0.433,0.0,never flagged
+PSE,Palestine,4,0,0,0.45,0.433,0.0,never flagged
+STP,Sao Tome and Principe,6,0,0,0.452,0.433,0.0,never flagged
+ESP,Spain,6,0,0,0.449,0.432,0.0,never flagged
+OMN,Oman,6,0,0,0.443,0.431,0.0,never flagged
+URY,Uruguay,6,0,0,0.446,0.43,0.0,never flagged
+BLR,Belarus,6,0,0,0.435,0.429,0.0,never flagged
+AUT,Austria,6,0,0,0.432,0.428,0.0,never flagged
+GAB,Gabon,6,0,0,0.441,0.428,0.0,never flagged
+KHM,Cambodia,6,0,0,0.44,0.428,0.0,never flagged
+PHL,Philippines,6,0,0,0.455,0.428,0.0,never flagged
+NIC,Nicaragua,6,0,0,0.442,0.427,0.0,never flagged
+SWZ,Eswatini,6,0,0,0.432,0.427,0.0,never flagged
+KGZ,Kyrgyzstan,5,0,0,0.436,0.426,0.0,never flagged
+TTO,Trinidad and Tobago,6,0,0,0.434,0.426,0.0,never flagged
+GEO,Georgia,6,0,0,0.439,0.424,0.0,never flagged
+CZE,Czechia,6,0,0,0.441,0.422,0.0,never flagged
+ISR,Israel,5,0,0,0.435,0.422,0.0,never flagged
+ALB,Albania,6,0,0,0.43,0.421,0.0,never flagged
+BHS,Bahamas,6,0,0,0.435,0.421,0.0,never flagged
+COG,Congo,1,0,0,0.421,0.421,0.0,never flagged
+DMA,Dominica,3,0,0,0.426,0.421,0.0,never flagged
+SRB,Serbia,5,0,0,0.432,0.421,0.0,never flagged
+SEN,Senegal,6,0,0,0.43,0.42,0.0,never flagged
+BGR,Bulgaria,5,0,0,0.429,0.419,0.0,never flagged
+CYP,Cyprus,6,0,0,0.452,0.419,0.0,never flagged
+MNG,Mongolia,6,0,0,0.455,0.419,0.0,never flagged
+SVK,Slovakia,6,0,0,0.486,0.419,0.0,never flagged
+BOL,Bolivia,5,0,0,0.426,0.418,0.0,never flagged
+DZA,Algeria,6,0,0,0.429,0.418,0.0,never flagged
+ITA,Italy,6,0,0,0.436,0.418,0.0,never flagged
+AUS,Australia,6,0,0,0.438,0.417,0.0,never flagged
+HRV,Croatia,6,0,0,0.425,0.417,0.0,never flagged
+JAM,Jamaica,6,0,0,0.427,0.417,0.0,never flagged
+ARM,Armenia,6,0,0,0.424,0.416,0.0,never flagged
+CPV,Cape Verde,6,0,0,0.419,0.416,0.0,never flagged
+GUY,Guyana,4,0,0,0.421,0.416,0.0,never flagged
+PRY,Paraguay,5,0,0,0.42,0.416,0.0,never flagged
+BIH,Bosnia and Herzegovina,6,0,0,0.437,0.415,0.0,never flagged
+NAM,Namibia,6,0,0,0.424,0.415,0.0,never flagged
+SUR,Suriname,2,0,0,0.418,0.413,0.0,never flagged
+EST,Estonia,6,0,0,0.424,0.412,0.0,never flagged
+IRL,Ireland,6,0,0,0.421,0.412,0.0,never flagged
+MKD,North Macedonia,6,0,0,0.42,0.412,0.0,never flagged
+TUN,Tunisia,4,0,0,0.431,0.412,0.0,never flagged
+UKR,Ukraine,5,0,0,0.421,0.412,0.0,never flagged
+AZE,Azerbaijan,6,0,0,0.419,0.411,0.0,never flagged
+HUN,Hungary,6,0,0,0.416,0.409,0.0,never flagged
+KAZ,Kazakhstan,6,0,0,0.42,0.408,0.0,never flagged
+SVN,Slovenia,6,0,0,0.419,0.407,0.0,never flagged
+PER,Peru,6,0,0,0.412,0.406,0.0,never flagged
+ROU,Romania,6,0,0,0.415,0.406,0.0,never flagged
+SYC,Seychelles,6,0,0,0.423,0.405,0.0,never flagged
+CHL,Chile,6,0,0,0.417,0.404,0.0,never flagged
+CRI,Costa Rica,6,0,0,0.41,0.403,0.0,never flagged
+TUR,Turkey,6,0,0,0.415,0.403,0.0,never flagged
+USA,United States,6,0,0,0.417,0.403,0.0,never flagged
+BRA,Brazil,6,0,0,0.408,0.401,0.0,never flagged
+ARG,Argentina,6,0,0,0.406,0.4,0.0,never flagged
+LVA,Latvia,6,0,0,0.418,0.4,0.0,never flagged
+LTU,Lithuania,6,0,0,0.405,0.397,0.0,never flagged
+NZL,New Zealand,6,0,0,0.405,0.396,0.0,never flagged
+POL,Poland,5,0,0,0.401,0.394,0.0,never flagged

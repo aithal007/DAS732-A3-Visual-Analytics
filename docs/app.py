@@ -30,7 +30,7 @@ ARCH = {0: ("T0 late starters", "#E69F00"), 1: ("T1 S-curve majority", "#56B4E9"
         2: ("T2 early saturators", "#009E73")}
 CLUS = {"0": "#E69F00", "1": "#56B4E9", "2": "#009E73"}
 STAGE = {"D": BLUE, "V": ORANGE, "M": GREEN, "K": PINK, "LOOP": RED}
-TRACK = ["D1", "V1", "M1", "V2", "K1", "LOOP", "D2", "V3", "M2", "V4", "K2"]
+TRACK = ["D1", "V1", "M1", "K1", "LOOP", "D2", "V2", "M2", "K2"]   # one workflow, unrolled
 
 pio.templates["a3"] = go.layout.Template(layout=go.Layout(
     font=dict(family="Inter, Segoe UI, sans-serif", size=13, color=INK),
@@ -126,6 +126,13 @@ def oci(o, c, i):
                 f'<div class="i"><b>Inference</b>{i}</div></div>', unsafe_allow_html=True)
 
 
+def gallery(title, files):
+    with st.expander(title):
+        cols = st.columns(2)
+        for i, (fn, cap) in enumerate(files):
+            cols[i % 2].image(str(IMG / fn), caption=cap, width="stretch")
+
+
 def card(title, sub=None):
     box = st.container(border=True)
     box.markdown(f'<p class="card-h">{title}</p>' + (f'<p class="card-s">{sub}</p>' if sub else ""),
@@ -171,8 +178,9 @@ with st.sidebar:
     st.markdown("### 🌐 Team Plot Twist")
     st.caption("DAS732 Data Visualization · IIIT Bangalore · Term 1, 2026-27 · Assignment 3")
     st.markdown('<div class="sb-q"><b>A3 question</b><br>Can infrastructure and history explain and forecast which '
-                'countries get online, and does feeding iteration-1 inferences back into the data change the '
-                'answer?</div>', unsafe_allow_html=True)
+                'countries get online, and does feeding each iteration\'s inferences back into the data change the '
+                'answer?<br><br><b>W1</b> statistics · Parikshith<br><b>W2</b> unsupervised · Sindhoor<br>'
+                '<b>W3</b> supervised · Varshith</div>', unsafe_allow_html=True)
     st.write("")
     it = st.radio("Model views show", ["Iteration 1 (raw)", "Iteration 2 (transformed)"], index=1)
     countries_all = sorted(D["fc"].entity.unique())
@@ -183,11 +191,11 @@ with st.sidebar:
 ITER2 = it.startswith("Iteration 2")
 
 # ---------------------------------------------------------------- hero + KPIs
-st.markdown("""<div class="hero"><div class="kicker">Visual analytics workflow · one feedback loop</div>
+st.markdown("""<div class="hero"><div class="kicker">Three visual analytics workflows · one feedback loop each</div>
 <h1>From Snapshots to Trajectories</h1>
-<p>Did mobile leapfrogging close the digital divide? Two Keim iterations on the OWID internet panel:
-statistics, clustering and prediction on raw data, a feedback loop that changes the data, and a second
-iteration that learns what the first could not.</p></div>""", unsafe_allow_html=True)
+<p>Did mobile leapfrogging close the digital divide? Three unrolled Keim workflows on the OWID internet
+panel (statistics, clustering, prediction), each with written hypotheses, its figures plugged in, a feedback loop
+that transforms the data, and a second iteration that learns what the first could not.</p></div>""", unsafe_allow_html=True)
 
 st.markdown(f"""<div class="kpis">
 <div class="kpi"><div class="lab">Africa's take-off delay</div><div class="val">11.9 yrs</div>
@@ -200,19 +208,37 @@ st.markdown(f"""<div class="kpis">
   <span class="pill bad">raw was {fm['coverage_80_quantile']:.0%}</span> <span class="pill good">conformal fixes it</span></div>
 </div>""", unsafe_allow_html=True)
 
-tabs = st.tabs(["🧭 Workflow", "🗂️ Data", "📈 Explore", "🧩 Mine", "🎯 Baseline model", "🔁 Feedback loop",
-                "🧬 Archetypes", "⚙️ Iteration 2 models", "🔮 Forecast & drift", "✅ Answer"])
+tabs = st.tabs(["🧭 Workflow", "🗂️ Data", "📈 Explore · W1", "🧩 Mine · W2", "🎯 Baseline model · W3",
+                "🔁 Feedback loop", "🧬 Archetypes · W2", "⚙️ Iteration 2 models · W3", "🔮 Forecast & drift · W3",
+                "✅ Answer"])
 
 # ================================================================ 0 workflow
 with tabs[0]:
     tracker(TRACK)
-    b = card("The workflow, unrolled", "Two complete Keim iterations joined by one labelled feedback edge")
-    b.image(str(IMG / "V0_workflow_architecture.png"), width="stretch")
-    b = card("System architecture (V0b)", "one shared core, three analysis modules, delivery reads artefacts only")
-    b.image(str(IMG / "V0b_system_architecture.png"), width="stretch")
+    DIAGRAMS = {
+        "Main workflow (V0)": ("V0_workflow_architecture.png",
+                               "One main question, three unrolled workflows, one synthesis"),
+        "W1 Statistics · Parikshith": ("W1_workflow_statistics.png",
+                                       "hypotheses, plugged-in figures, numbered path, feedback loop T"),
+        "W2 Unsupervised · Sindhoor": ("W2_workflow_unsupervised.png",
+                                       "snapshot → trajectories under DTW"),
+        "W3 Supervised · Varshith": ("W3_workflow_supervised.png",
+                                     "history features, fair comparison, drift, conformal forecast"),
+        "System architecture (V0b)": ("V0b_system_architecture.png",
+                                      "one shared core, three workflow modules, delivery reads artefacts only"),
+    }
+    pick = st.radio("Diagram", list(DIAGRAMS), horizontal=True, label_visibility="collapsed")
+    fname, sub = DIAGRAMS[pick]
+    b = card(pick, sub)
+    if fname.startswith("W"):
+        _, mid, _ = b.columns([0.12, 1, 0.12])
+        mid.image(str(IMG / fname), width="stretch")
+    else:
+        b.image(str(IMG / fname), width="stretch")
     oci("Keim's diamond drawn as a cycle has self-loops and cannot show which pass produced which inference.",
-        "Iteration 2 is only meaningful if it is visibly driven by what iteration 1 found.",
-        "Unroll it: D1 → V1 → M1 → V2 → K1, one red feedback edge K1 → D2, then D2 → V3 → M2 → V4 → K2.")
+        "A second iteration is only meaningful if the first iteration's knowledge visibly changes the data.",
+        "Unroll each workflow: D1 → V1 → M1 → K1, one red feedback edge carrying the transformation T, then "
+        "D2 → V2 → M2 → K2. Each diagram carries its hypotheses, its figures and its analysis path.")
 
 # ================================================================ 1 data
 with tabs[1]:
@@ -295,9 +321,15 @@ with tabs[2]:
         "varying (ρ 0.88 → 0.42) while broadband still does (0.80).",
         "The divide is a delay that is narrowing only in relative terms; late starters are not catching up.")
 
+    gallery("W1 evidence figures: iteration 1 and iteration 2 (V1c, V1b, V2, V3)", [
+        ("V1c_takeoff_alignment.png", "V1c iteration 2: aligned at own take-off, one S-curve"),
+        ("V1b_convergence.png", "V1b raw levels vs headroom"),
+        ("V2_floor_effect_decoupling.png", "V2 broadband floor, mobile decoupling"),
+        ("V3_multisim_inflation.png", "V3 SIMs per owner, Fiji")])
+
 # ================================================================ 3 mine
 with tabs[3]:
-    tracker(["M1", "V2"])
+    tracker(["M1", "V1"])
     it1 = D["it1"].copy()
     c1, c2 = st.columns([1.35, 1])
     with c1:
@@ -319,9 +351,15 @@ with tabs[3]:
         "Countries differ mostly in fixed infrastructure; one recording error distorts a single-year snapshot.",
         "Snapshot archetypes reproduce A1 but are fragile, and Fiji 2023-24 is an error to remove (K1.1).")
 
+    gallery("W2 evidence figures: stability and anomaly persistence (V5b, V5c, V6b, V6c)", [
+        ("V5b_bootstrap_coassignment.png", "V5b bootstrap co-assignment"),
+        ("V5c_silhouette_knife.png", "V5c silhouettes, border countries"),
+        ("V6b_anomaly_persistence.png", "V6b persistent vs transient anomalies"),
+        ("V6c_anomaly_why.png", "V6c why each anomaly is unusual")])
+
 # ================================================================ 4 baseline
 with tabs[4]:
-    tracker(["M1", "V2", "K1"])
+    tracker(["M1", "V1", "K1"])
     c1, c2 = st.columns([1, 1])
     i1 = D["i1"]
     with c1:
@@ -374,10 +412,10 @@ with tabs[5]:
 
 # ================================================================ 6 archetypes
 with tabs[6]:
-    tracker(["D2", "M2", "V4"])
+    tracker(["D2", "M2", "V2"])
     c1, c2 = st.columns([1, 1])
     with c1:
-        b = card("Trajectory map (V8b)", "t-SNE of DTW distances · size = 2025 internet share")
+        b = card("Trajectory map (interactive)", "t-SNE of DTW distances · size = 2025 internet share")
         ts = D["tsne"].copy()
         ts["archetype"] = ts.traj_cluster.map(lambda k: ARCH[int(k)][0])
         fig = px.scatter(ts, x="tsne_x", y="tsne_y", color="archetype", size="internet_2025", size_max=16,
@@ -406,9 +444,15 @@ with tabs[6]:
         "Countries at the same 2024 level got there along different paths.",
         "Archetypes are paths, not positions, and they form one continuum ordered by timing.")
 
+    gallery("W2 evidence figures: why DTW, the hierarchy, timing, what moved (V8a-V8d)", [
+        ("V8a_dtw_alignment.png", "V8a DTW vs same-year distance"),
+        ("V8b_dtw_dendrogram.png", "V8b DTW dendrogram, k = 3 cut"),
+        ("V8c_takeoff_ridgeline.png", "V8c 50 % crossing by archetype"),
+        ("V8d_iteration_embedding.png", "V8d countries that moved between iterations")])
+
 # ================================================================ 7 models
 with tabs[7]:
-    tracker(["M2", "V4"])
+    tracker(["M2", "V2"])
     c1, c2 = st.columns([1.35, 1])
     with c1:
         b = card(f"Out-of-fold residual map · {it}", "blue = more online than infrastructure predicts")
@@ -440,7 +484,7 @@ with tabs[7]:
 
 # ================================================================ 8 forecast
 with tabs[8]:
-    tracker(["D2", "V3", "M2", "V4"])
+    tracker(["D2", "V2", "M2"])
     c1, c2 = st.columns([1.2, 1])
     with c1:
         b = card(f"{focus}: cone of uncertainty (V12)", "trained on ≤ 2020, red dots were hidden from the model")

@@ -1,6 +1,6 @@
 """6-minute video cut: deck + shot-by-shot recording script (slides AND the live app on localhost).
 
-Reads the full deck built by build_slides.py, keeps 16 story slides in order, moves 8 supporting slides
+Reads the full deck built by build_slides.py, keeps 20 story slides in order, moves 15 supporting slides
 to the end as hidden appendix slides, writes per-slide speaker notes, and writes
 video/VIDEO_SCRIPT_6min.md: every shot has a time, speaker, screen (slide or app tab), action and words.
 
@@ -26,86 +26,87 @@ LIVE = "https://aithal007.github.io/DAS732-A3-Visual-Analytics/"
 # slide shots show that slide; "APP:<tab>" shots show the browser on that tab of the app.
 SHOTS = [
     (1, "Parikshith", "Slideshow on slide 1 (title).",
-     "We are Team Plot Twist. Our question from A1: did mobile leapfrogging close the digital divide? In A3 we "
-     "test what we saw with statistics, clustering and prediction, inside a visual analytics workflow with one "
-     "feedback loop.", 0),
-    (2, "Varshith", "Next slide (the question and four sub-questions).",
-     "The brief asks for statistics, unsupervised mining and supervised learning inside a workflow with a feedback "
-     "loop. So we split the question into sub-questions, one per method family, plus the workflow itself. The data "
-     "is A1's OWID panel: 217 countries, 1960 to 2025.", 0),
-    ("APP:Workflow", "Parikshith", "Alt+Tab to the browser (app already open on the Workflow tab). Move the mouse "
-     "along row 1, rest it on the red FEEDBACK LOOP edge, then along row 2. Scroll down to the system "
-     "architecture diagram.",
-     "This is our live app, running locally. The workflow is Keim's diamond unrolled into two rows. Iteration 1 "
-     "runs on raw data and ends with four inferences, K1. The red edge is the one feedback loop: K1 becomes a data "
-     "transformation, and iteration 2 repeats the whole diamond on the transformed data. Below, one shared core "
-     "module implements that loop, so one command reproduces everything.", 0),
-    (5, "Parikshith", "Alt+Tab back to PowerPoint; advance to V1 (slide 4).",
-     "A logistic S-curve fits 201 of 203 countries. Africa takes off in 2017, almost 12 years after Europe, p of 4 "
-     "times 10 to the minus 17, and later starters do not grow faster. The divide is a delay on one curve.", 0),
-    (6, "Parikshith", "Next slide (V1b).",
-     "Is it closing? Relative inequality, the Gini, fell from 0.81 to 0.19, but the Europe-Africa gap peaked at 64 "
-     "points in 2014 and is still 52. Low starters close the smallest share of their gap: no catch-up.", 0),
-    (7, "Parikshith", "Next slide (V2).",
-     "Nearly 30 percent of country-years have under one broadband line per 100, yet internet reaches 30 percent: a "
-     "floor. Mobile's correlation with internet use fell from 0.88 to 0.42, while broadband stays at 0.80. Mobile "
-     "saturated.", 0),
-    (8, "Parikshith", "Next slide (V3). Point at Fiji's red line on the right panel.",
-     "And mobile counts SIMs, not people: 1.34 per owner. Fiji jumps from 111 to 574 subscriptions in two years "
-     "with ownership flat at 82 percent: a recording error.", 0),
-    (11, "Sindhoor", "Next slide (V5).",
-     "Next, unsupervised mining of the 2024 snapshot. k-means gives three archetypes ordered by connectivity, "
-     "separated by landlines and broadband, not mobile. Bootstrap ARI is only 0.64, and Ward's best silhouette is "
-     "fake: one cluster is just Fiji and Hong Kong.", 0),
-    ("APP:Mine", "Sindhoor", "Alt+Tab to the browser, click the Mine tab. Click WARD under 'Clustering method': the "
-     "tiny cluster is the two light-blue bubbles. Hover the left one at about 75% (Fiji), then point at row 1 of "
-     "the 'Top anomalies' table (Fiji).",
-     "In the app, on the Mine tab, I switch from k-means to Ward, and the tiny cluster appears: Fiji and "
-     "Hong Kong. And Fiji is the top anomaly for both Isolation Forest and LOF.", 3),
-    (13, "Varshith", "Alt+Tab back to PowerPoint; advance to V7 (slide 10).",
-     "Then supervised learning: predict internet share from raw infrastructure. Folds hold out whole countries, so "
-     "the model is always tested on a country it has never seen. Gradient boosting reaches 11.8 points error, "
-     "R-squared 0.86. Broadband dominates, mobile adds almost nothing.", 0),
-    (14, "Sindhoor", "Next slide (feedback loop, V9 underneath). Point at each K1 line as you say it.",
-     "This is the feedback loop. Four inferences leave iteration 1, and each one changes the data. Fiji is an "
-     "error: two artefact rules remove 10 cells. Subscriptions are not people: normalise by owners and cap mobile "
-     "at 100. History matters: add the landline peak and reshape to trajectories. Broadband has a floor and the "
-     "gaps are not random: log transform, a floor flag, and in-fold imputation.", 0),
-    ("APP:Feedback loop", "Sindhoor", "Alt+Tab to the browser, click the Feedback loop tab (Fiji is preselected).",
-     "In the app, Fiji's raw series in red against the cleaned one in blue: the two impossible years are gone, "
-     "the rest of the series is untouched.", 2),
-    (16, "Sindhoor", "Alt+Tab back to PowerPoint; advance to V8 (slide 12).",
-     "Iteration 2 clusters each country's whole curve with dynamic time warping: late starters like Tanzania, the "
-     "S-curve majority, and early saturators like South Korea. Two thirds of African countries are late starters. Silhouette rises to 0.52 against 0.35, and 37 of "
-     "133 countries change group.", 0),
-    ("APP:Archetypes", "Sindhoor", "Click the Archetypes tab. Hover the orange end of the t-SNE map (late "
-     "starters), then hover India near the orange/blue boundary. Right panel already shows T0 late starters with "
-     "India in black; no click needed.",
-     "And the trajectory map: late starters sit at one end of a single continuum. India is on the boundary; "
-     "against the late starters, its curve has just broken away.", 3),
-    (18, "Varshith", "Alt+Tab back to PowerPoint; advance to V10 (slide 13).",
-     "Same countries, same folds, same rows: error falls from 11.77 to 10.16 points, minus 14 percent, most in "
-     "Asia and Africa. Imputation adds 2,134 usable rows and error reaches 8.84.", 0),
-    (21, "Varshith", "Next slide (V12).",
-     "Finally, forecasting. Trained up to 2020 and tested on 2021 to 2025, 71 percent of forecasts run low and the "
-     "80 percent band covers only 50 percent, because the target drifted after 2020 while the inputs did not. "
-     "Conformal re-calibration restores 83 percent.", 0),
-    ("APP:Forecast & drift", "Varshith", "Alt+Tab to the browser, click Forecast & drift (focus country India). "
-     "Click 'raw quantile', then 'conformal (CQR)'.",
-     "In the app: India's hidden points fall above the raw band; with conformal re-calibration they fall inside "
-     "it.", 3),
-    (23, "Parikshith", "Alt+Tab back to PowerPoint; advance to V14 (slide 15).",
-     "Putting it together. When: every region is on the same S-curve, 6 to 12 years behind Europe. What: broadband "
-     "and the landline peak separate countries today, mobile does not. Who: the archetypes differ in fixed "
-     "infrastructure. And the feedback loop improved every check: error, cluster separation and forecast "
-     "coverage.", 0),
-    (24, "Varshith", "Next slide (conclusion). Stop recording after 'Thank you'.",
-     "So mobile leapfrogging happened, but it did not close the divide. We cannot claim causation, ownership is "
-     "mostly imputed, and forecasts assume no further drift. Everything is reproducible with one command. Thank "
-     "you.", 0),
+     "We are Team Plot Twist. Our question from A1: did mobile leapfrogging close the digital divide? In A3 we test "
+     "it with three visual analytics workflows, one per team member.", 0),
+    (2, "Varshith", "Next slide (main question, three workflows).",
+     "Each workflow uses one family of methods the brief asks for: statistics, unsupervised mining and supervised "
+     "learning. Each one has its question and hypotheses written on it, its figures plugged in, a numbered analysis "
+     "path, and one feedback loop. A synthesis combines them.", 0),
+    (3, "Parikshith", "Next slide (V0, main workflow). Trace one lane left to right with the mouse.",
+     "This is the main workflow: Keim's diamond, unrolled. Each lane is one workflow. Iteration 1 on raw data, its "
+     "inferences, then the red feedback loop that transforms the data, then iteration 2 and its knowledge. All three "
+     "lanes feed one synthesis.", 0),
+    ("APP:Workflow", "Parikshith", "Alt+Tab to the browser (app on the Workflow tab). Choose 'W1 Statistics' in the "
+     "diagram selector. Point at the hypotheses, then at thumbnails 1 to 4, then at the red band.",
+     "In our app, this is my workflow, W1. The question and four hypotheses are written at the top, each with its "
+     "verdict, and the figures are plugged in, numbered in the order I read them.", 3),
+    (7, "Parikshith", "Alt+Tab back to PowerPoint; advance to V1.",
+     "A logistic S-curve fits 201 of 203 countries. Africa takes off in 2017, almost 12 years after Europe, "
+     "and the test is highly significant. Is the divide only a delay? In calendar time we cannot tell.", 0),
+    (9, "Parikshith", "Next slide (V3). Point at Fiji's red line.",
+     "Mobile counts SIMs, not people: 1.34 per owner. And Fiji jumps from 111 to 574 subscriptions in two years "
+     "with ownership flat: a recording error.", 0),
+    (10, "Parikshith", "Next slide (W1 feedback loop, V9 underneath).",
+     "So my feedback loop changes the data, not just filters it. Artefacts are removed by rule, mobile is "
+     "normalised per owner, and every curve is re-indexed to its own take-off year and its own saturation level.", 0),
+    (11, "Parikshith", "Next slide (V1c). Point at panel b, then panel d.",
+     "Iteration 2. In their own time, 201 curves collapse onto one S-curve, and the spread between countries falls "
+     "from 32 to under 10 points. The divide is a delay.", 0),
+    (12, "Parikshith", "Next slide (V1b). Point at panel c.",
+     "And in headroom terms, the countries furthest behind close the smallest share of their gap: it is closing in "
+     "relative terms only.", 0),
+    (13, "Sindhoor", "Next slide (W2 workflow).",
+     "My workflow, W2, clusters countries. Its question: which kinds of countries exist, how stable are those kinds, "
+     "and which countries fit none of them? Here are my hypotheses, my numbered path and my feedback loop.", 0),
+    (16, "Sindhoor", "Next slide (V5b). Point at the mixed-legacy off-diagonal block.",
+     "The 2024 snapshot gives three clusters, but they are only moderately stable: over 200 bootstrap refits, mixed "
+     "and legacy countries share a cluster 46 percent of the time, and 15 countries sit right on a cluster border.", 0),
+    (19, "Sindhoor", "Next slide (V6b). Point at the red rows, then at Fiji.",
+     "For anomalies, I refitted the detector every year. Monaco and Hong Kong are flagged every year: real markets. "
+     "Fiji is flagged only in 2023 and 2024: a recording error, which becomes the shared artefact rule.", 0),
+    ("APP:Mine", "Sindhoor", "Alt+Tab to the browser, click the Mine tab. Click WARD under 'Clustering method'; "
+     "hover the two light-blue bubbles (Fiji, Hong Kong); point at row 1 of 'Top anomalies'.",
+     "In the app, switching to Ward shows a tiny cluster of just Fiji and Hong Kong, and Fiji is the top anomaly "
+     "for both detectors.", 3),
+    (21, "Sindhoor", "Alt+Tab back to PowerPoint; advance to the W2 feedback-loop slide (V8a underneath).",
+     "My feedback loop turns each country into its whole curve, from 2000 to 2025, and compares curves with dynamic "
+     "time warping. Brazil and Bolivia follow one curve seven years apart, and DTW scores them five times closer.", 0),
+    (23, "Sindhoor", "Next slide (V8).",
+     "In iteration 2, late starters split off at the root of the tree, and we get three path archetypes: late "
+     "starters, the S-curve majority and early saturators. They "
+     "separate far better than the snapshot clusters, silhouette 0.52 against 0.35.", 0),
+    (25, "Sindhoor", "Next slide (V8d). Point at the ringed countries.",
+     "And the loop changed the answer: 37 of 133 countries regroup. India and Indonesia join the majority, and "
+     "Sweden and Norway become early saturators.", 0),
+    ("APP:Archetypes", "Sindhoor", "Alt+Tab to the browser, click the Archetypes tab. Hover India near the "
+     "orange/blue boundary of the t-SNE map.",
+     "On the trajectory map, India sits right on the boundary between the late starters and the majority.", 3),
+    (26, "Varshith", "Alt+Tab back to PowerPoint; advance to W3 workflow.",
+     "My workflow, W3, predicts internet use. The raw baseline explains 86 percent of variance for unseen "
+     "countries, but leans on broadband alone. My feedback loop adds 13 history features defined by W1, and "
+     "imputation inside each training fold.", 0),
+    (29, "Varshith", "Next slide (V10).",
+     "Same countries, same folds, same rows: error falls from 11.77 to 10.16 points, minus 14 percent, most in Asia "
+     "and Africa.", 0),
+    (32, "Varshith", "Next slide (V13).",
+     "Then the drift chart: after 2020 the target shifts past the 0.2 threshold while the inputs do not, so a model "
+     "trained to 2020 will forecast too low: the same infrastructure now means more people online.", 0),
+    (33, "Varshith", "Next slide (V12).",
+     "And it does: the raw 80 percent band covers only 50 percent of outcomes. Conformal re-calibration restores 83 "
+     "percent.", 0),
+    ("APP:Forecast & drift", "Varshith", "Alt+Tab to the browser, click Forecast & drift (India). Click 'raw "
+     "quantile', then 'conformal (CQR)'.",
+     "In the app, India's hidden points fall above the raw band, and inside the conformal one.", 3),
+    (34, "Parikshith", "Alt+Tab back to PowerPoint; advance to V14.",
+     "Putting the three workflows together: every region is on one S-curve, 6 to 12 years behind Europe; "
+     "broadband and the landline peak, not mobile, separate countries today; and every feedback loop improved its "
+     "check.", 0),
+    (35, "Varshith", "Next slide (conclusion). Stop recording after 'Thank you'.",
+     "So mobile leapfrogging happened, but it did not close the divide. We cannot claim causation, and the "
+     "forecasts assume no further drift. Thank you.", 0),
 ]
-STORY = [1, 2, 3, 5, 6, 7, 8, 11, 12, 13, 14, 16, 18, 21, 23, 24]   # full-deck numbers kept in the video
-APPENDIX = [4, 9, 10, 15, 17, 19, 20, 22]                          # V0b, V3b, V4, V9, V8b, V11, V13, V12b
+STORY = [1, 2, 3, 7, 9, 10, 11, 12, 13, 16, 19, 21, 23, 25, 26, 29, 32, 33, 34, 35]   # full-deck numbers in the video
+APPENDIX = [4, 5, 6, 8, 14, 15, 17, 18, 20, 22, 24, 27, 28, 30, 31]                   # hidden, for questions
 
 prs = Presentation(FULL)
 full_notes = {i: s.notes_slide.notes_text_frame.text for i, s in enumerate(prs.slides, 1)}
@@ -162,9 +163,9 @@ L = ["# A3 video: 6-minute shot-by-shot script", "",
      "1. Start the app locally, in a terminal:",
      "   ```", "   cd ass3/A3_submission", "   streamlit run app.py", "   ```",
      f"   It opens **{LOCAL}**. Backup if it fails: the live copy at {LIVE} (first load 20-60 s).",
-     "2. In the browser: click the **Workflow** tab, scroll to the top, sidebar *Focus country* = **India**, "
+     "2. In the browser: click the **Workflow** tab (diagram selector on *Main workflow V0*), scroll to the top, sidebar *Focus country* = **India**, "
      "*Model views show* = **Iteration 2**. Zoom the browser to 90% so whole charts fit.",
-     "3. Open `slides/DAS732_A3_DataStory_6min.pptx` in **Slide Show** (F5) on slide 1. Hidden slides 17-24 are "
+     "3. Open `slides/DAS732_A3_DataStory_6min.pptx` in **Slide Show** (F5) on slide 1. Hidden slides 21-35 are "
      "skipped automatically; keep them for questions.",
      "4. Only two windows open: PowerPoint and the browser. **Alt+Tab** switches between them.",
      "5. Record the whole screen with audio: OBS Studio (Display Capture + microphone), or a Teams/Zoom meeting "

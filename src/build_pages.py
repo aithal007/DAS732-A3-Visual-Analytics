@@ -42,8 +42,20 @@ for f in ["p3_cv_results.csv", "p3_regional_rmse_same_rows.csv", "p3_psi_drift.c
           "p3_model_metrics.json", "p1_sigma_convergence.csv", "p1_beta_convergence.csv", "p1_coverage_by_year.csv",
           "iter2_tsne_embedding.csv", "p3_interval_calibration.csv"]:
     add(f"outputs/{f}", ROOT / "outputs" / f)
-for f in ["V0_workflow_architecture.png", "V0b_system_architecture.png", "V8_trajectory_archetypes.png", "V14_synthesis_answer.png"]:
-    add(f"images/{f}", ROOT / "images" / f)
+from PIL import Image  # noqa: E402
+
+IMAGES = ["V0_workflow_architecture.png", "V0b_system_architecture.png", "V8_trajectory_archetypes.png",
+          "V14_synthesis_answer.png", "W1_workflow_statistics.png", "W2_workflow_unsupervised.png",
+          "W3_workflow_supervised.png", "V1c_takeoff_alignment.png", "V1b_convergence.png",
+          "V2_floor_effect_decoupling.png", "V3_multisim_inflation.png", "V5b_bootstrap_coassignment.png",
+          "V5c_silhouette_knife.png", "V6b_anomaly_persistence.png", "V6c_anomaly_why.png", "V8a_dtw_alignment.png",
+          "V8b_dtw_dendrogram.png", "V8c_takeoff_ridgeline.png", "V8d_iteration_embedding.png"]
+for f in IMAGES:                     # downscaled copies keep the in-browser load small
+    im = Image.open(ROOT / "images" / f).convert("RGB")
+    if im.width > 1800:
+        im = im.resize((1800, int(im.height * 1800 / im.width)), Image.LANCZOS)
+    im.quantize(256, method=Image.Quantize.MEDIANCUT).save(DOCS / "images" / f, optimize=True)
+    add(f"images/{f}")
 
 html = f"""<!doctype html>
 <html lang="en">

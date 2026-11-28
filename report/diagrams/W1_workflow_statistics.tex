@@ -1,0 +1,118 @@
+\documentclass[tikz,border=3pt]{standalone}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\usepackage[scaled=0.95]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{amssymb,amsmath}
+\definecolor{cD}{HTML}{2A78D6}\definecolor{cV}{HTML}{E69F00}\definecolor{cM}{HTML}{009E73}
+\definecolor{cK}{HTML}{CC79A7}\definecolor{cL}{HTML}{C0392B}\definecolor{ink}{HTML}{1F2328}
+\definecolor{mut}{HTML}{57606A}\definecolor{pan}{HTML}{F3F5F7}\definecolor{ok}{HTML}{1A7F37}
+\definecolor{no}{HTML}{C0392B}\definecolor{part}{HTML}{B35900}
+\tikzset{
+  box/.style={draw=#1, fill=#1!6, rounded corners=3pt, line width=0.8pt},
+  ttl/.style={font=\bfseries\scriptsize, text=ink, anchor=north west, inner sep=2pt},
+  txt/.style={font=\scriptsize, text=ink, anchor=north west, align=left, inner sep=2pt, text width=#1},
+  capt/.style={font=\scriptsize, text=ink, align=center, inner sep=1pt},
+  chip/.style={draw=#1, fill=white, rounded corners=2pt, line width=0.5pt, font=\scriptsize, text=ink,
+               inner sep=1.5pt, align=left},
+  stepn/.style={circle, fill=ink, text=white, font=\bfseries\scriptsize, inner sep=0pt, minimum size=0.36cm},
+  badge/.style={rounded corners=2pt, fill=#1, text=white, font=\bfseries\scriptsize, inner sep=2pt},
+  arr/.style={-{Stealth[length=2.2mm]}, line width=0.9pt, color=#1},
+  verdict/.style={rounded corners=2pt, fill=#1, text=white, font=\bfseries\scriptsize, inner sep=1.6pt},
+}
+\newcommand{\img}[3]{\includegraphics[width=#2cm,height=#3cm,keepaspectratio]{../../images/#1}}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[anchor=north west, font=\bfseries\small, text=ink, inner sep=0] at (0,23.4) {Workflow W1 \textendash{} Statistical analysis: when did countries get online, and is the divide closing?};
+\node[anchor=north east, font=\scriptsize, text=mut, inner sep=0] at (18.1,23.38) {Parikshith Aithal K V};
+\draw[box=ink, fill=pan] (0,21.849999999999998) rectangle (18.1,22.9);
+\node[badge=ink, anchor=north west] at (0.08,22.82) {Q1};
+\node[txt=16.8cm, font=\small] at (0.75,22.849999999999998) {\textbf{Question.} When did each country take off, is the gap between countries closing, and do the indicators measure what they appear to measure?};
+\draw[box=ink, fill=white] (0,18.37) rectangle (18.1,21.70);
+\node[ttl] at (0.08,21.66) {Hypotheses, the test that decides each one, and the verdict};
+\node[anchor=west, font=\bfseries\scriptsize, text=ink] at (0.1,20.92) {H1.1};
+\node[anchor=west, font=\scriptsize, text=ink, text width=7.0cm] at (0.95,20.92) {The divide is a time delay on one common S-curve, not a different curve};
+\node[verdict=ok, anchor=west, minimum width=1.55cm, align=center] at (8.15,20.92) {supported};
+\node[anchor=west, font=\scriptsize, text=ink!80, text width=8.1cm] at (9.85,20.92) {V1: take-off year differs by region ($p=4\times10^{-17}$); V1c: aligned curves collapse, spread 32$\rightarrow$10 pp};
+\node[anchor=west, font=\bfseries\scriptsize, text=ink] at (0.1,20.20) {H1.2};
+\node[anchor=west, font=\scriptsize, text=ink, text width=7.0cm] at (0.95,20.20) {The divide is closing};
+\node[verdict=part, anchor=west, minimum width=1.55cm, align=center] at (8.15,20.20) {refined};
+\node[anchor=west, font=\scriptsize, text=ink!80, text width=8.1cm] at (9.85,20.20) {V1b: relative gap closes (Gini 0.81$\rightarrow$0.19); low starters close the \emph{smallest} share of headroom ($\rho=+0.52$)};
+\node[anchor=west, font=\bfseries\scriptsize, text=ink] at (0.1,19.48) {H1.3};
+\node[anchor=west, font=\scriptsize, text=ink, text width=7.0cm] at (0.95,19.48) {Mobile subscriptions count connected people};
+\node[verdict=no, anchor=west, minimum width=1.55cm, align=center] at (8.15,19.48) {rejected};
+\node[anchor=west, font=\scriptsize, text=ink!80, text width=8.1cm] at (9.85,19.48) {V3: 1.34 SIMs per owner; $\rho$ 0.52 vs 0.89 for ownership; Fiji 111$\rightarrow$574 = recording artefact};
+\node[anchor=west, font=\bfseries\scriptsize, text=ink] at (0.1,18.76) {H1.4};
+\node[anchor=west, font=\scriptsize, text=ink, text width=7.0cm] at (0.95,18.76) {Internet use rises linearly with fixed broadband};
+\node[verdict=no, anchor=west, minimum width=1.55cm, align=center] at (8.15,18.76) {rejected};
+\node[anchor=west, font=\scriptsize, text=ink!80, text width=8.1cm] at (9.85,18.76) {V2: floor below 1 per 100 (29\% of rows); segmented fit, $F=21.4$, $p=6\times10^{-10}$};
+\node[badge=ink, anchor=south west] at (0,17.90) {ITERATION 1 \textmd{\, raw data}};
+\draw[box=cD] (0.0,11.27) rectangle (2.3,17.82);
+\node[badge=cD, anchor=north west] at (0.08,17.740000000000002) {D1};
+\node[ttl, text width=1.55cm, align=left] at (0.62,17.77) {Raw OWID panel};
+\node[txt=2.05cm] at (0.08,17.2) {217 countries, 1990--2025\\complete cases only\\coverage + MNAR test};
+\draw[box=cM] (10.85,11.27) rectangle (14.0,17.82);
+\node[badge=cM, anchor=north west] at (10.93,17.740000000000002) {M1};
+\node[ttl, text width=2.40cm, align=left] at (11.469999999999999,17.77) {Statistical models};
+\node[txt=2.90cm] at (10.93,17.2) {logistic fit $y=L/(1+e^{-k(t-t_0)})$\\Kruskal--Wallis + Holm\\segmented regression, $F$-test\\bootstrap Spearman CIs\\Mann--Whitney MNAR test};
+\draw[box=cK] (14.3,11.27) rectangle (18.1,17.82);
+\node[badge=cK, anchor=north west] at (14.38,17.740000000000002) {K1};
+\node[ttl, text width=3.05cm, align=left] at (14.92,17.77) {Inferences $K_1$};
+\node[txt=3.55cm] at (14.38,17.2) {\textbf{K1.1} Fiji 2023--24 = artefact\\\textbf{K1.2} subscriptions overstate people\\\textbf{K1.3} calendar-time levels mix \emph{when} with \emph{how far}: a delay looks like a gap\\\textbf{K1.4} broadband floor; data MNAR};
+\draw[box=cV] (2.6,11.27) rectangle (10.55,17.82);
+\node[badge=cV, anchor=north west] at (2.68,17.740000000000002) {V1};
+\node[ttl, text width=7.20cm, align=left] at (3.22,17.77) {Visual exploration of raw levels};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th1) at (4.63,16.18) {\img{V3b_data_quality_missingness.png}{3.71}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th1.north west) {1};
+\node[capt, text width=3.71cm, anchor=north] at (4.63,15.06) {\textbf{V3b} coverage; ownership missing not at random};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th2) at (8.52,16.18) {\img{V1_diffusion_scurves.png}{3.71}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th2.north west) {2};
+\node[capt, text width=3.71cm, anchor=north] at (8.52,15.06) {\textbf{V1} same S-curve, take-off 6--12 yr later};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th3) at (4.63,13.21) {\img{V2_floor_effect_decoupling.png}{3.71}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th3.north west) {3};
+\node[capt, text width=3.71cm, anchor=north] at (4.63,12.08) {\textbf{V2} broadband floor; mobile decouples};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th4) at (8.52,13.21) {\img{V3_multisim_inflation.png}{3.71}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th4.north west) {4};
+\node[capt, text width=3.71cm, anchor=north] at (8.52,12.08) {\textbf{V3} SIMs $\neq$ people; Fiji spike};
+\draw[arr=cD] (2.3,14.54) -- (2.6,14.54);
+\draw[arr=cV] (10.55,14.54) -- (10.85,14.54);
+\draw[arr=cM] (14.0,14.54) -- (14.3,14.54);
+\draw[box=cL, fill=cL!5, line width=1.1pt] (0,9.37) rectangle (18.1,10.92);
+\node[badge=cL, anchor=north west] at (0.08,10.84) {T};
+\node[ttl, text=cL] at (0.5,10.87) {Feedback loop: transformation $T$ (a change of representation, not a filter)};
+\node[txt=17.8cm] at (0.08,10.42) {\textbf{T1} artefact rules applied to every country (10 cells, shared core) \quad \textbf{T2} per-owner normalisation: SIMs per owner, mobile capped at 100 \quad \textbf{T3} \emph{own time and own scale}: each curve re-indexed to years since its take-off $t-t_0$ and divided by its saturation $L$ \quad \textbf{T4} \emph{headroom}: share of the remaining gap closed, $h=(y_{2024}-y_{2014})/(100-y_{2014})$ \quad \textbf{T5} $\log(1+\text{broadband})$ and a floor flag};
+\draw[cL, line width=1.6pt, -{Stealth[length=3mm]}] (16.20,11.27) -- (16.20,10.92);
+\node[fill=white, draw=cL, line width=0.8pt, rounded corners=2pt, font=\bfseries\scriptsize, text=cL, inner sep=2pt, anchor=east] at (16.08,11.09) {Feedback loop};
+\node[badge=ink, anchor=south west] at (0,8.70) {ITERATION 2 \textmd{\, transformed data}};
+\draw[box=cD] (0.0,2.0699999999999994) rectangle (2.3,8.62);
+\node[badge=cD, anchor=north west] at (0.08,8.54) {D2};
+\node[ttl, text width=1.55cm, align=left] at (0.62,8.569999999999999) {Transformed panel};
+\node[txt=2.05cm] at (0.08,7.999999999999999) {artefacts removed\\aligned time $t-t_0$\\headroom $h$\\per-owner features};
+\draw[box=cM] (10.85,2.0699999999999994) rectangle (14.0,8.62);
+\node[badge=cM, anchor=north west] at (10.93,8.54) {M2};
+\node[ttl, text width=2.40cm, align=left] at (11.469999999999999,8.569999999999999) {Statistics on $D_2$};
+\node[txt=2.90cm] at (10.93,7.999999999999999) {cross-country IQR in calendar vs aligned time\\$\sigma$-convergence, Gini\\$\beta$-convergence on headroom (OLS, Spearman)};
+\draw[box=cK] (14.3,2.0699999999999994) rectangle (18.1,8.62);
+\node[badge=cK, anchor=north west] at (14.38,8.54) {K2};
+\node[ttl, text width=3.05cm, align=left] at (14.92,8.569999999999999) {Knowledge $K_2$};
+\node[txt=3.55cm] at (14.38,7.999999999999999) {\textbf{H1.1} delay of 6--12 years on one curve\\\textbf{H1.2} closing in relative terms only; the furthest behind close least\\$\rightarrow$ feeds the synthesis (V14) and W3's features};
+\draw[box=cV] (2.6,2.0699999999999994) rectangle (10.55,8.62);
+\node[badge=cV, anchor=north west] at (2.68,8.54) {V2};
+\node[ttl, text width=7.20cm, align=left] at (3.22,8.569999999999999) {Visual exploration of the transformed data};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th5) at (4.63,6.98) {\img{V9_feedback_transformation.png}{3.71}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th5.north west) {5};
+\node[capt, text width=3.71cm, anchor=north] at (4.63,5.85) {\textbf{V9} what $T$ changed: removed cells, new features};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th6) at (8.52,6.98) {\img{V1c_takeoff_alignment.png}{3.71}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th6.north west) {6};
+\node[capt, text width=3.71cm, anchor=north] at (8.52,5.85) {\textbf{V1c} aligned at own take-off: one S-curve};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th7) at (6.58,4.01) {\img{V1b_convergence.png}{3.71}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th7.north west) {7};
+\node[capt, text width=3.71cm, anchor=north] at (6.58,2.88) {\textbf{V1b} headroom: low starters close less};
+\draw[arr=cD] (2.3,5.34) -- (2.6,5.34);
+\draw[arr=cV] (10.55,5.34) -- (10.85,5.34);
+\draw[arr=cM] (14.0,5.34) -- (14.3,5.34);
+\draw[cL, line width=1.6pt, -{Stealth[length=3mm]}] (1.15,9.37) -- (1.15,8.62);
+\node[txt=18.0cm, anchor=north west] at (0,1.82) {\textbf{Analysis path.} \textcircled{\scriptsize 1} check what is observed (V3b) $\rightarrow$ \textcircled{\scriptsize 2} fit and compare take-off years (V1) $\rightarrow$ \textcircled{\scriptsize 3} test the broadband relation and its change over time (V2) $\rightarrow$ \textcircled{\scriptsize 4} test what mobile subscriptions count, which exposes Fiji (V3) $\rightarrow$ $K_1$ $\rightarrow$ $T$ $\rightarrow$ \textcircled{\scriptsize 5} verify the transformation (V9) $\rightarrow$ \textcircled{\scriptsize 6} test the delay hypothesis in aligned time (V1c) $\rightarrow$ \textcircled{\scriptsize 7} test closing in headroom terms (V1b) $\rightarrow$ synthesis V14.};
+
+\end{tikzpicture}
+\end{document}

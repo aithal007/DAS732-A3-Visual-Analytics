@@ -1,0 +1,136 @@
+,country,cluster,stability
+GAB,Gabon,C1 mixed,0.404
+FJI,Fiji,C1 mixed,0.5
+VEN,Venezuela,C1 mixed,0.618
+CPV,Cape Verde,C1 mixed,0.627
+BOL,Bolivia,C1 mixed,0.627
+SLV,El Salvador,C1 mixed,0.735
+MDA,Moldova,C1 mixed,0.758
+CZE,Czechia,C1 mixed,0.758
+BRN,Brunei,C1 mixed,0.761
+SWE,Sweden,C1 mixed,0.762
+NZL,New Zealand,C1 mixed,0.763
+ZAF,South Africa,C1 mixed,0.764
+HKG,Hong Kong,C2 fixed-line legacy,0.768
+NOR,Norway,C1 mixed,0.771
+BHS,Bahamas,C1 mixed,0.774
+EST,Estonia,C2 fixed-line legacy,0.776
+UZB,Uzbekistan,C1 mixed,0.783
+SWZ,Eswatini,"C0 mobile-first, low",0.788
+ROU,Romania,C1 mixed,0.801
+DOM,Dominican Republic,C1 mixed,0.803
+BTN,Bhutan,C1 mixed,0.803
+IRL,Ireland,C2 fixed-line legacy,0.805
+PER,Peru,C1 mixed,0.807
+PHL,Philippines,"C0 mobile-first, low",0.808
+DNK,Denmark,C2 fixed-line legacy,0.809
+JOR,Jordan,C1 mixed,0.81
+KHM,Cambodia,"C0 mobile-first, low",0.812
+MKD,North Macedonia,C2 fixed-line legacy,0.813
+CHN,China,C2 fixed-line legacy,0.817
+ISL,Iceland,C2 fixed-line legacy,0.821
+SVK,Slovakia,C1 mixed,0.829
+SYC,Seychelles,C1 mixed,0.832
+BIH,Bosnia and Herzegovina,C1 mixed,0.832
+NIC,Nicaragua,"C0 mobile-first, low",0.834
+MAC,Macao,C1 mixed,0.84
+FIN,Finland,C1 mixed,0.84
+COL,Colombia,C1 mixed,0.855
+KGZ,Kyrgyzstan,C1 mixed,0.855
+ARM,Armenia,C1 mixed,0.861
+EGY,Egypt,C1 mixed,0.866
+MYS,Malaysia,C1 mixed,0.871
+VNM,Vietnam,C1 mixed,0.871
+BHR,Bahrain,C1 mixed,0.872
+GEO,Georgia,C1 mixed,0.872
+TTO,Trinidad and Tobago,C1 mixed,0.873
+LVA,Latvia,C1 mixed,0.874
+ARG,Argentina,C1 mixed,0.874
+IRQ,Iraq,C1 mixed,0.874
+DZA,Algeria,C1 mixed,0.876
+IRN,Iran,C1 mixed,0.876
+THA,Thailand,C1 mixed,0.876
+TUN,Tunisia,C1 mixed,0.876
+LTU,Lithuania,C1 mixed,0.876
+MAR,Morocco,C1 mixed,0.878
+TUR,Turkey,C1 mixed,0.88
+QAT,Qatar,C1 mixed,0.88
+AUS,Australia,C2 fixed-line legacy,0.88
+CHL,Chile,C1 mixed,0.88
+ALB,Albania,C1 mixed,0.881
+MDV,Maldives,C1 mixed,0.882
+OMN,Oman,C1 mixed,0.883
+JAM,Jamaica,C1 mixed,0.883
+BRA,Brazil,C1 mixed,0.883
+AZE,Azerbaijan,C1 mixed,0.883
+MEX,Mexico,C1 mixed,0.883
+KAZ,Kazakhstan,C1 mixed,0.883
+MNG,Mongolia,C1 mixed,0.883
+CRI,Costa Rica,C1 mixed,0.883
+VCT,Saint Vincent and the Grenadines,C1 mixed,0.883
+PRT,Portugal,C2 fixed-line legacy,0.903
+MCO,Monaco,C2 fixed-line legacy,0.903
+AND,Andorra,C2 fixed-line legacy,0.903
+BEL,Belgium,C2 fixed-line legacy,0.904
+USA,United States,C2 fixed-line legacy,0.906
+HRV,Croatia,C2 fixed-line legacy,0.906
+HUN,Hungary,C2 fixed-line legacy,0.907
+NLD,Netherlands,C2 fixed-line legacy,0.908
+MLT,Malta,C2 fixed-line legacy,0.911
+KOR,South Korea,C2 fixed-line legacy,0.911
+DEU,Germany,C2 fixed-line legacy,0.911
+BLR,Belarus,C2 fixed-line legacy,0.911
+GRC,Greece,C2 fixed-line legacy,0.911
+SEN,Senegal,"C0 mobile-first, low",0.913
+NAM,Namibia,"C0 mobile-first, low",0.917
+GHA,Ghana,"C0 mobile-first, low",0.917
+SAU,Saudi Arabia,C2 fixed-line legacy,0.917
+SVN,Slovenia,C2 fixed-line legacy,0.918
+CAN,Canada,C2 fixed-line legacy,0.918
+ESP,Spain,C2 fixed-line legacy,0.919
+CYP,Cyprus,C2 fixed-line legacy,0.92
+IDN,Indonesia,"C0 mobile-first, low",0.92
+ARE,United Arab Emirates,C2 fixed-line legacy,0.922
+GBR,United Kingdom,C2 fixed-line legacy,0.922
+ECU,Ecuador,"C0 mobile-first, low",0.923
+SRB,Serbia,C2 fixed-line legacy,0.924
+MNE,Montenegro,C2 fixed-line legacy,0.924
+CHE,Switzerland,C2 fixed-line legacy,0.924
+AUT,Austria,C2 fixed-line legacy,0.924
+URY,Uruguay,C2 fixed-line legacy,0.924
+ITA,Italy,C2 fixed-line legacy,0.925
+MUS,Mauritius,C2 fixed-line legacy,0.925
+LIE,Liechtenstein,C2 fixed-line legacy,0.925
+SGP,Singapore,C2 fixed-line legacy,0.925
+GTM,Guatemala,"C0 mobile-first, low",0.926
+CUB,Cuba,"C0 mobile-first, low",0.926
+KIR,Kiribati,"C0 mobile-first, low",0.931
+BWA,Botswana,"C0 mobile-first, low",0.934
+AGO,Angola,"C0 mobile-first, low",0.935
+TCD,Chad,"C0 mobile-first, low",0.935
+BEN,Benin,"C0 mobile-first, low",0.935
+PAK,Pakistan,"C0 mobile-first, low",0.935
+TGO,Togo,"C0 mobile-first, low",0.935
+UGA,Uganda,"C0 mobile-first, low",0.935
+KEN,Kenya,"C0 mobile-first, low",0.935
+NER,Niger,"C0 mobile-first, low",0.935
+MOZ,Mozambique,"C0 mobile-first, low",0.935
+MWI,Malawi,"C0 mobile-first, low",0.935
+BFA,Burkina Faso,"C0 mobile-first, low",0.935
+COD,Democratic Republic of Congo,"C0 mobile-first, low",0.935
+ETH,Ethiopia,"C0 mobile-first, low",0.935
+ZMB,Zambia,"C0 mobile-first, low",0.935
+RWA,Rwanda,"C0 mobile-first, low",0.935
+NGA,Nigeria,"C0 mobile-first, low",0.936
+HND,Honduras,"C0 mobile-first, low",0.937
+IND,India,"C0 mobile-first, low",0.937
+NPL,Nepal,"C0 mobile-first, low",0.94
+MRT,Mauritania,"C0 mobile-first, low",0.94
+CIV,Cote d'Ivoire,"C0 mobile-first, low",0.94
+BGD,Bangladesh,"C0 mobile-first, low",0.941
+GMB,Gambia,"C0 mobile-first, low",0.941
+STP,Sao Tome and Principe,"C0 mobile-first, low",0.942
+TZA,Tanzania,"C0 mobile-first, low",0.942
+ZWE,Zimbabwe,"C0 mobile-first, low",0.942
+LSO,Lesotho,"C0 mobile-first, low",0.943
+LKA,Sri Lanka,"C0 mobile-first, low",0.943

@@ -1,193 +1,131 @@
-\documentclass[tikz,border=4pt]{standalone}
-\usetikzlibrary{positioning,arrows.meta,calc,backgrounds}
+\documentclass[tikz,border=3pt]{standalone}
+\usetikzlibrary{positioning,arrows.meta,calc}
 \usepackage[scaled=0.95]{helvet}
 \renewcommand{\familydefault}{\sfdefault}
-\usepackage{amssymb}
-% ---------------------------------------------------------------- palette (same as all figures)
-\definecolor{cD}{HTML}{2A78D6}   % data
-\definecolor{cV}{HTML}{E69F00}   % visualization
-\definecolor{cM}{HTML}{009E73}   % models
-\definecolor{cK}{HTML}{CC79A7}   % knowledge
-\definecolor{cL}{HTML}{C0392B}   % feedback loop
-\definecolor{ink}{HTML}{1F2328}
-\definecolor{mut}{HTML}{6E7781}
-\definecolor{pan}{HTML}{F3F5F7}
-\definecolor{r1}{HTML}{E69F00}\definecolor{r2}{HTML}{56B4E9}\definecolor{r3}{HTML}{009E73}
+\usepackage{amssymb,amsmath}
+\definecolor{cD}{HTML}{2A78D6}\definecolor{cV}{HTML}{E69F00}\definecolor{cM}{HTML}{009E73}
+\definecolor{cK}{HTML}{CC79A7}\definecolor{cL}{HTML}{C0392B}\definecolor{ink}{HTML}{1F2328}
+\definecolor{mut}{HTML}{57606A}\definecolor{pan}{HTML}{F3F5F7}\definecolor{ok}{HTML}{1A7F37}
+\definecolor{no}{HTML}{C0392B}\definecolor{part}{HTML}{B35900}
 \tikzset{
-  mod/.style={draw=#1, fill=#1!7, rounded corners=4pt, line width=0.9pt},
-  ttl/.style={font=\bfseries\footnotesize, text=ink, anchor=north, align=center},
-  sub/.style={font=\tiny, text=mut, anchor=north, align=center, text width=#1},
-  chip/.style={draw=#1, fill=white, rounded corners=2pt, line width=0.6pt, font=\tiny, text=ink,
-               inner sep=1.6pt, minimum height=0.34cm},
-  badge/.style={circle, fill=#1, text=white, font=\bfseries\tiny, inner sep=0pt, minimum size=0.36cm},
-  arr/.style={-{Stealth[length=2.4mm]}, line width=0.9pt, color=#1},
-  hdr/.style={font=\bfseries\small, text=ink},
-  num/.style={circle, draw=ink, line width=0.7pt, font=\bfseries\scriptsize, inner sep=0pt, minimum size=0.42cm},
+  box/.style={draw=#1, fill=#1!6, rounded corners=3pt, line width=0.8pt},
+  ttl/.style={font=\bfseries\scriptsize, text=ink, anchor=north west, inner sep=2pt},
+  txt/.style={font=\scriptsize, text=ink, anchor=north west, align=left, inner sep=2pt, text width=#1},
+  capt/.style={font=\scriptsize, text=ink, align=center, inner sep=1pt},
+  chip/.style={draw=#1, fill=white, rounded corners=2pt, line width=0.5pt, font=\scriptsize, text=ink,
+               inner sep=1.5pt, align=left},
+  stepn/.style={circle, fill=ink, text=white, font=\bfseries\scriptsize, inner sep=0pt, minimum size=0.36cm},
+  badge/.style={rounded corners=2pt, fill=#1, text=white, font=\bfseries\scriptsize, inner sep=2pt},
+  arr/.style={-{Stealth[length=2.2mm]}, line width=0.9pt, color=#1},
+  verdict/.style={rounded corners=2pt, fill=#1, text=white, font=\bfseries\scriptsize, inner sep=1.6pt},
 }
-\newcommand{\header}[3]{\node[num] at (#1,#2) {#3};}
+\newcommand{\img}[3]{\includegraphics[width=#2cm,height=#3cm,keepaspectratio]{../../images/#1}}
 
 \begin{document}
 \begin{tikzpicture}[x=1cm,y=1cm]
-
-% ================================================================ (a) compact Keim diamond
-\node[font=\bfseries\scriptsize, text=ink, anchor=west] at (-0.1,9.25) {(a) Keim et al., compact};
-\fill[pan, rounded corners=6pt] (-0.1,2.0) rectangle (2.95,8.95);
-\node[mod=cV, minimum width=1.55cm, minimum height=0.5cm, font=\tiny\bfseries] (kv) at (1.42,8.05) {Visualization};
-\node[mod=cD, minimum width=0.95cm, minimum height=0.5cm, font=\tiny\bfseries] (kd) at (0.55,6.55) {Data};
-\node[mod=cK, minimum width=1.15cm, minimum height=0.5cm, font=\tiny\bfseries] (kk) at (2.3,6.55) {Knowledge};
-\node[mod=cM, minimum width=1.05cm, minimum height=0.5cm, font=\tiny\bfseries] (km) at (1.42,5.05) {Models};
-\foreach \a/\b in {kd/kv, kd/km, kv/kk, km/kk} \draw[arr=ink, line width=0.6pt] (\a) -- (\b);
-\draw[arr=ink, line width=0.6pt] ([xshift=-2pt]kv.south) -- ([xshift=-2pt]km.north);
-\draw[arr=ink, line width=0.6pt] ([xshift=2pt]km.north) -- ([xshift=2pt]kv.south);
-\draw[arr=cL, line width=1pt] (kk.south) .. controls (2.6,3.7) and (0.3,3.7) .. (kd.south);
-\node[font=\tiny\bfseries, text=cL] at (1.42,3.55) {feedback loop};
-\node[sub=2.8cm, font=\tiny] at (1.42,3.25) {a cycle with self-loops cannot\\show which pass produced\\which inference, so (b)\\unrolls it into two rows};
-
-% ================================================================ (b) headers
-\node[font=\bfseries\scriptsize, text=ink, anchor=west] at (3.35,9.25) {(b) Our workflow, unrolled};
-\header{4.2}{8.55}{1} \node[hdr, anchor=west] at (4.48,8.55) {Data};
-\header{8.15}{8.55}{2} \node[hdr, anchor=west] at (8.43,8.55) {Visualize};
-\header{12.15}{8.55}{3} \node[hdr, anchor=west] at (12.43,8.55) {Model};
-\header{16.25}{8.55}{4} \node[hdr, anchor=west] at (16.53,8.55) {Visualize $\rightarrow$ Know};
-
-% lane labels
-\node[rotate=90, font=\bfseries\scriptsize, text=ink] at (3.55,6.75) {Iteration 1 \textcolor{mut}{\textmd{(raw data)}}};
-\node[rotate=90, font=\bfseries\scriptsize, text=ink] at (3.55,2.55) {Iteration 2 \textcolor{mut}{\textmd{(transformed)}}};
-
-% ================================================================ lane 1
-% ---- D1
-\draw[mod=cD] (3.9,5.45) rectangle (7.45,8.15);
-\node[badge=cD] at (3.9,8.15) {D1};
-\node[ttl] at (5.75,8.05) {Raw OWID panel};
-\node[sub=3.4cm] at (5.67,7.68) {217 countries, 1960--2025,\\5 indicators (white = missing)};
-% mini coverage grid: 5 indicators x 9 years, white = missing
-\foreach \r/\miss in {0/{}, 1/{}, 2/{}, 3/{0,1,2}, 4/{0,1,2,3,4,5,6}} {
-  \foreach \c in {0,...,8} {
-    \def\col{cD!55}
-    \foreach \m in \miss { \ifnum\c=\m \gdef\col{white} \fi }
-    \fill[\col, draw=cD!40, line width=0.2pt] (5.1+\c*0.24, 6.95-\r*0.22) rectangle ++(0.2,0.18);
-  }
-}
-\foreach \lab [count=\i from 0] in {internet, mobile, landline, broadband, owners}
-  \node[font=\tiny, text=mut, anchor=east] at (5.06, 7.04-\i*0.22) {\lab};
-\node[chip=cD, anchor=west] at (4.1,5.72) {audit: 2 duplicate + 5 count cols dropped};
-
-% ---- V1
-\draw[mod=cV] (7.85,5.45) rectangle (11.45,8.15);
-\node[badge=cV] at (7.85,8.15) {V1};
-\node[ttl] at (9.7,8.05) {Statistical exploration};
-\node[sub=3.4cm] at (9.65,7.68) {S-curves, convergence,\\broadband floor, SIMs per owner};
-\begin{scope}[shift={(8.2,6.05)}]
-  \draw[mut, line width=0.4pt, -{Stealth[length=1mm]}] (0,0) -- (1.55,0);
-  \draw[mut, line width=0.4pt, -{Stealth[length=1mm]}] (0,0) -- (0,1.05);
-  \foreach \s/\cc in {0.35/r3, 0.75/r2, 1.15/r1}
-    \draw[\cc, line width=1.1pt, domain=0:1.5, samples=40] plot (\x, {0.95/(1+exp(-7*(\x-\s)))});
-  \node[font=\tiny, text=mut, anchor=north] at (0.78,-0.02) {take-off delay 6--12 yr};
-\end{scope}
-\begin{scope}[shift={(10.0,6.05)}]
-  \foreach \x/\y in {0.1/0.12,0.2/0.18,0.3/0.1,0.45/0.35,0.6/0.42,0.75/0.55,0.9/0.62,1.05/0.78,1.2/0.85}
-     \fill[cD!80] (\x,\y) circle (0.035);
-  \draw[ink, line width=0.8pt] (0.05,0.1) -- (0.45,0.3) -- (1.25,0.9);
-  \fill[cV!25] (0,0) rectangle (0.3,1.0);
-  \node[font=\tiny, text=mut, anchor=north] at (0.65,-0.02) {broadband floor};
-\end{scope}
-
-% ---- M1
-\draw[mod=cM] (11.85,5.45) rectangle (15.6,8.15);
-\node[badge=cM] at (11.85,8.15) {M1};
-\node[ttl] at (13.75,8.05) {Mining + baseline models};
-\node[sub=3.6cm] at (13.72,7.68) {complete cases, no imputation};
-\node[chip=cM, minimum width=3.3cm] at (13.72,7.0) {PCA $\cdot$ $k$-means / GMM / Ward};
-\node[chip=cM, minimum width=3.3cm] at (13.72,6.52) {Isolation Forest + LOF anomalies};
-\node[chip=cM, minimum width=3.3cm] at (13.72,6.04) {Ridge $\cdot$ RF $\cdot$ HistGBM, grouped CV};
-\node[font=\tiny, text=mut] at (13.72,5.67) {silhouette $\cdot$ bootstrap ARI $\cdot$ held-out importance};
-
-% ---- V2 / K1
-\draw[mod=cK] (16.0,5.45) rectangle (19.75,8.15);
-\node[badge=cK] at (16.0,8.15) {K1};
-\node[ttl] at (17.95,8.05) {Diagnostics $\rightarrow$ inferences};
-\node[sub=3.6cm] at (17.88,7.68) {read from V2: biplot, clusters,\\anomalies, residuals};
-\foreach \t [count=\i from 0] in {K1.1 Fiji 2023--24 = artefact, K1.2 SIMs $\neq$ people, K1.3 history $>$ snapshot, {K1.4 broadband floor; data MNAR}}
-  \node[chip=cK, anchor=west, minimum width=3.45cm] at (16.15,6.95-\i*0.4) {\t};
-
-% lane-1 arrows
-\draw[arr=cD] (7.45,6.8) -- (7.85,6.8);
-\draw[arr=cV] (11.45,6.8) -- (11.85,6.8);
-\draw[arr=cM] (15.6,6.8) -- (16.0,6.8);
-
-% ================================================================ feedback channel
-\draw[cL, line width=1.6pt, rounded corners=6pt, -{Stealth[length=3mm]}]
-  (17.88,5.45) -- (17.88,5.2) -- (5.67,5.2) -- (5.67,4.42);
-\node[fill=white, draw=cL, line width=1pt, rounded corners=3pt, font=\bfseries\scriptsize, text=cL,
-      inner sep=3pt] at (11.7,5.2) {FEEDBACK LOOP};
-\node[font=\tiny, text=cL, fill=white, inner sep=1pt] at (11.7,4.86)
-  {inferences K1 $\rightarrow$ transformation T:\enspace T1 clean artefacts $\cdot$ T2 engineer 13 features $\cdot$ T3 reshape to trajectories + in-fold MICE};
-
-% ================================================================ lane 2
-% ---- D2
-\draw[mod=cD, draw=cL] (3.9,1.25) rectangle (7.45,4.42);
-\node[badge=cD] at (3.9,4.42) {D2};
-\node[ttl] at (5.75,4.32) {Transformed panel};
-\node[sub=3.4cm] at (5.67,3.95) {10 artefact cells removed,\\13 past-only features + flags};
-\foreach \r in {0,...,3} \foreach \c in {0,...,8}
-  \fill[cD!55, draw=cD!40, line width=0.2pt] (5.1+\c*0.24, 3.05-\r*0.22) rectangle ++(0.2,0.18);
-\draw[cL, line width=1pt] (5.1+7*0.24,3.05-1*0.22) -- ++(0.2,0.18) ++(-0.2,0) -- ++(0.2,-0.18);
-\foreach \lab [count=\i from 0] in {internet, mobile, landline, broadband} \node[font=\tiny, text=mut, anchor=east] at (5.06, 3.14-\i*0.22) {\lab};
-\foreach \c in {0,...,8} \fill[cM!55, draw=cM!40, line width=0.2pt] (5.1+\c*0.24, 3.05-4*0.22) rectangle ++(0.2,0.18);
-\node[font=\tiny, text=cM!70!black, anchor=east] at (5.06,2.26) {+13 features};
-\node[chip=cD, anchor=west] at (4.1,1.55) {imputation fitted inside each training fold};
-
-% ---- V3
-\draw[mod=cV] (7.85,1.25) rectangle (11.45,4.42);
-\node[badge=cV] at (7.85,4.42) {V3};
-\node[ttl] at (9.7,4.32) {Transformation views};
-\node[sub=3.4cm] at (9.65,3.95) {before/after, feature\\association, drift};
-\begin{scope}[shift={(8.25,1.65)}]
-  \fill[cL!8] (0,0.62) rectangle (2.9,1.45);
-  \draw[cL, dashed, line width=0.6pt] (0,0.62) -- (2.9,0.62);
-  \node[font=\tiny, text=cL, anchor=south] at (1.5,0.64) {PSI = 0.2 (retrain)};
-  \draw[ink, line width=1.1pt] (0,1.2) -- (0.5,0.7) -- (1.0,0.3) -- (1.5,0.12) -- (2.0,0.18) -- (2.4,0.7) -- (2.85,1.05);
-  \draw[cD, line width=0.8pt] (0,0.9) -- (0.6,0.4) -- (1.2,0.1) -- (2.0,0.08) -- (2.85,0.3);
-  \draw[mut, line width=0.4pt] (0,0) -- (2.9,0);
-  \node[font=\tiny, text=mut, anchor=north] at (1.45,0) {drift chart: target moves, inputs do not};
-\end{scope}
-
-% ---- M2
-\draw[mod=cM] (11.85,1.25) rectangle (15.6,4.42);
-\node[badge=cM] at (11.85,4.42) {M2};
-\node[ttl] at (13.75,4.32) {Iteration-2 models};
-\node[sub=3.6cm] at (13.72,3.95) {same country folds as iteration 1};
-\node[chip=cM, minimum width=3.3cm] at (13.72,3.27) {DTW trajectory clustering ($k$=3)};
-\node[chip=cM, minimum width=3.3cm] at (13.72,2.79) {HistGBM + engineered features};
-\node[chip=cM, minimum width=3.3cm] at (13.72,2.31) {quantile forecast + conformal (CQR)};
-\begin{scope}[shift={(12.35,1.42)}]
-  \foreach \s/\cc in {0.3/r1, 0.9/r2, 1.6/r3}
-    \draw[\cc, line width=0.9pt, domain=0:2.6, samples=30] plot (\x, {0.48/(1+exp(-4*(\x-\s)))});
-\end{scope}
-
-% ---- V4 / K2
-\draw[mod=cK] (16.0,1.25) rectangle (19.75,4.42);
-\node[badge=cK] at (16.0,4.42) {K2};
-\node[ttl] at (17.95,4.32) {Evaluation $\rightarrow$ knowledge};
-\node[sub=3.6cm] at (17.88,3.95) {read from V4: archetypes,\\iteration 1 vs 2, fan chart};
-\node[chip=cK, anchor=west, minimum width=3.45cm] at (16.15,3.27) {same-row RMSE 11.77 $\rightarrow$ 10.16};
-\node[chip=cK, anchor=west, minimum width=3.45cm] at (16.15,2.85) {silhouette 0.35 $\rightarrow$ 0.52};
-\node[chip=cK, anchor=west, minimum width=3.45cm] at (16.15,2.43) {80\% coverage 50\% $\rightarrow$ 83\%};
-\node[font=\tiny\bfseries, text=ink, align=center, text width=3.5cm] at (17.88,1.72)
-  {answer: a 6--12 yr delay on one S-curve; fixed infrastructure marks the position};
-
-% lane-2 arrows
-\draw[arr=cD] (7.45,2.85) -- (7.85,2.85);
-\draw[arr=cV] (11.45,2.85) -- (11.85,2.85);
-\draw[arr=cM] (15.6,2.85) -- (16.0,2.85);
-% drift triggers re-calibration (dashed, like a refresh edge)
-\draw[arr=cV, dashed, line width=0.8pt] (9.65,1.25) .. controls (9.9,0.72) and (13.4,0.72) .. (13.72,2.12);
-\node[font=\tiny, text=cV!80!black, fill=white, inner sep=1pt] at (11.7,0.86) {PSI $>$ 0.2 $\Rightarrow$ re-calibrate intervals};
-
-% ================================================================ outputs bar
-\draw[arr=ink, line width=0.9pt] (17.88,1.25) -- (17.88,0.2) -- (12.9,0.2);
-\node[draw=ink, fill=pan, rounded corners=3pt, font=\scriptsize, text=ink, inner sep=3pt, anchor=east]
-  at (12.9,0.2) {\textbf{outputs}\enspace IEEE report $\cdot$ data-story deck $\cdot$ interactive app (browser)};
-
+\draw[box=ink, fill=pan] (0,12.05) rectangle (13.2,14.6);
+\node[badge=ink, anchor=north west] at (0.08,14.52) {Main question};
+\node[txt=12.9cm, font=\footnotesize] at (0.08,14.1) {Can infrastructure and history explain and forecast which countries get online, and does feeding each iteration's inferences back into the data change the answer? \textcolor{mut}{\scriptsize (A1 asked whether mobile let countries skip fixed lines, and whether that closed the divide.)}};
+\node[txt=12.9cm] at (0.08,13.15) {Answered by three workflows, one per team member and one per family of methods. Each is a complete unrolled Keim loop with its own question, hypotheses, feedback loop and second iteration (Figs.~W1--W3); their knowledge is combined in one synthesis.};
+\node[font=\bfseries\scriptsize, text=ink, anchor=north] at (15.65,14.6) {Keim et al., compact};
+\node[box=cV, font=\bfseries\scriptsize, minimum size=0.42cm, inner sep=1pt] (kV) at (15.65,13.85) {V};
+\node[box=cD, font=\bfseries\scriptsize, minimum size=0.42cm, inner sep=1pt] (kD) at (14.60,13.30) {D};
+\node[box=cK, font=\bfseries\scriptsize, minimum size=0.42cm, inner sep=1pt] (kK) at (16.70,13.30) {K};
+\node[box=cM, font=\bfseries\scriptsize, minimum size=0.42cm, inner sep=1pt] (kM) at (15.65,12.75) {M};
+\draw[arr=ink, line width=0.5pt] (kD) -- (kV);
+\draw[arr=ink, line width=0.5pt] (kD) -- (kM);
+\draw[arr=ink, line width=0.5pt] (kV) -- (kK);
+\draw[arr=ink, line width=0.5pt] (kM) -- (kK);
+\draw[arr=ink, line width=0.5pt] (kV) -- (kM);
+\draw[arr=cL, line width=0.9pt] (kK.south) .. controls (16.55,12.15) and (14.75,12.15) .. (kD.south);
+\node[font=\scriptsize, text=cL, anchor=north] at (15.65,12.4) {feedback loop, unrolled below};
+\draw[box=cD] (0,0.55) rectangle (1.75,11.7);
+\node[badge=cD, anchor=north west] at (0.08,11.62) {D};
+\node[txt=1.6cm] at (0.06,11.1) {\textbf{Raw OWID panel} (A1)\\[2pt]217 countries\\1960--2025\\5 indicators\\[4pt]\textbf{Shared core}\\one definition of the panel, regions, artefact rules and features};
+\draw[box=cK, line width=1.1pt] (16.35,0.55) rectangle (18.1,11.7);
+\node[badge=cK, anchor=north west] at (16.43,11.62) {K$^\ast$};
+\node[txt=1.6cm] at (16.4,11.1) {\textbf{Synthesis}\\[2pt]\img{V14_synthesis_answer.png}{1.6}{1.4}\\[2pt]V14: the divide is a delay on one S-curve; fixed infrastructure, not mobile, marks the position};
+\draw[box=ink, fill=white] (2.0,8.12) rectangle (3.85,11.62);
+\node[badge=ink, anchor=north west] at (2.06,11.56) {W1};
+\node[txt=1.75cm] at (2.04,11.12) {\textbf{Statistics}\\Parikshith\\[3pt]\textit{When, and is it closing?}};
+\draw[box=cV] (4.1,8.12) rectangle (6.55,11.62);
+\node[ttl] at (4.119999999999999,11.60) {Iteration 1: V + M};
+\node[inner sep=0.5pt, draw=mut!45, line width=0.3pt] at (5.32,9.89) {\img{V1_diffusion_scurves.png}{2.25}{2.27}};
+\node[capt, text width=2.35cm, anchor=south] at (5.32,8.14) {V3b, V1, V2, V3};
+\draw[box=cV] (11.35,8.12) rectangle (13.8,11.62);
+\node[ttl] at (11.37,11.60) {Iteration 2: V + M};
+\node[inner sep=0.5pt, draw=mut!45, line width=0.3pt] at (12.57,9.89) {\img{V1c_takeoff_alignment.png}{2.25}{2.27}};
+\node[capt, text width=2.35cm, anchor=south] at (12.57,8.14) {V9, V1c, V1b};
+\draw[box=cK] (6.8,8.12) rectangle (8.75,11.62);
+\node[ttl] at (6.819999999999999,11.60) {K$_1$};
+\node[txt=1.85cm] at (6.819999999999999,11.20) {delay; SIMs $\neq$ people; Fiji artefact; floor};
+\draw[box=cK] (14.05,8.12) rectangle (16.1,11.62);
+\node[ttl] at (14.07,11.60) {K$_2$};
+\node[txt=1.95cm] at (14.07,11.20) {one curve, 6--12 yr delay; low starters close least};
+\draw[box=cL, fill=cL!6, line width=1pt] (9.05,8.12) rectangle (11.05,11.62);
+\node[ttl, text=cL] at (9.07,11.60) {T: Feedback loop};
+\node[txt=1.90cm] at (9.07,11.20) {shared T1 (artefacts); own time $t-t_0$; headroom; per owner};
+\draw[arr=ink] (3.85,9.87) -- (4.1,9.87);
+\draw[arr=cV] (6.55,9.87) -- (6.8,9.87);
+\draw[arr=cL, line width=1.4pt] (8.75,9.87) -- (9.05,9.87);
+\draw[arr=cL, line width=1.4pt] (11.05,9.87) -- (11.35,9.87);
+\draw[arr=cV] (13.8,9.87) -- (14.05,9.87);
+\draw[arr=cD] (1.75,9.87) -- (2.0,9.87);
+\draw[arr=cK] (16.1,9.87) -- (16.35,9.87);
+\draw[box=ink, fill=white] (2.0,4.41) rectangle (3.85,7.90);
+\node[badge=ink, anchor=north west] at (2.06,7.84) {W2};
+\node[txt=1.75cm] at (2.04,7.40) {\textbf{Unsupervised}\\Sindhoor\\[3pt]\textit{Which kinds of countries?}};
+\draw[box=cV] (4.1,4.41) rectangle (6.55,7.90);
+\node[ttl] at (4.119999999999999,7.88) {Iteration 1: V + M};
+\node[inner sep=0.5pt, draw=mut!45, line width=0.3pt] at (5.32,6.17) {\img{V5b_bootstrap_coassignment.png}{2.25}{2.27}};
+\node[capt, text width=2.35cm, anchor=south] at (5.32,4.43) {V4, V5, V5b, V5c, V6, V6b, V6c};
+\draw[box=cV] (11.35,4.41) rectangle (13.8,7.90);
+\node[ttl] at (11.37,7.88) {Iteration 2: V + M};
+\node[inner sep=0.5pt, draw=mut!45, line width=0.3pt] at (12.57,6.17) {\img{V8_trajectory_archetypes.png}{2.25}{2.27}};
+\node[capt, text width=2.35cm, anchor=south] at (12.57,4.43) {V8a, V8b, V8, V8c, V8d};
+\draw[box=cK] (6.8,4.41) rectangle (8.75,7.90);
+\node[ttl] at (6.819999999999999,7.88) {K$_1$};
+\node[txt=1.85cm] at (6.819999999999999,7.48) {unstable borders; no history; \textbf{Fiji transient} $\Rightarrow$ shared T1};
+\draw[box=cK] (14.05,4.41) rectangle (16.1,7.90);
+\node[ttl] at (14.07,7.88) {K$_2$};
+\node[txt=1.95cm] at (14.07,7.48) {three path archetypes; 37 of 133 regroup};
+\draw[box=cL, fill=cL!6, line width=1pt] (9.05,4.41) rectangle (11.05,7.90);
+\node[ttl, text=cL] at (9.07,7.88) {T: Feedback loop};
+\node[txt=1.90cm] at (9.07,7.48) {artefacts out; snapshot$\rightarrow$curves; DTW};
+\draw[arr=ink] (3.85,6.15) -- (4.1,6.15);
+\draw[arr=cV] (6.55,6.15) -- (6.8,6.15);
+\draw[arr=cL, line width=1.4pt] (8.75,6.15) -- (9.05,6.15);
+\draw[arr=cL, line width=1.4pt] (11.05,6.15) -- (11.35,6.15);
+\draw[arr=cV] (13.8,6.15) -- (14.05,6.15);
+\draw[arr=cD] (1.75,6.15) -- (2.0,6.15);
+\draw[arr=cK] (16.1,6.15) -- (16.35,6.15);
+\draw[box=ink, fill=white] (2.0,0.69) rectangle (3.85,4.19);
+\node[badge=ink, anchor=north west] at (2.06,4.13) {W3};
+\node[txt=1.75cm] at (2.04,3.69) {\textbf{Supervised}\\Varshith\\[3pt]\textit{Predict and forecast?}};
+\draw[box=cV] (4.1,0.69) rectangle (6.55,4.19);
+\node[ttl] at (4.119999999999999,4.17) {Iteration 1: V + M};
+\node[inner sep=0.5pt, draw=mut!45, line width=0.3pt] at (5.32,2.46) {\img{V7_baseline_diagnostics.png}{2.25}{2.27}};
+\node[capt, text width=2.35cm, anchor=south] at (5.32,0.71) {V7};
+\draw[box=cV] (11.35,0.69) rectangle (13.8,4.19);
+\node[ttl] at (11.37,4.17) {Iteration 2: V + M};
+\node[inner sep=0.5pt, draw=mut!45, line width=0.3pt] at (12.57,2.46) {\img{V12_forecast_fan_chart.png}{2.25}{2.27}};
+\node[capt, text width=2.35cm, anchor=south] at (12.57,0.71) {V10, V11, V12b, V13, V12};
+\draw[box=cK] (6.8,0.69) rectangle (8.75,4.19);
+\node[ttl] at (6.819999999999999,4.17) {K$_1$};
+\node[txt=1.85cm] at (6.819999999999999,3.77) {broadband only; mid-level errors; MNAR};
+\draw[box=cK] (14.05,0.69) rectangle (16.1,4.19);
+\node[ttl] at (14.07,4.17) {K$_2$};
+\node[txt=1.95cm] at (14.07,3.77) {$-14$\,\% error; drift; 83\,\% coverage};
+\draw[box=cL, fill=cL!6, line width=1pt] (9.05,0.69) rectangle (11.05,4.19);
+\node[ttl, text=cL] at (9.07,4.17) {T: Feedback loop};
+\node[txt=1.90cm] at (9.07,3.77) {13 history features \textbf{from W1's $K_1$}; in-fold MICE; drift$\Rightarrow$CQR};
+\draw[arr=ink] (3.85,2.44) -- (4.1,2.44);
+\draw[arr=cV] (6.55,2.44) -- (6.8,2.44);
+\draw[arr=cL, line width=1.4pt] (8.75,2.44) -- (9.05,2.44);
+\draw[arr=cL, line width=1.4pt] (11.05,2.44) -- (11.35,2.44);
+\draw[arr=cV] (13.8,2.44) -- (14.05,2.44);
+\draw[arr=cD] (1.75,2.44) -- (2.0,2.44);
+\draw[arr=cK] (16.1,2.44) -- (16.35,2.44);
+\node[anchor=north west, font=\scriptsize, text=mut, inner sep=0] at (0,0.43000000000000005) {Solid black: workflow order. Red: the feedback loop of each workflow (one edge per workflow, no self-loops). Bold notes mark knowledge passed between workflows.};
 \end{tikzpicture}
 \end{document}

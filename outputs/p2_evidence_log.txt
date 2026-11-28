@@ -1,0 +1,196 @@
+
+=== Mean co-assignment between cluster blocks (diag = within-block) ===
+                      C0 mobile-first, low  C1 mixed  C2 fixed-line legacy
+C0 mobile-first, low                 0.924     0.079                 0.000
+C1 mixed                             0.079     0.821                 0.461
+C2 fixed-line legacy                 0.000     0.461                 0.896
+
+[V1] mean ARI=0.640 (sd 0.203); share of country pairs with 0.1<co<0.9 = 0.453
+
+=== Least stable countries (bootstrap co-assignment with own cluster) ===
+          country   cluster  stability
+GAB         Gabon  C1 mixed      0.404
+FJI          Fiji  C1 mixed      0.500
+VEN     Venezuela  C1 mixed      0.618
+CPV    Cape Verde  C1 mixed      0.627
+BOL       Bolivia  C1 mixed      0.627
+SLV   El Salvador  C1 mixed      0.735
+MDA       Moldova  C1 mixed      0.758
+CZE       Czechia  C1 mixed      0.758
+BRN        Brunei  C1 mixed      0.761
+SWE        Sweden  C1 mixed      0.762
+NZL   New Zealand  C1 mixed      0.763
+ZAF  South Africa  C1 mixed      0.764
+  [img] V5b_bootstrap_coassignment.png
+
+=== Silhouette summary (k=2 vs k=3) ===
+   k  mean_silhouette  n_negative  n_below_0.10         sizes
+0  2           0.4469           2             7      [45, 90]
+1  3           0.3290           0            15  [41, 57, 37]
+
+=== Border countries at k=3 (sil < 0.1) ===
+             country            cluster_k3          neighbour_k3  sil_k3
+GAB            Gabon              C1 mixed  C0 mobile-first, low  0.0156
+FJI             Fiji              C1 mixed  C2 fixed-line legacy  0.0256
+MDA          Moldova              C1 mixed  C2 fixed-line legacy  0.0292
+EST          Estonia  C2 fixed-line legacy              C1 mixed  0.0304
+BRN           Brunei              C1 mixed  C2 fixed-line legacy  0.0335
+CZE          Czechia              C1 mixed  C2 fixed-line legacy  0.0500
+NZL      New Zealand              C1 mixed  C2 fixed-line legacy  0.0693
+SWZ         Eswatini  C0 mobile-first, low              C1 mixed  0.0748
+SWE           Sweden              C1 mixed  C2 fixed-line legacy  0.0767
+BHS          Bahamas              C1 mixed  C2 fixed-line legacy  0.0768
+NOR           Norway              C1 mixed  C2 fixed-line legacy  0.0790
+MKD  North Macedonia  C2 fixed-line legacy              C1 mixed  0.0799
+DNK          Denmark  C2 fixed-line legacy              C1 mixed  0.0849
+CHN            China  C2 fixed-line legacy              C1 mixed  0.0859
+IRL          Ireland  C2 fixed-line legacy              C1 mixed  0.0952
+  [img] V5c_silhouette_knife.png
+[anomaly] scanned [2019, 2020, 2021, 2022, 2023, 2024]; skipped (n complete < 100): [(2010, 0), (2011, 0), (2012, 0), (2013, 8), (2014, 29), (2015, 36), (2016, 48), (2017, 56), (2018, 54)]
+
+=== Anomaly persistence table (rows shown in strip) ===
+                           country  n_obs  n_flag  longest_run  max_score  mean_score  frac_flagged                 category
+code                                                                                                                        
+MCO                         Monaco      6       6            6      0.718       0.704         1.000  persistent (structural)
+HKG                      Hong Kong      6       6            6      0.640       0.622         1.000  persistent (structural)
+BDI                        Burundi      5       5            5      0.619       0.607         1.000  persistent (structural)
+AND                        Andorra      6       5            5      0.574       0.552         0.833  persistent (structural)
+FSM           Micronesia (country)      3       3            2      0.576       0.549         1.000                recurrent
+ARE           United Arab Emirates      6       3            3      0.557       0.527         0.500                recurrent
+CAF       Central African Republic      1       1            1      0.542       0.542         1.000    transient (artefact?)
+TCD                           Chad      4       2            1      0.548       0.531         0.500    transient (artefact?)
+ATG            Antigua and Barbuda      4       2            2      0.532       0.524         0.500    transient (artefact?)
+KWT                         Kuwait      4       2            2      0.537       0.523         0.500    transient (artefact?)
+BRB                       Barbados      4       2            1      0.552       0.521         0.500    transient (artefact?)
+LKA                      Sri Lanka      6       2            2      0.545       0.514         0.333    transient (artefact?)
+KIR                       Kiribati      6       2            2      0.541       0.501         0.333    transient (artefact?)
+FJI                           Fiji      6       2            2      0.662       0.493         0.333    transient (artefact?)
+LBY                          Libya      4       1            1      0.524       0.490         0.250    transient (artefact?)
+MDG                     Madagascar      5       1            1      0.530       0.507         0.200    transient (artefact?)
+UGA                         Uganda      6       1            1      0.579       0.508         0.167    transient (artefact?)
+COD   Democratic Republic of Congo      6       1            1      0.541       0.507         0.167    transient (artefact?)
+ZMB                         Zambia      6       1            1      0.540       0.507         0.167    transient (artefact?)
+CUB                           Cuba      6       1            1      0.520       0.497         0.167    transient (artefact?)
+IRN                           Iran      6       1            1      0.526       0.495         0.167    transient (artefact?)
+MAC                          Macao      6       1            1      0.627       0.485         0.167    transient (artefact?)
+
+[V6] category counts (all countries scanned): {'never flagged': 164, 'transient (artefact?)': 16, 'persistent (structural)': 4, 'recurrent': 2}
+     -> persistent = candidates for structural features (e.g. multi-SIM), transient = candidates for T1 cleaning review.
+  [img] V6b_anomaly_persistence.png
+
+=== Top anomalies: feature deviation from own cluster mean (z units) ===
+feature    broadband_subs_per100  internet_users_share_pct  mobile_phone_ownership_share_pct  mobile_subs_per100  telephone_lines_per100
+country                                                                                                                                 
+Andorra                     0.80                      0.04                             -0.00                0.27                    2.06
+Fiji                       -1.17                     -0.51                             -0.53                8.12                   -0.18
+Hong Kong                   0.05                      0.10                              0.10                4.13                    0.74
+Monaco                      1.01                      0.24                              0.19               -0.62                    4.05
+Uganda                     -0.17                     -1.64                             -1.64               -0.27                   -0.10
+  [img] V6c_anomaly_why.png
+Trajectory panel 2000-2025: 210 countries with any data -> 195 with >= 18 observed years -> n = 181 after gap handling (14 dropped for unfillable edges). Cells filled: 225 (interior linear interpolation; edge carry <= 3 yrs).
+
+=== DTW teaching pair ===
+    early     late  T50_early  T50_late  lag_years  dtw_dist  euclid_dist  euclid_over_dtw  mean_path_shift_years
+0  Brazil  Bolivia    2012.58    2019.2       6.62    0.1743       0.8638             4.96                   3.62
+  [img] V8a_dtw_alignment.png
+
+[V5] cophenetic correlation = 0.716
+
+=== Dendrogram cut diagnostics (k=2..6) ===
+   k  silhouette_dtw                    sizes  cut_height split_of_k-1 meaningful(min_child>=max(5,5%n))
+0  2          0.5759                [138, 43]    169.5391          NaN                               NaN
+1  3          0.5364            [113, 43, 25]    114.8850    [113, 25]                              True
+2  4          0.5074         [113, 43, 24, 1]     83.2800      [24, 1]                             False
+3  5          0.4186      [89, 43, 24, 24, 1]     68.4341     [89, 24]                              True
+4  6          0.4299  [61, 43, 28, 24, 24, 1]     54.4980     [61, 28]                              True
+
+=== Region x DTW cluster (does geography explain the tree?) ===
+dtw_cluster_k3  T0 late starters  T1 S-curve majority  T2 early saturators
+region                                                                    
+Africa                        33                   18                    0
+Asia                           6                   31                    5
+Europe                         0                   26                   16
+North America                  1                   20                    2
+Oceania                        3                    4                    2
+Other                          0                    2                    0
+South America                  0                   12                    0
+  [img] V8b_dtw_dendrogram.png
+
+=== T50 by DTW cluster ===
+                     count     mean   std      min   median      max
+cluster_dtw                                                         
+T0 late starters         5  2023.00  0.59  2022.20  2023.24  2023.62
+T1 S-curve majority    113  2013.51  4.55  2003.71  2013.90  2021.11
+T2 early saturators     25  2001.77  1.43  1999.83  2001.34  2005.83
+
+=== T50 by Euclidean cluster ===
+                     count     mean   std      min   median      max
+cluster_euclid                                                      
+T0 late starters        24  2020.24  1.74  2016.77  2019.72  2023.62
+T1 S-curve majority     73  2013.88  2.90  2008.12  2014.03  2019.65
+T2 early saturators     46  2004.06  2.92  1999.83  2003.61  2009.25
+[V3] eta^2: DTW=0.594 vs Euclid=0.819  (higher = clusters align with adoption timing)
+  [img] V8c_takeoff_ridgeline.png
+
+=== Crosstab Iteration-1 x Iteration-2 (Sankey source table) ===
+Iter2                 T0 late starters  T1 S-curve majority  T2 early saturators
+Iter1                                                                           
+C0 mobile-first, low                25                   16                    0
+C1 mixed                             0                   53                    4
+C2 fixed-line legacy                 0                   17                   18
+[V8] ARI(Iter1, Iter2) = 0.304; movers = 37/133 (27.8%); embedding = t-SNE
+
+=== Countries that changed cluster ===
+                   country                 iter1         iter2_aligned         iter2_native  changed  sil_iter1
+NZL            New Zealand              C1 mixed  C2 fixed-line legacy  T2 early saturators     True      0.069
+SWZ               Eswatini  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.075
+SWE                 Sweden              C1 mixed  C2 fixed-line legacy  T2 early saturators     True      0.077
+NOR                 Norway              C1 mixed  C2 fixed-line legacy  T2 early saturators     True      0.079
+MKD        North Macedonia  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.080
+CHN                  China  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.086
+IRL                Ireland  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.095
+PHL            Philippines  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.105
+KHM               Cambodia  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.135
+ECU                Ecuador  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.157
+NIC              Nicaragua  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.167
+MUS              Mauritius  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.180
+HRV                Croatia  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.196
+FIN                Finland              C1 mixed  C2 fixed-line legacy  T2 early saturators     True      0.236
+KIR               Kiribati  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.241
+CUB                   Cuba  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.257
+NAM                Namibia  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.269
+SEN                Senegal  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.270
+IDN              Indonesia  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.275
+GHA                  Ghana  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.278
+SAU           Saudi Arabia  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.291
+BWA               Botswana  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.294
+GTM              Guatemala  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.305
+HUN                Hungary  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.312
+CYP                 Cyprus  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.320
+SVN               Slovenia  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.358
+ITA                  Italy  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.378
+AND                Andorra  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.392
+HND               Honduras  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.394
+URY                Uruguay  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.413
+IND                  India  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.426
+PRT               Portugal  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.449
+GRC                 Greece  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.456
+STP  Sao Tome and Principe  C0 mobile-first, low              C1 mixed  T1 S-curve majority     True      0.458
+BLR                Belarus  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.462
+MLT                  Malta  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.488
+ESP                  Spain  C2 fixed-line legacy              C1 mixed  T1 S-curve majority     True      0.493
+  [img] V8d_iteration_embedding.png
+boot_ari_mean                  0.6396
+boot_ari_sd                    0.2029
+boot_unstable_pair_share       0.4525
+silhouette_mean_k2             0.4469
+silhouette_mean_k3              0.329
+anomaly_years               2019-2024
+cophenetic_corr                0.7161
+eta2_dtw                       0.5941
+eta2_euclid                    0.8189
+n_never_crossed                    38
+ari_iter1_iter2                0.3039
+n_movers                           37
+n_common                          133
+embedding_method                t-SNE

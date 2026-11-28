@@ -1,0 +1,111 @@
+\documentclass[tikz,border=3pt]{standalone}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\usepackage[scaled=0.95]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{amssymb,amsmath}
+\definecolor{cD}{HTML}{2A78D6}\definecolor{cV}{HTML}{E69F00}\definecolor{cM}{HTML}{009E73}
+\definecolor{cK}{HTML}{CC79A7}\definecolor{cL}{HTML}{C0392B}\definecolor{ink}{HTML}{1F2328}
+\definecolor{mut}{HTML}{57606A}\definecolor{pan}{HTML}{F3F5F7}\definecolor{ok}{HTML}{1A7F37}
+\definecolor{no}{HTML}{C0392B}\definecolor{part}{HTML}{B35900}
+\tikzset{
+  box/.style={draw=#1, fill=#1!6, rounded corners=3pt, line width=0.8pt},
+  ttl/.style={font=\bfseries\scriptsize, text=ink, anchor=north west, inner sep=2pt},
+  txt/.style={font=\scriptsize, text=ink, anchor=north west, align=left, inner sep=2pt, text width=#1},
+  capt/.style={font=\scriptsize, text=ink, align=center, inner sep=1pt},
+  chip/.style={draw=#1, fill=white, rounded corners=2pt, line width=0.5pt, font=\scriptsize, text=ink,
+               inner sep=1.5pt, align=left},
+  stepn/.style={circle, fill=ink, text=white, font=\bfseries\scriptsize, inner sep=0pt, minimum size=0.36cm},
+  badge/.style={rounded corners=2pt, fill=#1, text=white, font=\bfseries\scriptsize, inner sep=2pt},
+  arr/.style={-{Stealth[length=2.2mm]}, line width=0.9pt, color=#1},
+  verdict/.style={rounded corners=2pt, fill=#1, text=white, font=\bfseries\scriptsize, inner sep=1.6pt},
+}
+\newcommand{\img}[3]{\includegraphics[width=#2cm,height=#3cm,keepaspectratio]{../../images/#1}}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[anchor=north west, font=\bfseries\small, text=ink, inner sep=0] at (0,23.4) {Workflow W3 \textendash{} Supervised learning: can infrastructure predict and forecast who is online?};
+\node[anchor=north east, font=\scriptsize, text=mut, inner sep=0] at (18.1,23.38) {Varshith M Gowda};
+\draw[box=ink, fill=pan] (0,21.849999999999998) rectangle (18.1,22.9);
+\node[badge=ink, anchor=north west] at (0.08,22.82) {Q3};
+\node[txt=16.8cm, font=\small] at (0.75,22.849999999999998) {\textbf{Question.} How well does infrastructure predict internet use in countries a model has never seen and in years it has not seen, and how far can the forecast be trusted?};
+\draw[box=ink, fill=white] (0,19.09) rectangle (18.1,21.70);
+\node[ttl] at (0.08,21.66) {Hypotheses, the test that decides each one, and the verdict};
+\node[anchor=west, font=\bfseries\scriptsize, text=ink] at (0.1,20.92) {H3.1};
+\node[anchor=west, font=\scriptsize, text=ink, text width=7.0cm] at (0.95,20.92) {Raw infrastructure predicts unseen countries well};
+\node[verdict=part, anchor=west, minimum width=1.55cm, align=center] at (8.15,20.92) {refined};
+\node[anchor=west, font=\scriptsize, text=ink!80, text width=8.1cm] at (9.85,20.92) {V7: $R^2=0.86$, but broadband carries almost all weight and errors are 12--14 pp above 10\,\% adoption};
+\node[anchor=west, font=\bfseries\scriptsize, text=ink] at (0.1,20.20) {H3.2};
+\node[anchor=west, font=\scriptsize, text=ink, text width=7.0cm] at (0.95,20.20) {History features and in-fold imputation lower error on identical rows};
+\node[verdict=ok, anchor=west, minimum width=1.55cm, align=center] at (8.15,20.20) {supported};
+\node[anchor=west, font=\scriptsize, text=ink!80, text width=8.1cm] at (9.85,20.20) {V10: RMSE 11.77$\rightarrow$10.16 on the same 4{,}089 rows ($-14$\,\%); largest gain in Asia, Africa};
+\node[anchor=west, font=\bfseries\scriptsize, text=ink] at (0.1,19.48) {H3.3};
+\node[anchor=west, font=\scriptsize, text=ink, text width=7.0cm] at (0.95,19.48) {A model trained up to 2020 gives trustworthy 2021--25 intervals};
+\node[verdict=no, anchor=west, minimum width=1.55cm, align=center] at (8.15,19.48) {rejected};
+\node[anchor=west, font=\scriptsize, text=ink!80, text width=8.1cm] at (9.85,19.48) {V13: target drifts (PSI 0.44); V12: raw 80\,\% interval covers 50\,\%; conformal restores 83\,\%};
+\node[badge=ink, anchor=south west] at (0,18.62) {ITERATION 1 \textmd{\, raw data}};
+\draw[box=cD] (0.0,11.989999999999998) rectangle (2.3,18.54);
+\node[badge=cD, anchor=north west] at (0.08,18.46) {D1};
+\node[ttl, text width=1.55cm, align=left] at (0.62,18.49) {Raw panel};
+\node[txt=2.05cm] at (0.08,17.919999999999998) {4{,}089 complete-case country-years\\4 raw predictors\\country-grouped 5-fold CV};
+\draw[box=cM] (10.85,11.989999999999998) rectangle (14.0,18.54);
+\node[badge=cM, anchor=north west] at (10.93,18.46) {M1};
+\node[ttl, text width=2.40cm, align=left] at (11.469999999999999,18.49) {Baseline models};
+\node[txt=2.90cm] at (10.93,17.919999999999998) {Ridge, Random Forest\\histogram gradient boosting\\fixed country$\rightarrow$fold map\\held-out permutation importance};
+\draw[box=cK] (14.3,11.989999999999998) rectangle (18.1,18.54);
+\node[badge=cK, anchor=north west] at (14.38,18.46) {K1};
+\node[ttl, text width=3.05cm, align=left] at (14.92,18.49) {Inferences $K_1$};
+\node[txt=3.55cm] at (14.38,17.919999999999998) {\textbf{K1.1} broadband alone carries the model; mobile adds 0.02\\\textbf{K1.2} errors largest where histories differ\\\textbf{K1.3} complete cases drop rows that are missing not at random (W1)};
+\draw[box=cV] (2.6,11.989999999999998) rectangle (10.55,18.54);
+\node[badge=cV, anchor=north west] at (2.68,18.46) {V1};
+\node[ttl, text width=7.20cm, align=left] at (3.22,18.49) {Diagnostics of the baseline};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th1) at (6.58,15.41) {\img{V7_baseline_diagnostics.png}{7.59}{5.15}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th1.north west) {1};
+\node[capt, text width=7.59cm, anchor=north] at (6.58,12.80) {\textbf{V7} predicted vs actual, residuals by region and level, held-out importance};
+\draw[arr=cD] (2.3,15.26) -- (2.6,15.26);
+\draw[arr=cV] (10.55,15.26) -- (10.85,15.26);
+\draw[arr=cM] (14.0,15.26) -- (14.3,15.26);
+\draw[box=cL, fill=cL!5, line width=1.1pt] (0,10.09) rectangle (18.1,11.64);
+\node[badge=cL, anchor=north west] at (0.08,11.56) {T};
+\node[ttl, text=cL] at (0.5,11.59) {Feedback loop: transformation $T$ (new predictors and new rows, informed by $K_1$ of W1 and W3)};
+\node[txt=17.8cm] at (0.08,11.14) {\textbf{T1} artefact cells removed (shared core) \quad \textbf{T2} 13 past-only engineered features: landline peak and decline, leapfrog index, years since mobile overtook landlines, SIMs per owner, capped mobile, $\log(1+\text{broadband})$, floor flag, 1- and 3-year momentum \quad \textbf{T3} multivariate imputation (MICE) fitted inside each training fold, with missingness flags: 2{,}134 more usable rows \quad \textbf{T4} inner loop: drift chart above 0.2 $\Rightarrow$ conformal re-calibration};
+\draw[cL, line width=1.6pt, -{Stealth[length=3mm]}] (16.20,11.99) -- (16.20,11.64);
+\node[fill=white, draw=cL, line width=0.8pt, rounded corners=2pt, font=\bfseries\scriptsize, text=cL, inner sep=2pt, anchor=east] at (16.08,11.81) {Feedback loop};
+\node[badge=ink, anchor=south west] at (0,9.42) {ITERATION 2 \textmd{\, transformed data}};
+\draw[box=cD] (0.0,2.7899999999999983) rectangle (2.3,9.339999999999998);
+\node[badge=cD, anchor=north west] at (0.08,9.259999999999998) {D2};
+\node[ttl, text width=1.55cm, align=left] at (0.62,9.289999999999997) {Transformed panel};
+\node[txt=2.05cm] at (0.08,8.719999999999999) {6{,}223 country-years\\13 engineered features\\same folds as iteration 1};
+\draw[box=cM] (10.85,2.7899999999999983) rectangle (14.0,9.339999999999998);
+\node[badge=cM, anchor=north west] at (10.93,9.259999999999998) {M2};
+\node[ttl, text width=2.40cm, align=left] at (11.469999999999999,9.289999999999997) {Models on $D_2$};
+\node[txt=2.90cm] at (10.93,8.719999999999999) {HistGBM + engineered features\\ablations (MICE vs features)\\SHAP, PDP + ICE\\quantile GBM + CQR; PSI};
+\draw[box=cK] (14.3,2.7899999999999983) rectangle (18.1,9.339999999999998);
+\node[badge=cK, anchor=north west] at (14.38,9.259999999999998) {K2};
+\node[ttl, text width=3.05cm, align=left] at (14.92,9.289999999999997) {Knowledge $K_2$};
+\node[txt=3.55cm] at (14.38,8.719999999999999) {\textbf{H3.2} history lowers error by 14\,\% on identical rows\\\textbf{H3.3} post-2020 concept drift; conformal intervals cover 83\,\% at nominal 80\,\%\\$\rightarrow$ feeds the synthesis (V14)};
+\draw[box=cV] (2.6,2.7899999999999983) rectangle (10.55,9.339999999999998);
+\node[badge=cV, anchor=north west] at (2.68,9.259999999999998) {V2};
+\node[ttl, text width=7.20cm, align=left] at (3.22,9.289999999999997) {Explaining and stress-testing the new model};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th2) at (3.99,7.70) {\img{V10_iteration_comparison.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th2.north west) {2};
+\node[capt, text width=2.41cm, anchor=north] at (3.99,6.57) {\textbf{V10} same rows: $-14$\,\% error};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th3) at (6.58,7.70) {\img{V11b_residual_choropleth.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th3.north west) {3};
+\node[capt, text width=2.41cm, anchor=north] at (6.58,6.57) {\textbf{V11} SHAP + residual map};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th4) at (9.17,7.70) {\img{V12b_pdp_calibration.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th4.north west) {4};
+\node[capt, text width=2.41cm, anchor=north] at (9.17,6.57) {\textbf{V12b} learned floor; calibration};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th5) at (5.28,4.73) {\img{V13_psi_drift_chart.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th5.north west) {5};
+\node[capt, text width=2.41cm, anchor=north] at (5.28,3.60) {\textbf{V13} target drifts after 2020};
+\node[inner sep=0.6pt, draw=mut!45, line width=0.3pt, fill=white] (th6) at (7.87,4.73) {\img{V12_forecast_fan_chart.png}{2.41}{2.17}};
+\node[stepn] at ([xshift=1pt,yshift=-1pt]th6.north west) {6};
+\node[capt, text width=2.41cm, anchor=north] at (7.87,3.60) {\textbf{V12} conformal fan chart};
+\draw[arr=cD] (2.3,6.06) -- (2.6,6.06);
+\draw[arr=cV] (10.55,6.06) -- (10.85,6.06);
+\draw[arr=cM] (14.0,6.06) -- (14.3,6.06);
+\draw[cL, line width=1.6pt, -{Stealth[length=3mm]}] (1.15,10.09) -- (1.15,9.34);
+\node[txt=18.0cm, anchor=north west] at (0,2.54) {\textbf{Analysis path.} \textcircled{\scriptsize 1} diagnose the raw baseline (V7) $\rightarrow$ $K_1$ $\rightarrow$ $T$ $\rightarrow$ \textcircled{\scriptsize 2} compare iterations on identical rows and folds (V10) $\rightarrow$ \textcircled{\scriptsize 3} explain the model and locate its errors (V11) $\rightarrow$ \textcircled{\scriptsize 4} read the learned shapes (V12b a--c) $\rightarrow$ \textcircled{\scriptsize 5} monitor drift (V13) $\rightarrow$ \textcircled{\scriptsize 6} forecast with re-calibrated intervals (V12, V12b d) $\rightarrow$ synthesis V14.};
+
+\end{tikzpicture}
+\end{document}

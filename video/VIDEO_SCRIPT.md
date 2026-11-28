@@ -1,99 +1,143 @@
 # A3 video script (generated from the slide notes by src/build_slides.py)
 
-Length 15:05. Record the deck in slideshow mode. At each [DEMO ...] cue switch to the app (https://aithal007.github.io/DAS732-A3-Visual-Analytics/ or `streamlit run app.py`) for 10-15 seconds, then return. Every report figure appears on a slide.
+Length 20:35. Full deck (for the viva). The 6-minute video uses DAS732_A3_DataStory_6min.pptx. Optional: switch to the app (https://aithal007.github.io/DAS732-A3-Visual-Analytics/ or `streamlit run app.py`) for 10-15 seconds, then return. Every report figure appears on a slide.
 
 ## Slide 1: From Snapshots to Trajectories
 
-[Parikshith, 0:00-0:20] Good morning. We are Team Plot Twist. In A1 we looked at the Our World in Data internet data and asked whether mobile leapfrogging closed the digital divide. In A3 we test what we saw, with statistics, clustering and prediction, inside a visual analytics workflow with one feedback loop.
+[Parikshith, 0:00-0:20] We are Team Plot Twist. In A1 we asked whether mobile leapfrogging closed the digital divide. In A3 we test what we saw with three visual analytics workflows, one per team member, each with its own hypotheses and its own feedback loop.
 
-## Slide 2: One question, four sub-questions, one feedback loop
+## Slide 2: One main question, three workflows, one synthesis
 
-[Varshith, 0:20-0:50] Our question extends A1. Four sub-questions, one per family of methods the brief asks for: statistics, unsupervised mining, supervised learning, and the workflow itself. Every figure in the report answers one of them, and every figure is in this video.
+[Varshith, 0:20-0:45] Our main question extends A1. We answer it with three workflows, one per family of methods the brief asks for, and one per team member: statistics, unsupervised mining and supervised learning. Each has its own hypotheses and its own feedback loop, and a synthesis combines them.
 
-## Slide 3: The workflow, unrolled: two full iterations joined by one labelled feedback loop
+## Slide 3: V0  Three unrolled workflows answer one question; each has exactly one labelled feedback loop
 
-[Parikshith, 0:50-1:35] On the left, Keim's diamond: data, visualization, models, knowledge. As a cycle it cannot tell us which pass produced which finding, so on the right we unroll it. Iteration 1 runs on the raw A1 data: exploration, models, diagnostics, and four inferences K1. The red edge is the single feedback loop: K1 becomes a data transformation. Iteration 2 repeats the full diamond on the transformed data. The tracker at the bottom of every slide shows where we are.
+[Parikshith, 0:45-1:20] This is the main workflow. On the top right, Keim's diamond; as a cycle it cannot show which pass produced which finding, so we unroll it. Each lane is one workflow: iteration 1 on raw data, its inferences, the red feedback loop that transforms the data, iteration 2 and its knowledge. Bold notes mark knowledge passed between workflows, and all three meet in the synthesis.
 
-## Slide 4: System architecture: one shared core, three analysis modules, every number read from artefacts
+## Slide 4: V0b  One shared core, three workflow modules, every number read from generated artefacts
 
-[Parikshith, 1:35-2:05] How it is built: one shared core module holds the data loading, the artefact rules and the engineered features, so the feedback loop is a single definition. Three analysis modules write tables and figures, and the report, the deck and the browser app only read those artefacts. One command reproduces everything.
+[Parikshith, 1:20-1:50] How it is built: one shared core holds the data loading, the artefact rules and the engineered features. One module group per workflow writes tables and figures; the workflow diagrams are generated from those figures; the report, the deck and the app only read them.
 
-## Slide 5: V1  Every region follows the same S-curve, up to 12 years late, and late starters do not catch up
+## Slide 5: W1  Statistical workflow: hypotheses, plugged-in evidence, a numbered path and one feedback loop
 
-[Parikshith, 2:05-2:50] I fitted a three-parameter logistic S-curve to every country; 201 of 203 fit with R-squared above 0.9. The take-off year, half of saturation, differs by region with p of 4 times 10 to the minus 17. Africa takes off in 2017, almost 12 years after Europe, confirmed by Holm-corrected Mann-Whitney. And on the right: later take-off does not mean faster growth. So the divide is a delay that is not closing on its own.
+[Parikshith, 1:50-2:30] My workflow, W1, statistics. The question and four hypotheses are written at the top, each with its verdict. Iteration 1 uses four figures, numbered in the order I read them. The red band is the feedback loop: it re-expresses each country's curve in its own time and scale. Iteration 2 tests the hypotheses again on the transformed data.
 
-## Slide 6: V1b  The divide narrowed in relative terms only; low starters close the smallest share of their gap
+## Slide 6: V3b  Data are missing not at random, so the method changes between iterations
 
-[Parikshith, 2:50-3:30] Is the divide closing? It depends on how it is measured. Relative inequality, the Gini, fell from 0.81 to 0.19. But the absolute gap between the median European and African country peaked at 64 points in 2014 and is still 52. And on the right: countries that started low closed a SMALLER share of their remaining gap. So there is no catch-up; the divide shrinks only because leaders hit the ceiling.
+[Parikshith, 2:30-3:05] Step 1, data quality. Broadband exists only from about 2000, ownership only in survey years. The gaps are not random: country-years without an ownership survey are far less online, 50 against 75 percent. So first iterations use complete cases, and W3 later imputes inside each training fold.
 
-## Slide 7: V2  Broadband has a floor and a non-linear effect; mobile stopped separating countries after 2005
+## Slide 7: V1  Every region follows an S-curve, up to 12 years late, and late starters do not catch up
 
-[Parikshith, 3:30-4:15] Left: almost a third of country-years have no broadband, yet internet use there still reaches 30 percent: that is the floor. Above it internet grows with log broadband, and segmented regression finds a break near 23 per 100. Right: correlation with internet use per year, with bootstrap intervals. In 2005 all three were near 0.9; by 2024 mobile is 0.42 and broadband 0.80. Mobile saturated, so it stopped telling countries apart.
+[Parikshith, 3:05-3:45] Step 2. I fitted a logistic S-curve to every country; 201 of 203 fit with R-squared above 0.9. The take-off year differs by region with p of 4 times 10 to the minus 17: Africa takes off in 2017, almost 12 years after Europe, and later starters do not grow faster.
 
-## Slide 8: V3  Subscriptions count SIMs, not people, and Fiji's 2023-24 values are a recording artefact
+## Slide 8: V2  Broadband has a floor and a non-linear effect; mobile stopped separating countries after 2005
 
-[Parikshith, 4:15-4:55] The median country has 1.34 SIMs per phone owner, so subscriptions overstate people. Ownership correlates 0.89 with internet use, subscriptions only 0.52. We set one threshold for the whole team, 1.5 SIMs per owner. And Fiji jumps from 111 to 574 subscriptions in two years while ownership stays flat: that is a recording artefact. Sindhoor's anomaly detector finds it independently.
+[Parikshith, 3:45-4:25] Step 3. Almost a third of country-years have no broadband, yet internet there still reaches 30 percent: a floor. Segmented regression finds a break near 23 per 100. On the right, mobile's correlation with internet use fell from 0.88 to 0.42 while broadband stays at 0.80.
 
-## Slide 9: V3b  Data are missing not at random, so the method changes between iterations
+## Slide 9: V3  Subscriptions count SIMs, not people, and Fiji's 2023-24 values are a recording artefact
 
-[Parikshith, 4:55-5:35] Before modelling, data quality. Broadband exists only from about 2000, phone ownership only in survey years, and 2025 is almost empty. Crucially, the gaps are not random: country-years without an ownership survey are far less online, 50 against 75 percent. Filling them with an average would bias poor countries upwards, so iteration 1 uses complete cases and iteration 2 uses imputation fitted inside each training fold, plus flags that tell the model a value was missing.
+[Parikshith, 4:25-5:00] Step 4. The median country has 1.34 SIMs per phone owner, so subscriptions overstate people. And Fiji jumps from 111 to 574 subscriptions in two years while ownership stays flat: a recording artefact. Sindhoor's workflow finds it independently.
 
-## Slide 10: V4  Two axes describe 82% of 2024 connectivity; the mobile axis is stretched by two countries
+## Slide 10: W1 feedback loop: four inferences become a new coordinate system for the data
 
-[Sindhoor, 5:35-6:10] On the 2024 snapshot of 135 complete countries, PCA puts 64 percent of variance on one connectivity axis, where all five indicators load positively. The second axis is mobile alone, and Fiji and Hong Kong stretch it by themselves.
+[Parikshith, 5:00-5:40] The feedback loop of W1. Fiji becomes a rule applied to every country. Subscriptions are normalised by owners. And the key step: each curve is re-indexed to its own take-off year and divided by its own saturation, and the gap is measured as headroom. V9 underneath shows what changed.
 
-## Slide 11: V5  Three archetypes ordered by connectivity, separated by landlines and broadband, only moderately stable
+## Slide 11: V1c  Re-indexed to its own take-off, every country follows one S-curve: the divide is a delay
 
-[Sindhoor, 6:10-6:50] I scanned k from 2 to 8 for k-means, GMM and Ward. k equal to 3 gives three archetypes ordered by connectivity, mobile-first, mixed and fixed-line legacy, matching A1's four kinds of country. They differ most on landlines and broadband, least on mobile. But bootstrap ARI is only 0.64, and Ward's high silhouette is fake: one of its clusters is just Fiji and Hong Kong.
+[Parikshith, 5:40-6:20] Iteration 2, step 6. On the left, 201 curves in calendar time. In the middle, the same curves in each country's own time and scale: they collapse onto one S-curve, and the spread between countries falls from 32 to under 10 points. The six regional medians sit on top of each other. The divide is a delay, not a different curve.
 
-## Slide 12: V6  Both detectors rank Fiji first; most anomalies are multi-SIM markets
+## Slide 12: V1b  In headroom terms the divide is not closing: low starters close the smallest share of their gap
 
-[Sindhoor, 6:50-7:25] Isolation Forest and LOF, rank-averaged. Both put Fiji first. Most of the others are multi-SIM markets; Monaco is there for 95 landlines per 100. This is the model confirming what Parikshith's V3 showed, and it becomes inference K1.1. [DEMO, app tab 1: switch the clustering method; hover Fiji.]
+[Parikshith, 6:20-6:55] Step 7. Is the divide closing? On raw levels the answers disagree. Measured as headroom, the share of the remaining gap closed, countries that started higher closed more: rho 0.52. So it is closing in relative terms only.
 
-## Slide 13: V7  A raw-infrastructure model explains 86% of variance but leans on broadband alone
+## Slide 13: W2  Unsupervised workflow: from an unstable snapshot to path archetypes under DTW
 
-[Varshith, 7:25-8:05] We predict internet share from raw broadband, mobile, landlines and year. Folds are grouped by country, so the model is always tested on countries it has never seen. Random forest gets 11.5 points, gradient boosting 11.8. Held-out permutation importance: broadband dominates, mobile adds almost nothing. The errors are large in mid-adoption countries.
+[Sindhoor, 6:55-7:35] My workflow, W2, unsupervised mining. Question and hypotheses at the top. Iteration 1 clusters the 2024 snapshot and tests how stable it is. The feedback loop turns each country into its whole curve and changes the distance to dynamic time warping. Iteration 2 clusters paths.
 
-## Slide 14: K1 → FEEDBACK LOOP: each inference becomes a change to the data
+## Slide 14: V4  Two axes describe 82% of 2024 connectivity; the mobile axis is stretched by two countries
 
-[Sindhoor, 8:05-8:50] This is the feedback loop. Four inferences leave iteration 1 and each one changes the data. Fiji is an error, so two artefact rules, a level shift and a one-year spike, remove 10 cells across all countries. Subscriptions are not people, so we normalise by owners and cap mobile at 100. History matters, so we add the landline peak as an expanding maximum, past-only, and reshape to trajectories. And broadband is non-linear, so log transform, a floor flag, and imputation inside each training fold.
+[Sindhoor, 7:35-8:05] Step 1. On the 2024 snapshot of 135 countries, PCA puts 64 percent of variance on one connectivity axis. The second axis is mobile alone, and Fiji and Hong Kong stretch it by themselves.
 
-## Slide 15: V9  The transformation removes ten artefact cells and adds history no single-year value contains
+## Slide 15: V5  Three archetypes ordered by connectivity, separated by landlines and broadband
 
-[Parikshith, 8:50-9:25] This is the first view of iteration 2: what the transformation changed. On the left, the removed cells. In the middle, the engineered features against the raw ones: the history features carry information no single-year value has, and SIMs per owner is noise, so we neutralise it. On the right, coverage, which is why we impute. [DEMO, app tab 2: Fiji raw versus cleaned.]
+[Sindhoor, 8:05-8:40] Step 2. I scanned k from 2 to 8 for k-means, GMM and Ward. k equal to 3 gives three archetypes ordered by connectivity: mobile-first, mixed and fixed-line legacy. Ward's high silhouette is fake: one cluster is just Fiji and Hong Kong.
 
-## Slide 16: V8  Grouped by PATH, countries form three S-curve archetypes that cut across the 2024 snapshot
+## Slide 16: V5b  Snapshot clusters are only moderately stable: mixed and legacy share a cluster in 46% of resamples
 
-[Sindhoor, 9:25-10:05] In iteration 2 I clustered each country's whole curve, 2000 to 2025, with dynamic time warping. Three archetypes: late starters like Tanzania, the S-curve majority like the Maldives, early saturators like South Korea. Two thirds of Africa are late starters. These clusters separate far better, silhouette 0.52, and 37 of 133 countries change group compared with the 2024 snapshot.
+[Sindhoor, 8:40-9:15] Step 3, stability. Each cell is how often two countries land in the same cluster over 200 bootstrap refits. The mobile-first block is solid. But mixed and legacy countries share a cluster in 46 percent of refits: the boundary moves.
 
-## Slide 17: V8b  The three archetypes are the natural cut of the DTW tree and lie on one timing continuum
+## Slide 17: V5c  k = 3 misassigns no country, but 15 of 135 sit on a cluster border
 
-[Sindhoor, 10:05-10:40] Is k equal to 3 justified? The dendrogram of DTW distances says yes: late starters split off at the root and early saturators next. The t-SNE map of the same distances lays the countries on one continuum ordered by timing, from Ethiopia to South Korea, with India, Indonesia and Nigeria on the boundary.
+[Sindhoor, 9:15-9:45] Step 4, per country. k equal to 2 has a higher mean but misassigns two countries. k equal to 3 misassigns none, yet 15 countries, like Sweden, Norway and China, sit on a border.
 
-## Slide 18: V10  On identical rows and folds, the transformed data lower error by 14%, most in Asia and Africa
+## Slide 18: V6  Both detectors rank Fiji first; most anomalies are multi-SIM markets
 
-[Varshith, 10:40-11:20] Same countries, same folds, same rows. Error falls from 11.77 to 10.16 points, minus 14 percent, most in Asia and Africa, nothing in the Americas. With imputation, 2,134 more rows become usable and error reaches 8.84. The ablations show the engineered features carry most of the gain.
+[Sindhoor, 9:45-10:15] Step 5. Isolation Forest and LOF, rank-averaged. Both put Fiji first; most others are multi-SIM markets, and Monaco has 95 landlines per 100.
 
-## Slide 19: V11  Ownership, broadband and the landline peak drive the model; its errors are geographic
+## Slide 19: V6b  Four anomalies persist every year (structural); Fiji appears only in 2023-24 (artefact)
 
-[Varshith, 11:20-11:55] On the left, SHAP ranks phone ownership, log broadband and the landline peak on top; ownership is mostly imputed, so it acts as a composite index. The map shows where infrastructure under- or over-explains adoption. Kosovo is a data gap, not a finding. [DEMO, app tab 3: toggle iteration 1 and 2.]
+[Sindhoor, 10:15-10:50] Step 5 over time. I refitted the detector every year. Monaco, Hong Kong, Andorra and Burundi are flagged every year: real markets. Fiji appears only in 2023 and 2024: a recording error. That becomes the shared artefact rule.
 
-## Slide 20: V13  After 2020 the target drifts past the retraining threshold while the inputs do not
+## Slide 20: V6c  Each top anomaly is unusual on one indicator
 
-[Varshith, 11:55-12:35] This is the drift chart from the lecture on ML workflows: Population Stability Index per year against a 2015 to 2020 baseline, with thresholds 0.1 and 0.2. After 2020 the target crosses 0.2 while every input stays below until 2023. Same infrastructure, more people online. So we predict, before looking, that the forecast will be too low and too confident.
+[Sindhoor, 10:50-11:20] Step 6, why. Each bar is how far a country is from its own cluster. Fiji and Hong Kong on mobile, Monaco and Andorra on landlines.
 
-## Slide 21: V12  Forecasts made in 2020 run low; conformal re-calibration restores the cone of uncertainty
+## Slide 21: W2 feedback loop: snapshots become trajectories under a time-shift-invariant distance
 
-[Varshith, 12:35-13:10] Quantile gradient boosting trained up to 2020, tested on 2021 to 2025. As the drift chart predicted, 71% of forecasts are too low and the 80 percent band covers only 50%. Conformalised quantile regression widens it by 4.7 points and coverage returns to 83%. [DEMO, app tab 4: India, raw versus conformal.]
+[Sindhoor, 11:20-12:00] My feedback loop. Each country becomes its whole curve from 2000 to 2025, artefacts removed. And the distance changes to dynamic time warping: below, Brazil and Bolivia follow the same curve almost seven years apart, and DTW scores them five times closer than a same-year comparison.
 
-## Slide 22: V12b  The model learned the broadband floor and a history effect; only conformal intervals are calibrated
+## Slide 22: V8b  Late starters split from all others at the root; k = 3 is the natural cut
 
-[Varshith, 13:10-13:50] Two checks on the model. Partial dependence: predictions stay flat while broadband is on the floor and rise between 3 and 30 per 100; the landline history adds 12 points. And the calibration curve tests the intervals at five levels, not one: raw intervals are over-confident everywhere, the conformal ones sit on the diagonal.
+[Sindhoor, 12:00-12:30] Iteration 2, step 8. The DTW dendrogram: late starters split off at the root, early saturators next, and the next cut only removes one country. So three groups.
 
-## Slide 23: V14  Answer: the divide is a delay on one S-curve, and fixed infrastructure, not mobile, marks the position
+## Slide 23: V8  Grouped by PATH, countries form three S-curve archetypes that cut across the 2024 snapshot
 
-[Parikshith, 13:50-14:35] Putting both iterations together. When: every region is on the same S-curve, 6 to 12 years behind Europe. What: today broadband and the landline peak separate countries, mobile does not. Who: the archetypes differ in fixed infrastructure. And the feedback loop improved every check: error on the same rows, cluster separation, and forecast coverage.
+[Sindhoor, 12:30-13:10] Step 9. Three path archetypes: late starters like Tanzania, the S-curve majority like the Maldives, early saturators like South Korea. They separate far better than the snapshot clusters, silhouette 0.52 against 0.35.
 
-## Slide 24: What we know now, and what we cannot claim
+## Slide 24: V8c  Archetypes are ordered in time, but DTW groups by shape
 
-[Varshith, 14:35-15:05] To close: mobile leapfrogging happened but did not close the divide. We cannot claim causation, ownership is mostly imputed, and the forecasts assume no further drift. Everything is reproducible with one command. Thank you; we are happy to take questions.
+[Sindhoor, 13:10-13:45] Step 10. The archetypes are ordered in time, but the majority spans 17 years. That is intended: DTW groups by shape, so the majority is one curve reached at different times, which matches W1.
+
+## Slide 25: V8d  The feedback loop regroups 37 of 133 countries
+
+[Sindhoor, 13:45-14:20] Step 11, what the loop changed. The same map, coloured by iteration 1 and iteration 2. 37 of 133 countries change group: India and Indonesia move to the majority, Sweden and Norway become early saturators.
+
+## Slide 26: W3  Supervised workflow: history features, fair comparison, drift and re-calibrated forecasts
+
+[Varshith, 14:20-15:00] My workflow, W3, supervised learning. Three hypotheses at the top. Iteration 1 is a raw baseline. The feedback loop adds history features, defined from W1's inferences, and imputation inside each training fold. Iteration 2 compares fairly, explains the model, checks drift and forecasts.
+
+## Slide 27: V7  A raw-infrastructure model explains 86% of variance but leans on broadband alone
+
+[Varshith, 15:00-15:40] Step 1. We predict internet share from raw broadband, mobile, landlines and year. Folds hold out whole countries. Gradient boosting gets 11.8 points; broadband dominates, mobile adds almost nothing, and errors are large in mid-adoption countries.
+
+## Slide 28: W3 feedback loop: new predictors and new rows, then a drift-triggered re-calibration
+
+[Varshith, 15:40-16:15] My feedback loop adds thirteen past-only features, defined from W1's inferences, and imputation fitted inside each training fold, which adds 2,134 rows. And an inner loop: when the drift chart crosses 0.2, the forecast intervals are re-calibrated.
+
+## Slide 29: V10  On identical rows and folds, the transformed data lower error by 14%, most in Asia and Africa
+
+[Varshith, 16:15-16:55] Iteration 2, step 2. Same countries, same folds, same rows. Error falls from 11.77 to 10.16 points, minus 14 percent, most in Asia and Africa. With imputation, error reaches 8.84.
+
+## Slide 30: V11  Ownership, broadband and the landline peak drive the model; its errors are geographic
+
+[Varshith, 16:55-17:30] Step 3. SHAP ranks phone ownership, log broadband and the landline peak on top; ownership is mostly imputed, so it acts as a composite index. The map shows where infrastructure under- or over-explains adoption.
+
+## Slide 31: V12b  The model learned W1's broadband floor and a history effect; only conformal intervals are calibrated
+
+[Varshith, 17:30-18:05] Step 4. Partial dependence: predictions stay flat while broadband is on the floor, exactly W1's finding. And the calibration curve: raw intervals are over-confident at every level, the conformal ones sit on the diagonal.
+
+## Slide 32: V13  After 2020 the target drifts past the retraining threshold while the inputs do not
+
+[Varshith, 18:05-18:40] Step 5, the drift chart. Population Stability Index against a 2015 to 2020 baseline. After 2020 the target crosses 0.2 while the inputs stay below: same infrastructure, more people online.
+
+## Slide 33: V12  Forecasts made in 2020 run low; conformal re-calibration restores the cone of uncertainty
+
+[Varshith, 18:40-19:20] Step 6. Trained up to 2020, tested on 2021 to 2025: 71% of forecasts are too low and the 80 percent band covers only 50%. Conformal re-calibration restores 83%.
+
+## Slide 34: V14  Answer: the divide is a delay on one S-curve, and fixed infrastructure, not mobile, marks the position
+
+[Parikshith, 19:20-20:05] Putting the three workflows together. When, from W1: every region is on the same S-curve, 6 to 12 years behind Europe. What: broadband and the landline peak separate countries today, mobile does not. Who, from W2: the archetypes differ in fixed infrastructure. And every feedback loop improved its check: cluster separation, error on the same rows, and forecast coverage.
+
+## Slide 35: What we know now, and what we cannot claim
+
+[Varshith, 20:05-20:35] To close: mobile leapfrogging happened but did not close the divide. We cannot claim causation, ownership is mostly imputed, and the forecasts assume no further drift. Everything is reproducible. Thank you.

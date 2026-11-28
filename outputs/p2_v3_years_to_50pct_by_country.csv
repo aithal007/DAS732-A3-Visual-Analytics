@@ -1,0 +1,182 @@
+,country,region,years_to_50pct,cluster_dtw,cluster_euclid
+AFG,Afghanistan,Asia,,T0 late starters,T0 late starters
+AGO,Angola,Africa,,T0 late starters,T0 late starters
+ALB,Albania,Europe,2012.25,T1 S-curve majority,T1 S-curve majority
+AND,Andorra,Europe,2006.05,T1 S-curve majority,T2 early saturators
+ARE,United Arab Emirates,Asia,2005.83,T2 early saturators,T2 early saturators
+ARG,Argentina,South America,2010.83,T1 S-curve majority,T1 S-curve majority
+ARM,Armenia,Asia,2013.64,T1 S-curve majority,T1 S-curve majority
+ATG,Antigua and Barbuda,North America,2010.6,T1 S-curve majority,T1 S-curve majority
+AUS,Australia,Oceania,2000.55,T2 early saturators,T2 early saturators
+AUT,Austria,Europe,2003.63,T2 early saturators,T2 early saturators
+AZE,Azerbaijan,Asia,2011.0,T1 S-curve majority,T1 S-curve majority
+BDI,Burundi,Africa,,T0 late starters,T0 late starters
+BEL,Belgium,Europe,2003.01,T2 early saturators,T2 early saturators
+BEN,Benin,Africa,,T0 late starters,T0 late starters
+BFA,Burkina Faso,Africa,,T0 late starters,T0 late starters
+BGD,Bangladesh,Asia,2023.62,T0 late starters,T0 late starters
+BGR,Bulgaria,Europe,2011.52,T1 S-curve majority,T1 S-curve majority
+BHR,Bahrain,Asia,2007.9,T1 S-curve majority,T2 early saturators
+BHS,Bahamas,North America,2010.32,T1 S-curve majority,T1 S-curve majority
+BIH,Bosnia and Herzegovina,Europe,2014.03,T1 S-curve majority,T1 S-curve majority
+BLR,Belarus,Europe,2012.43,T1 S-curve majority,T1 S-curve majority
+BLZ,Belize,North America,2017.24,T1 S-curve majority,T1 S-curve majority
+BOL,Bolivia,South America,2019.2,T1 S-curve majority,T1 S-curve majority
+BRA,Brazil,South America,2012.58,T1 S-curve majority,T1 S-curve majority
+BRB,Barbados,North America,2004.07,T1 S-curve majority,T2 early saturators
+BRN,Brunei,Asia,2009.25,T1 S-curve majority,T2 early saturators
+BTN,Bhutan,Asia,2016.45,T1 S-curve majority,T1 S-curve majority
+BWA,Botswana,Africa,2019.41,T1 S-curve majority,T0 late starters
+CAF,Central African Republic,Africa,,T0 late starters,T0 late starters
+CAN,Canada,North America,1999.91,T2 early saturators,T2 early saturators
+CHE,Switzerland,Europe,2000.36,T2 early saturators,T2 early saturators
+CHL,Chile,South America,2010.69,T1 S-curve majority,T1 S-curve majority
+CHN,China,Asia,2014.88,T1 S-curve majority,T1 S-curve majority
+CIV,Cote d'Ivoire,Africa,,T0 late starters,T0 late starters
+CMR,Cameroon,Africa,,T0 late starters,T0 late starters
+COD,Democratic Republic of Congo,Africa,,T0 late starters,T0 late starters
+COG,Congo,Africa,,T0 late starters,T0 late starters
+COL,Colombia,South America,2012.38,T1 S-curve majority,T1 S-curve majority
+COM,Comoros,Africa,,T0 late starters,T0 late starters
+CPV,Cape Verde,Africa,2015.96,T1 S-curve majority,T1 S-curve majority
+CRI,Costa Rica,North America,2013.57,T1 S-curve majority,T1 S-curve majority
+CUB,Cuba,North America,2016.5,T1 S-curve majority,T1 S-curve majority
+CYP,Cyprus,Europe,2009.06,T1 S-curve majority,T2 early saturators
+CZE,Czechia,Europe,2006.52,T1 S-curve majority,T2 early saturators
+DEU,Germany,Europe,2002.17,T2 early saturators,T2 early saturators
+DJI,Djibouti,Africa,2016.77,T1 S-curve majority,T0 late starters
+DMA,Dominica,North America,2012.17,T1 S-curve majority,T1 S-curve majority
+DNK,Denmark,Europe,2001.33,T2 early saturators,T2 early saturators
+DOM,Dominican Republic,North America,2014.09,T1 S-curve majority,T1 S-curve majority
+DZA,Algeria,Africa,2018.14,T1 S-curve majority,T1 S-curve majority
+ECU,Ecuador,South America,2015.21,T1 S-curve majority,T1 S-curve majority
+EGY,Egypt,Africa,2018.3,T1 S-curve majority,T1 S-curve majority
+ESP,Spain,Europe,2005.85,T1 S-curve majority,T2 early saturators
+EST,Estonia,Europe,2003.59,T2 early saturators,T2 early saturators
+ETH,Ethiopia,Africa,,T0 late starters,T0 late starters
+FIN,Finland,Europe,2001.36,T2 early saturators,T2 early saturators
+FJI,Fiji,Oceania,2016.14,T1 S-curve majority,T1 S-curve majority
+FRA,France,Europe,2006.16,T1 S-curve majority,T2 early saturators
+FSM,Micronesia (country),Oceania,,T0 late starters,T0 late starters
+GAB,Gabon,Africa,2016.55,T1 S-curve majority,T1 S-curve majority
+GBR,United Kingdom,Europe,2001.72,T2 early saturators,T2 early saturators
+GEO,Georgia,Asia,2015.22,T1 S-curve majority,T1 S-curve majority
+GHA,Ghana,Africa,2019.69,T1 S-curve majority,T0 late starters
+GIN,Guinea,Africa,,T0 late starters,T0 late starters
+GMB,Gambia,Africa,,T0 late starters,T0 late starters
+GNB,Guinea-Bissau,Africa,,T0 late starters,T0 late starters
+GNQ,Equatorial Guinea,Africa,2019.15,T1 S-curve majority,T0 late starters
+GRC,Greece,Europe,2010.77,T1 S-curve majority,T1 S-curve majority
+GRD,Grenada,North America,2013.9,T1 S-curve majority,T1 S-curve majority
+GTM,Guatemala,North America,2020.75,T1 S-curve majority,T0 late starters
+GUY,Guyana,South America,2018.21,T1 S-curve majority,T1 S-curve majority
+HKG,Hong Kong,Asia,2002.76,T2 early saturators,T2 early saturators
+HND,Honduras,North America,2020.71,T1 S-curve majority,T0 late starters
+HRV,Croatia,Europe,2008.91,T1 S-curve majority,T1 S-curve majority
+HTI,Haiti,North America,,T0 late starters,T0 late starters
+HUN,Hungary,Europe,2006.47,T1 S-curve majority,T2 early saturators
+IDN,Indonesia,Asia,2019.38,T1 S-curve majority,T0 late starters
+IND,India,Asia,2021.11,T1 S-curve majority,T0 late starters
+IRL,Ireland,Europe,2005.64,T1 S-curve majority,T2 early saturators
+IRN,Iran,Asia,2015.59,T1 S-curve majority,T1 S-curve majority
+IRQ,Iraq,Asia,2019.61,T1 S-curve majority,T0 late starters
+ISL,Iceland,Europe,2001.02,T2 early saturators,T2 early saturators
+ISR,Israel,Asia,2007.17,T1 S-curve majority,T2 early saturators
+ITA,Italy,Europe,2009.24,T1 S-curve majority,T1 S-curve majority
+JAM,Jamaica,North America,2016.53,T1 S-curve majority,T1 S-curve majority
+JOR,Jordan,Asia,2014.47,T1 S-curve majority,T1 S-curve majority
+JPN,Japan,Asia,2003.11,T2 early saturators,T2 early saturators
+KAZ,Kazakhstan,Asia,2010.97,T1 S-curve majority,T1 S-curve majority
+KEN,Kenya,Africa,,T0 late starters,T0 late starters
+KGZ,Kyrgyzstan,Asia,2016.92,T1 S-curve majority,T1 S-curve majority
+KHM,Cambodia,Asia,2017.53,T1 S-curve majority,T0 late starters
+KIR,Kiribati,Oceania,2019.74,T1 S-curve majority,T0 late starters
+KNA,Saint Kitts and Nevis,North America,2008.12,T1 S-curve majority,T1 S-curve majority
+KOR,South Korea,Asia,2000.45,T2 early saturators,T2 early saturators
+KWT,Kuwait,Asia,2008.91,T1 S-curve majority,T2 early saturators
+LAO,Laos,Asia,2019.43,T1 S-curve majority,T0 late starters
+LBN,Lebanon,Asia,2010.76,T1 S-curve majority,T1 S-curve majority
+LBR,Liberia,Africa,,T0 late starters,T0 late starters
+LBY,Libya,Africa,2018.1,T1 S-curve majority,T1 S-curve majority
+LCA,Saint Lucia,North America,2013.16,T1 S-curve majority,T1 S-curve majority
+LIE,Liechtenstein,Europe,2001.34,T2 early saturators,T2 early saturators
+LKA,Sri Lanka,Asia,2022.59,T0 late starters,T0 late starters
+LSO,Lesotho,Africa,2023.36,T0 late starters,T0 late starters
+LTU,Lithuania,Europe,2007.02,T1 S-curve majority,T2 early saturators
+LUX,Luxembourg,Europe,2002.69,T2 early saturators,T2 early saturators
+LVA,Latvia,Europe,2005.52,T1 S-curve majority,T2 early saturators
+MAC,Macao,Asia,2008.16,T1 S-curve majority,T2 early saturators
+MAR,Morocco,Africa,2009.81,T1 S-curve majority,T1 S-curve majority
+MCO,Monaco,Europe,2003.17,T2 early saturators,T2 early saturators
+MDA,Moldova,Europe,2013.42,T1 S-curve majority,T1 S-curve majority
+MDG,Madagascar,Africa,,T0 late starters,T0 late starters
+MDV,Maldives,Asia,2014.14,T1 S-curve majority,T1 S-curve majority
+MEX,Mexico,North America,2014.43,T1 S-curve majority,T1 S-curve majority
+MHL,Marshall Islands,Oceania,2019.04,T1 S-curve majority,T0 late starters
+MKD,North Macedonia,Europe,2008.69,T1 S-curve majority,T1 S-curve majority
+MLI,Mali,Africa,,T0 late starters,T0 late starters
+MLT,Malta,Europe,2007.97,T1 S-curve majority,T2 early saturators
+MNG,Mongolia,Asia,2018.73,T1 S-curve majority,T1 S-curve majority
+MOZ,Mozambique,Africa,,T0 late starters,T0 late starters
+MRT,Mauritania,Africa,,T0 late starters,T0 late starters
+MUS,Mauritius,Africa,2014.97,T1 S-curve majority,T1 S-curve majority
+MWI,Malawi,Africa,,T0 late starters,T0 late starters
+MYS,Malaysia,Asia,2005.46,T1 S-curve majority,T2 early saturators
+NAM,Namibia,Africa,2019.03,T1 S-curve majority,T0 late starters
+NER,Niger,Africa,,T0 late starters,T0 late starters
+NGA,Nigeria,Africa,,T0 late starters,T0 late starters
+NIC,Nicaragua,North America,2020.76,T1 S-curve majority,T0 late starters
+NLD,Netherlands,Europe,2001.05,T2 early saturators,T2 early saturators
+NOR,Norway,Europe,1999.83,T2 early saturators,T2 early saturators
+NPL,Nepal,Asia,,T0 late starters,T0 late starters
+NZL,New Zealand,Oceania,2000.45,T2 early saturators,T2 early saturators
+OMN,Oman,Asia,2011.17,T1 S-curve majority,T1 S-curve majority
+PAK,Pakistan,Asia,2023.24,T0 late starters,T0 late starters
+PAN,Panama,North America,2014.81,T1 S-curve majority,T1 S-curve majority
+PER,Peru,South America,2016.91,T1 S-curve majority,T1 S-curve majority
+PHL,Philippines,Asia,2019.65,T1 S-curve majority,T1 S-curve majority
+PNG,Papua New Guinea,Oceania,,T0 late starters,T0 late starters
+POL,Poland,Europe,2007.31,T1 S-curve majority,T2 early saturators
+PRI,Puerto Rico,Other,2011.1,T1 S-curve majority,T1 S-curve majority
+PRT,Portugal,Europe,2009.34,T1 S-curve majority,T1 S-curve majority
+PRY,Paraguay,South America,2015.08,T1 S-curve majority,T1 S-curve majority
+PSE,Palestine,Other,2013.48,T1 S-curve majority,T1 S-curve majority
+QAT,Qatar,Asia,2008.65,T1 S-curve majority,T2 early saturators
+ROU,Romania,Europe,2013.05,T1 S-curve majority,T1 S-curve majority
+RUS,Russia,Europe,2010.11,T1 S-curve majority,T1 S-curve majority
+RWA,Rwanda,Africa,,T0 late starters,T0 late starters
+SAU,Saudi Arabia,Asia,2011.38,T1 S-curve majority,T1 S-curve majority
+SEN,Senegal,Africa,2019.67,T1 S-curve majority,T0 late starters
+SGP,Singapore,Asia,2002.44,T2 early saturators,T2 early saturators
+SLB,Solomon Islands,Oceania,,T0 late starters,T0 late starters
+SLE,Sierra Leone,Africa,,T0 late starters,T0 late starters
+SLV,El Salvador,North America,2018.93,T1 S-curve majority,T0 late starters
+SMR,San Marino,Europe,2000.78,T2 early saturators,T2 early saturators
+SOM,Somalia,Africa,,T0 late starters,T0 late starters
+STP,Sao Tome and Principe,Africa,2019.79,T1 S-curve majority,T0 late starters
+SUR,Suriname,South America,2017.17,T1 S-curve majority,T1 S-curve majority
+SVK,Slovakia,Europe,2003.71,T1 S-curve majority,T2 early saturators
+SVN,Slovenia,Europe,2005.44,T1 S-curve majority,T2 early saturators
+SWE,Sweden,Europe,2000.71,T2 early saturators,T2 early saturators
+SWZ,Eswatini,Africa,2020.2,T1 S-curve majority,T0 late starters
+SYC,Seychelles,Africa,2012.88,T1 S-curve majority,T1 S-curve majority
+TCD,Chad,Africa,,T0 late starters,T0 late starters
+TGO,Togo,Africa,,T0 late starters,T0 late starters
+THA,Thailand,Asia,2016.46,T1 S-curve majority,T1 S-curve majority
+TJK,Tajikistan,Asia,2022.2,T0 late starters,T0 late starters
+TON,Tonga,Oceania,2018.43,T1 S-curve majority,T1 S-curve majority
+TTO,Trinidad and Tobago,North America,2010.22,T1 S-curve majority,T1 S-curve majority
+TUN,Tunisia,Africa,2016.07,T1 S-curve majority,T1 S-curve majority
+TUR,Turkey,Asia,2013.78,T1 S-curve majority,T1 S-curve majority
+TZA,Tanzania,Africa,,T0 late starters,T0 late starters
+UGA,Uganda,Africa,,T0 late starters,T0 late starters
+UKR,Ukraine,Europe,2015.27,T1 S-curve majority,T1 S-curve majority
+URY,Uruguay,South America,2010.72,T1 S-curve majority,T1 S-curve majority
+USA,United States,North America,2001.09,T2 early saturators,T2 early saturators
+UZB,Uzbekistan,Asia,2017.2,T1 S-curve majority,T1 S-curve majority
+VCT,Saint Vincent and the Grenadines,North America,2015.29,T1 S-curve majority,T1 S-curve majority
+VEN,Venezuela,South America,2012.16,T1 S-curve majority,T1 S-curve majority
+VNM,Vietnam,Asia,2015.62,T1 S-curve majority,T1 S-curve majority
+ZAF,South Africa,Africa,2014.34,T1 S-curve majority,T1 S-curve majority
+ZMB,Zambia,Africa,,T0 late starters,T0 late starters
+ZWE,Zimbabwe,Africa,,T0 late starters,T0 late starters

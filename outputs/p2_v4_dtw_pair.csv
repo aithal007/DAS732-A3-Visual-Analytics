@@ -1,0 +1,2 @@
+early,late,T50_early,T50_late,lag_years,dtw_dist,euclid_dist,euclid_over_dtw,mean_path_shift_years
+Brazil,Bolivia,2012.58,2019.2,6.62,0.1743,0.8638,4.96,3.62

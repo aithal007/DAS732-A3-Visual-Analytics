@@ -318,7 +318,7 @@ def fig_v8b_dendrogram_tsne():
     fig.suptitle("V8b  The trajectory archetypes are real structure in DTW space, and late starters sit at one end of "
                  "a single continuum", x=0.01, ha="left", fontsize=12.5, weight="bold")
     fig.tight_layout()
-    savefig(fig, "V8b_dendrogram_tsne.png")
+    savefig(fig, "../outputs/diagnostics/V8b_dendrogram_tsne.png")   # superseded in the report by V8b_dtw_dendrogram + V8d
 
 
 def main():

@@ -1,0 +1,15 @@
+,value
+boot_ari_mean,0.6396
+boot_ari_sd,0.2029
+boot_unstable_pair_share,0.4525
+silhouette_mean_k2,0.4469
+silhouette_mean_k3,0.329
+anomaly_years,2019-2024
+cophenetic_corr,0.7161
+eta2_dtw,0.5941
+eta2_euclid,0.8189
+n_never_crossed,38
+ari_iter1_iter2,0.3039
+n_movers,37
+n_common,133
+embedding_method,t-SNE

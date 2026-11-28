@@ -1,0 +1,26 @@
+code,country,cluster,feature,raw_value,z_global,z_minus_cluster_mean,anomaly_score
+MCO,Monaco,C2 fixed-line legacy,internet_users_share_pct,99.0449,0.973,0.239,0.678
+MCO,Monaco,C2 fixed-line legacy,mobile_subs_per100,107.400795,-0.327,-0.623,0.678
+MCO,Monaco,C2 fixed-line legacy,mobile_phone_ownership_share_pct,99.5,1.005,0.193,0.678
+MCO,Monaco,C2 fixed-line legacy,telephone_lines_per100,95.47772,5.265,4.046,0.678
+MCO,Monaco,C2 fixed-line legacy,broadband_subs_per100,55.67808,2.209,1.012,0.678
+FJI,Fiji,C1 mixed,internet_users_share_pct,74.7052,-0.076,-0.512,0.6621
+FJI,Fiji,C1 mixed,mobile_subs_per100,574.15234,8.297,8.125,0.6621
+FJI,Fiji,C1 mixed,mobile_phone_ownership_share_pct,82.7,-0.159,-0.528,0.6621
+FJI,Fiji,C1 mixed,telephone_lines_per100,8.372776,-0.391,-0.183,0.6621
+FJI,Fiji,C1 mixed,broadband_subs_per100,1.8000956,-1.163,-1.174,0.6621
+HKG,Hong Kong,C2 fixed-line legacy,internet_users_share_pct,95.75537,0.831,0.097,0.6115
+HKG,Hong Kong,C2 fixed-line legacy,mobile_subs_per100,364.84897,4.43,4.133,0.6115
+HKG,Hong Kong,C2 fixed-line legacy,mobile_phone_ownership_share_pct,98.1,0.908,0.096,0.6115
+HKG,Hong Kong,C2 fixed-line legacy,telephone_lines_per100,44.574814,1.96,0.74,0.6115
+HKG,Hong Kong,C2 fixed-line legacy,broadband_subs_per100,40.272404,1.245,0.048,0.6115
+UGA,Uganda,"C0 mobile-first, low",internet_users_share_pct,8.949831,-2.907,-1.638,0.5794
+UGA,Uganda,"C0 mobile-first, low",mobile_subs_per100,83.16503,-0.774,-0.267,0.5794
+UGA,Uganda,"C0 mobile-first, low",mobile_phone_ownership_share_pct,43.3,-2.888,-1.641,0.5794
+UGA,Uganda,"C0 mobile-first, low",telephone_lines_per100,0.39183173,-0.909,-0.098,0.5794
+UGA,Uganda,"C0 mobile-first, low",broadband_subs_per100,0.20761333,-1.263,-0.167,0.5794
+AND,Andorra,C2 fixed-line legacy,internet_users_share_pct,94.3976,0.772,0.039,0.574
+AND,Andorra,C2 fixed-line legacy,mobile_subs_per100,155.69211,0.566,0.269,0.574
+AND,Andorra,C2 fixed-line legacy,mobile_phone_ownership_share_pct,96.7,0.811,-0.001,0.574
+AND,Andorra,C2 fixed-line legacy,telephone_lines_per100,64.94545,3.283,2.063,0.574
+AND,Andorra,C2 fixed-line legacy,broadband_subs_per100,52.35544,2.001,0.804,0.574

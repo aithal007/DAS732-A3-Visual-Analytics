@@ -1,0 +1,134 @@
+,country,iter1,iter2_aligned,iter2_native,changed,sil_iter1
+ALB,Albania,C1 mixed,C1 mixed,T1 S-curve majority,False,0.425
+DZA,Algeria,C1 mixed,C1 mixed,T1 S-curve majority,False,0.447
+AND,Andorra,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.392
+AGO,Angola,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.586
+ARG,Argentina,C1 mixed,C1 mixed,T1 S-curve majority,False,0.345
+ARM,Armenia,C1 mixed,C1 mixed,T1 S-curve majority,False,0.424
+AUS,Australia,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.246
+AUT,Austria,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.39
+AZE,Azerbaijan,C1 mixed,C1 mixed,T1 S-curve majority,False,0.434
+BHS,Bahamas,C1 mixed,C1 mixed,T1 S-curve majority,False,0.077
+BHR,Bahrain,C1 mixed,C1 mixed,T1 S-curve majority,False,0.251
+BGD,Bangladesh,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.51
+BLR,Belarus,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.462
+BEL,Belgium,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.289
+BEN,Benin,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.559
+BTN,Bhutan,C1 mixed,C1 mixed,T1 S-curve majority,False,0.33
+BOL,Bolivia,C1 mixed,C1 mixed,T1 S-curve majority,False,0.183
+BIH,Bosnia and Herzegovina,C1 mixed,C1 mixed,T1 S-curve majority,False,0.206
+BWA,Botswana,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.294
+BRA,Brazil,C1 mixed,C1 mixed,T1 S-curve majority,False,0.438
+BRN,Brunei,C1 mixed,C1 mixed,T1 S-curve majority,False,0.034
+BFA,Burkina Faso,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.568
+KHM,Cambodia,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.135
+CAN,Canada,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.351
+CPV,Cape Verde,C1 mixed,C1 mixed,T1 S-curve majority,False,0.18
+TCD,Chad,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.515
+CHL,Chile,C1 mixed,C1 mixed,T1 S-curve majority,False,0.409
+CHN,China,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.086
+COL,Colombia,C1 mixed,C1 mixed,T1 S-curve majority,False,0.335
+CRI,Costa Rica,C1 mixed,C1 mixed,T1 S-curve majority,False,0.437
+CIV,Cote d'Ivoire,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.382
+HRV,Croatia,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.196
+CUB,Cuba,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.257
+CYP,Cyprus,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.32
+CZE,Czechia,C1 mixed,C1 mixed,T1 S-curve majority,False,0.05
+COD,Democratic Republic of Congo,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.519
+DNK,Denmark,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.085
+DOM,Dominican Republic,C1 mixed,C1 mixed,T1 S-curve majority,False,0.3
+ECU,Ecuador,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.157
+EGY,Egypt,C1 mixed,C1 mixed,T1 S-curve majority,False,0.416
+SLV,El Salvador,C1 mixed,C1 mixed,T1 S-curve majority,False,0.181
+EST,Estonia,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.03
+SWZ,Eswatini,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.075
+ETH,Ethiopia,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.559
+FJI,Fiji,C1 mixed,C1 mixed,T1 S-curve majority,False,0.026
+FIN,Finland,C1 mixed,C2 fixed-line legacy,T2 early saturators,True,0.236
+GAB,Gabon,C1 mixed,C1 mixed,T1 S-curve majority,False,0.016
+GMB,Gambia,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.531
+GEO,Georgia,C1 mixed,C1 mixed,T1 S-curve majority,False,0.302
+DEU,Germany,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.468
+GHA,Ghana,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.278
+GRC,Greece,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.456
+GTM,Guatemala,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.305
+HND,Honduras,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.394
+HKG,Hong Kong,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.139
+HUN,Hungary,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.312
+ISL,Iceland,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.143
+IND,India,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.426
+IDN,Indonesia,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.275
+IRN,Iran,C1 mixed,C1 mixed,T1 S-curve majority,False,0.121
+IRQ,Iraq,C1 mixed,C1 mixed,T1 S-curve majority,False,0.473
+IRL,Ireland,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.095
+ITA,Italy,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.378
+JAM,Jamaica,C1 mixed,C1 mixed,T1 S-curve majority,False,0.442
+JOR,Jordan,C1 mixed,C1 mixed,T1 S-curve majority,False,0.316
+KAZ,Kazakhstan,C1 mixed,C1 mixed,T1 S-curve majority,False,0.458
+KEN,Kenya,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.547
+KIR,Kiribati,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.241
+KGZ,Kyrgyzstan,C1 mixed,C1 mixed,T1 S-curve majority,False,0.435
+LVA,Latvia,C1 mixed,C1 mixed,T1 S-curve majority,False,0.367
+LSO,Lesotho,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.481
+LIE,Liechtenstein,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.4
+LTU,Lithuania,C1 mixed,C1 mixed,T1 S-curve majority,False,0.383
+MAC,Macao,C1 mixed,C1 mixed,T1 S-curve majority,False,0.142
+MWI,Malawi,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.563
+MYS,Malaysia,C1 mixed,C1 mixed,T1 S-curve majority,False,0.205
+MDV,Maldives,C1 mixed,C1 mixed,T1 S-curve majority,False,0.474
+MLT,Malta,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.488
+MRT,Mauritania,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.392
+MUS,Mauritius,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.18
+MEX,Mexico,C1 mixed,C1 mixed,T1 S-curve majority,False,0.275
+MDA,Moldova,C1 mixed,C1 mixed,T1 S-curve majority,False,0.029
+MCO,Monaco,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.272
+MNG,Mongolia,C1 mixed,C1 mixed,T1 S-curve majority,False,0.439
+MAR,Morocco,C1 mixed,C1 mixed,T1 S-curve majority,False,0.43
+MOZ,Mozambique,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.44
+NAM,Namibia,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.269
+NPL,Nepal,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.393
+NLD,Netherlands,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.286
+NZL,New Zealand,C1 mixed,C2 fixed-line legacy,T2 early saturators,True,0.069
+NIC,Nicaragua,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.167
+NER,Niger,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.538
+NGA,Nigeria,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.563
+MKD,North Macedonia,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.08
+NOR,Norway,C1 mixed,C2 fixed-line legacy,T2 early saturators,True,0.079
+OMN,Oman,C1 mixed,C1 mixed,T1 S-curve majority,False,0.436
+PAK,Pakistan,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.499
+PER,Peru,C1 mixed,C1 mixed,T1 S-curve majority,False,0.401
+PHL,Philippines,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.105
+PRT,Portugal,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.449
+QAT,Qatar,C1 mixed,C1 mixed,T1 S-curve majority,False,0.305
+ROU,Romania,C1 mixed,C1 mixed,T1 S-curve majority,False,0.15
+RWA,Rwanda,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.574
+VCT,Saint Vincent and the Grenadines,C1 mixed,C1 mixed,T1 S-curve majority,False,0.375
+STP,Sao Tome and Principe,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.458
+SAU,Saudi Arabia,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.291
+SEN,Senegal,"C0 mobile-first, low",C1 mixed,T1 S-curve majority,True,0.27
+SYC,Seychelles,C1 mixed,C1 mixed,T1 S-curve majority,False,0.238
+SGP,Singapore,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.304
+SVK,Slovakia,C1 mixed,C1 mixed,T1 S-curve majority,False,0.206
+SVN,Slovenia,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.358
+ZAF,South Africa,C1 mixed,C1 mixed,T1 S-curve majority,False,0.259
+KOR,South Korea,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.463
+ESP,Spain,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.493
+LKA,Sri Lanka,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.417
+SWE,Sweden,C1 mixed,C2 fixed-line legacy,T2 early saturators,True,0.077
+CHE,Switzerland,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.469
+TZA,Tanzania,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.357
+THA,Thailand,C1 mixed,C1 mixed,T1 S-curve majority,False,0.463
+TGO,Togo,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.594
+TTO,Trinidad and Tobago,C1 mixed,C1 mixed,T1 S-curve majority,False,0.258
+TUN,Tunisia,C1 mixed,C1 mixed,T1 S-curve majority,False,0.437
+TUR,Turkey,C1 mixed,C1 mixed,T1 S-curve majority,False,0.404
+UGA,Uganda,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.502
+ARE,United Arab Emirates,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.216
+GBR,United Kingdom,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.481
+USA,United States,C2 fixed-line legacy,C2 fixed-line legacy,T2 early saturators,False,0.313
+URY,Uruguay,C2 fixed-line legacy,C1 mixed,T1 S-curve majority,True,0.413
+UZB,Uzbekistan,C1 mixed,C1 mixed,T1 S-curve majority,False,0.115
+VEN,Venezuela,C1 mixed,C1 mixed,T1 S-curve majority,False,0.149
+VNM,Vietnam,C1 mixed,C1 mixed,T1 S-curve majority,False,0.476
+ZMB,Zambia,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.528
+ZWE,Zimbabwe,"C0 mobile-first, low","C0 mobile-first, low",T0 late starters,False,0.427
