@@ -210,7 +210,7 @@ st.markdown(f"""<div class="kpis">
 
 tabs = st.tabs(["🧭 Workflow", "🗂️ Data", "📈 Explore · W1", "🧩 Mine · W2", "🎯 Baseline model · W3",
                 "🔁 Feedback loop", "🧬 Archetypes · W2", "⚙️ Iteration 2 models · W3", "🔮 Forecast & drift · W3",
-                "✅ Answer"])
+                "🎛️ What if?", "✅ Answer"])
 
 # ================================================================ 0 workflow
 with tabs[0]:
@@ -527,8 +527,180 @@ with tabs[8]:
         "Post-2020 acceleration: the same infrastructure now coincides with more people online (concept drift).",
         "Re-calibrate uncertainty whenever the drift chart crosses 0.2.")
 
-# ================================================================ 9 answer
+# ================================================================ 9 what if
 with tabs[9]:
+    tracker(["V2", "M2", "K2"])
+    st.markdown('<p class="card-s">Move one thing and watch the answer change. Every scenario re-uses a model from '
+                'the report; none of them claims cause, they show what the fitted relations imply.</p>',
+                unsafe_allow_html=True)
+    wi = st.radio("Scenario", ["W1 · What if a country had taken off earlier?",
+                               "W1 · What if a country added broadband, or more mobile?",
+                               "W2 · What if Fiji's recording error had stayed in the data?",
+                               "W3 · What if we had not re-calibrated the forecast?"],
+                  label_visibility="collapsed")
+
+    # ---------------------------------------------------------------- W1 take-off shift
+    if wi.startswith("W1 · What if a country had taken off"):
+        fits = D["fits"][D["fits"].r2 >= 0.9].set_index("entity")
+        names = sorted(fits.index)
+        eu = fits[fits.region == "Europe"].t0_takeoff.median()
+        c1, c2 = st.columns([1, 2.3])
+        with c1:
+            who = st.selectbox("Country", names, index=names.index(focus) if focus in names else names.index("India"),
+                               key="wi_t0_c")
+            f = fits.loc[who]
+            st.session_state.setdefault("wi_t0_s", 0)
+            shift = st.slider("Take off earlier (−) or later (+), years", -25, 15, key="wi_t0_s")
+            b1, b2 = st.columns(2)
+            b1.button("Europe's take-off", key="wi_eu", width="stretch",
+                      on_click=lambda: st.session_state.update(
+                          wi_t0_s=int(np.clip(round(eu - f.t0_takeoff), -25, 15))))
+            b2.button("Reset", key="wi_reset", width="stretch",
+                      on_click=lambda: st.session_state.update(wi_t0_s=0))
+        yrs = np.arange(1990, 2031)
+        curve = lambda t0: f.L_saturation / (1 + np.exp(-f.k_growth * (yrs - t0)))  # noqa: E731
+        base, alt = curve(f.t0_takeoff), curve(f.t0_takeoff + shift)
+        obs = D["panel"][(D["panel"].entity == who) & (D["panel"].year >= 1990)].dropna(subset=[TARGET])
+        with c2:
+            b = card(f"{who}: the same S-curve, started at a different time",
+                     "logistic fit from V1 (saturation L, growth k, take-off t0); only t0 moves")
+            fig = go.Figure()
+            fig.add_scatter(x=obs.year, y=obs[TARGET], mode="markers", name="observed",
+                            marker=dict(color=INK, size=6))
+            fig.add_scatter(x=yrs, y=base, name=f"fitted (take-off {f.t0_takeoff:.0f})",
+                            line=dict(color=MUTED, width=2, dash="dash"))
+            fig.add_scatter(x=yrs, y=alt, name=f"what if (take-off {f.t0_takeoff + shift:.0f})",
+                            line=dict(color=BLUE, width=4))
+            fig.add_vline(x=2025, line=dict(color=LINE, dash="dot"))
+            fig.update_layout(yaxis=dict(title="internet users (%)", range=[0, 105]), xaxis_title="year",
+                              legend=dict(orientation="h", y=-0.22))
+            show(fig, 400, b)
+        y_b, y_a = float(base[yrs == 2025][0]), float(alt[yrs == 2025][0])
+        with c1:
+            st.metric("Internet use in 2025", f"{y_a:.0f}%", f"{y_a - y_b:+.0f} pp vs its own fit")
+            st.metric("Take-off relative to Europe's median", f"{f.t0_takeoff + shift - eu:+.1f} years")
+        oci(f"{who} took off in {f.t0_takeoff:.0f}, {f.t0_takeoff - eu:+.1f} years from Europe's median ({eu:.0f}).",
+            "Every country follows the same S-curve shape (V1c); only the start differs.",
+            "Moving the start alone moves the whole curve: the divide is a delay, so earlier take-off closes it.")
+
+    # ---------------------------------------------------------------- W1 levers
+    elif wi.startswith("W1 · What if a country added broadband"):
+        d = D["panel"][D["panel"].year == 2022].dropna(subset=[TARGET, "log1p_broadband", "mobile_capped"])
+        X = np.c_[np.ones(len(d)), d.log1p_broadband, d.mobile_capped]
+        beta, *_ = np.linalg.lstsq(X, d[TARGET].values, rcond=None)
+        r2 = 1 - ((d[TARGET] - X @ beta) ** 2).sum() / ((d[TARGET] - d[TARGET].mean()) ** 2).sum()
+        names = sorted(d.entity)
+        pred = lambda bb, mob: float(np.clip(beta[0] + beta[1] * np.log1p(bb) + beta[2] * mob, 0, 100))  # noqa: E731
+        c1, c2 = st.columns([1, 2.3])
+        with c1:
+            who = st.selectbox("Country (2022 values)", names,
+                               index=names.index(focus) if focus in names else names.index("India"), key="wi_lv_c")
+            r = d[d.entity == who].iloc[0]
+            bb = st.slider("Fixed broadband per 100", 0.0, 60.0, float(round(r.broadband_subs_per100, 1)), 0.5,
+                           key=f"wi_bb_{who}")
+            mob = st.slider("Mobile subscriptions per 100 (capped at 100)", 20.0, 100.0,
+                            float(round(r.mobile_capped, 0)), 1.0, key=f"wi_mob_{who}")
+            now, new = pred(r.broadband_subs_per100, r.mobile_capped), pred(bb, mob)
+            st.metric("Model: internet users", f"{new:.0f}%", f"{new - now:+.1f} pp vs its 2022 inputs")
+            st.caption(f"Actual 2022: {r[TARGET]:.0f}%. Model fitted on {len(d)} countries, R² {r2:.2f}.")
+        with c2:
+            b = card("Which lever moves internet use?", "same country, one lever at a time; dot = current what-if")
+            from plotly.subplots import make_subplots
+            xb, xm = np.linspace(0, 60, 121), np.linspace(20, 100, 81)
+            fig = make_subplots(rows=1, cols=2, shared_yaxes=True, horizontal_spacing=0.06,
+                                subplot_titles=("Lever 1: fixed broadband", "Lever 2: mobile"))
+            fig.add_scatter(x=xb, y=[pred(v, mob) for v in xb], line=dict(color=BLUE, width=4), name="broadband",
+                            row=1, col=1)
+            fig.add_scatter(x=[bb], y=[new], mode="markers", marker=dict(color=RED, size=14), name="what if",
+                            row=1, col=1)
+            fig.add_vrect(x0=0, x1=1, fillcolor=ORANGE, opacity=0.12, line_width=0, row=1, col=1)
+            fig.add_scatter(x=xm, y=[pred(bb, v) for v in xm], line=dict(color=ORANGE, width=4), name="mobile",
+                            row=1, col=2)
+            fig.add_scatter(x=[mob], y=[new], mode="markers", marker=dict(color=RED, size=14), showlegend=False,
+                            row=1, col=2)
+            fig.update_xaxes(title_text="broadband lines per 100", row=1, col=1)
+            fig.update_xaxes(title_text="mobile subscriptions per 100", row=1, col=2)
+            fig.update_yaxes(title_text="internet users (%)", range=[0, 105], row=1, col=1)
+            fig.update_layout(showlegend=False)
+            show(fig, 400, b)
+        oci(f"From 1 to 10 broadband lines per 100 the model adds {beta[1] * (np.log1p(10) - np.log1p(1)):.0f} pp; "
+            f"raising mobile from 50 to 100 per 100 adds only {beta[2] * 50:.0f} pp.",
+            "Mobile is saturated in most countries (median 100 per 100), so it no longer separates them (V2, V1f).",
+            "Leapfrogging with mobile alone barely moves the answer; fixed broadband does. Association, not cause.")
+
+    # ---------------------------------------------------------------- W2 PCA with/without the artefact
+    elif wi.startswith("W2"):
+        a = D["it1"].copy()
+        C = ["internet_users_share_pct", "mobile_subs_per100", "mobile_phone_ownership_share_pct",
+             "telephone_lines_per100", "broadband_subs_per100"]
+        lab = ["internet", "mobile", "owners", "landlines", "broadband"]
+        c1, c2 = st.columns([1, 2.3])
+        with c1:
+            keep_fiji = st.toggle("Keep Fiji's 2024 error (574 SIMs per 100)", value=True, key="wi_fiji")
+            keep_hk = st.toggle("Keep Hong Kong (366, a real multi-SIM market)", value=True, key="wi_hk")
+        sub = a[(a.name != "Fiji") | keep_fiji]
+        sub = sub[(sub.name != "Hong Kong") | keep_hk]
+        Z = (sub[C] - sub[C].mean()) / sub[C].std(ddof=0)
+        U, S, Vt = np.linalg.svd(Z.values, full_matrices=False)
+        ev = S ** 2 / (S ** 2).sum()
+        sc = Z.values @ Vt[:2].T
+        sgn = np.sign(Vt[0].sum())
+        sc[:, 0] *= sgn
+        with c1:
+            st.metric("PC1 general connectivity", f"{ev[0]:.0%}")
+            st.metric("PC2 'mobile' axis", f"{ev[1]:.0%}", f"mobile loading {abs(Vt[1][1]):.2f}", delta_color="off")
+            st.caption("PC2 loadings: " + ", ".join(f"{l} {abs(v):.2f}" for l, v in zip(lab, Vt[1])))
+        with c2:
+            b = card("2024 snapshot PCA, recomputed live", f"{len(sub)} countries, z-scored; colour = region")
+            fig = px.scatter(x=sc[:, 0], y=sc[:, 1], color=sub.region, hover_name=sub.name,
+                             color_discrete_map=REGION_COLORS, labels={"x": "PC1", "y": "PC2", "color": ""})
+            for nm in ["Fiji", "Hong Kong"]:
+                m = (sub.name == nm).values
+                if m.any():
+                    fig.add_annotation(x=sc[m, 0][0], y=sc[m, 1][0], text=nm, showarrow=True, arrowhead=0, ax=30, ay=-25)
+            fig.update_traces(marker=dict(size=9, line=dict(color="white", width=0.5)))
+            show(fig, 400, b)
+        oci("With Fiji and Hong Kong, PC2 is a 'mobile' axis held up by two points.",
+            "One recording error (Fiji) and one multi-SIM market stretch the axis on their own (V4, V6b).",
+            "Removing the error is why W2's feedback loop applies the artefact rule; Hong Kong is real and is kept.")
+
+    # ---------------------------------------------------------------- W3 calibration
+    else:
+        cal = D["calib"].copy()
+        c1, c2 = st.columns([1, 2.3])
+        with c1:
+            lvl = st.select_slider("Promised coverage of the forecast band",
+                                   options=[f"{v:.0%}" for v in cal.nominal], value="80%", key="wi_cal")
+            row = cal[cal.nominal.map(lambda v: f"{v:.0%}") == lvl].iloc[0]
+            recal = st.toggle("Apply conformal re-calibration (CQR)", value=False, key="wi_cqr")
+            got = row.cqr if recal else row.raw
+            st.metric("Outcomes 2021-25 inside the band", f"{got:.0%}", f"{got - row.nominal:+.0%} vs promised",
+                      delta_color="normal" if abs(got - row.nominal) < 0.05 else "inverse")
+            if recal:
+                st.caption(f"The band is widened by {row.margin:.1f} pp at this level.")
+        with c2:
+            b = card("Does the forecast keep its promise?", "trained on years up to 2020, scored on hidden 2021-25")
+            fig = go.Figure()
+            fig.add_scatter(x=cal.nominal * 100, y=cal.nominal * 100, name="promise (diagonal)",
+                            line=dict(color=LINE, dash="dash"))
+            fig.add_scatter(x=cal.nominal * 100, y=cal.raw * 100, name="raw model", mode="lines+markers",
+                            line=dict(color=RED, width=3 if not recal else 1.5))
+            if recal:
+                fig.add_scatter(x=cal.nominal * 100, y=cal.cqr * 100, name="re-calibrated (CQR)",
+                                mode="lines+markers", line=dict(color=BLUE, width=4))
+            fig.add_scatter(x=[row.nominal * 100], y=[got * 100], mode="markers",
+                            marker=dict(color=INK, size=14, symbol="diamond"), name="selected")
+            fig.update_layout(xaxis=dict(title="promised coverage (%)", range=[45, 95]),
+                              yaxis=dict(title="achieved coverage (%)", range=[20, 100]),
+                              legend=dict(orientation="h", y=-0.22))
+            show(fig, 400, b)
+        oci("Without re-calibration, a band that promises 80% covers 50% of what really happened.",
+            "The target drifted after 2020 (V13), so the 2020 model is too low and too confident.",
+            "Turn re-calibration on: coverage sits on the diagonal at every level. Re-calibrate whenever drift > 0.2.")
+
+
+# ================================================================ 9 answer
+with tabs[10]:
     tracker(["K2"])
     b = card("The answer (V14)", "when · what · who · what the loop changed")
     b.image(str(IMG / "V14_synthesis_answer.png"), width="stretch")
